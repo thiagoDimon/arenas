@@ -16,7 +16,7 @@ Frontend responsivo para o Arenas — Progressive Web App para criação e geren
 - `src/` — Código fonte principal
   - `components/` — Componentes Vue globais
   - `layouts/` — Layouts reutilizáveis
-  - `pages/` — Páginas que viram rotas automaticamente
+  - `pages/` — Páginas da aplicação
   - `plugins/` — Plugins globais
   - `router/` — Configuração de rotas
   - `stores/` — Stores Pinia
@@ -87,7 +87,8 @@ Frontend responsivo para o Arenas — Progressive Web App para criação e geren
 - [Documentação do Vuetify](https://vuetifyjs.com/)
 - [Documentação do Pinia](https://pinia.vuejs.org/)
 - [Documentação do Vue Router](https://router.vuejs.org/)
-- [Documentação dos Plugins](https://github.com/unplugin/unplugin-vue-components), [Layouts](https://github.com/loicduong/vite-plugin-vue-layouts-next)
+- [Documentação dos Plugins](https://github.com/unplugin/unplugin-vue-components)
+- [Documentação dos Layouts](https://github.com/loicduong/vite-plugin-vue-layouts-next)
 
 ---
 <br>
