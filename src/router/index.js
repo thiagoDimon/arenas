@@ -4,12 +4,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/pages/index.vue'),
+    component: () => import('@/pages/login/index.vue'),
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('@/pages/index.vue'), // Redireciona para a página inicial
+    component: () => import('@/pages/login/index.vue'), // Redireciona para a página inicial
   },
 ]
 

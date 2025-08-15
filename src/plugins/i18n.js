@@ -2,13 +2,25 @@ import { createI18n } from 'vue-i18n'
 
 const messages = {
   pt: {
-    login: 'Login',
+    entrar: 'Entrar',
+    arenas: 'Arenas',
+    usuario: 'Usuário',
+    senha: 'Senha',
+    entrarComGoogle: 'Entrar com Google',
   },
   en: {
-    login: 'Login',
+    entrar: 'Login',
+    arenas: 'Arenas',
+    usuario: 'User',
+    senha: 'Password',
+    entrarComGoogle: 'Login with Google',
   },
   es: {
-    login: 'Login',
+    entrar: 'Iniciar',
+    arenas: 'Arenas',
+    usuario: 'Usuario',
+    senha: 'Contraseña',
+    entrarComGoogle: 'Iniciar con Google',
   },
 }
 
