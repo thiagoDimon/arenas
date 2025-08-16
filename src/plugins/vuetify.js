@@ -4,6 +4,21 @@ import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
+const colors = {
+  'primary': '#1B5E20',
+  'secondary': '#FFD54F',
+  'primary-color-100': '#32AE3B',
+  'primary-color-200': '#27872E',
+  'primary-color-300': '#1B5E20',
+  'primary-color-400': '#103713',
+  'primary-color-500': '#051005',
+  'secondary-color-100': '#FFEDB2',
+  'secondary-color-200': '#FFE180',
+  'secondary-color-300': '#FFD54F',
+  'secondary-color-400': '#FFC81A',
+  'secondary-color-500': '#E5AF00',
+}
+
 export default createVuetify({
   components,
   directives,
@@ -11,16 +26,10 @@ export default createVuetify({
     defaultTheme: 'system',
     themes: {
       light: {
-        colors: {
-          primary: '#1B5E20', // Defina sua cor primária aqui
-          secondary: '#FFD54F', // Defina sua cor secundária aqui
-        },
+        colors,
       },
       dark: {
-        colors: {
-          primary: '#1B5E20',
-          secondary: '#FFD54F',
-        },
+        colors,
       },
     },
   },

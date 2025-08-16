@@ -7,6 +7,10 @@ const messages = {
     usuario: 'Usuário',
     senha: 'Senha',
     entrarComGoogle: 'Entrar com Google',
+    naoTemConta: 'Não tem uma conta? Registre-se aqui',
+    lembreMe: 'Lembre-me',
+    mensagemUsuarioSenhaNaoInformado: 'Usuário ou senha não informados',
+    atencao: 'Atenção',
   },
   en: {
     entrar: 'Login',
@@ -14,6 +18,10 @@ const messages = {
     usuario: 'User',
     senha: 'Password',
     entrarComGoogle: 'Login with Google',
+    naoTemConta: 'Don\'t have an account? Sign up here',
+    lembreMe: 'Remember me',
+    mensagemUsuarioSenhaNaoInformado: 'Username or password not provided',
+    atencao: 'Attention',
   },
   es: {
     entrar: 'Iniciar',
@@ -21,6 +29,10 @@ const messages = {
     usuario: 'Usuario',
     senha: 'Contraseña',
     entrarComGoogle: 'Iniciar con Google',
+    naoTemConta: '¿No tienes una cuenta? Regístrate aquí',
+    lembreMe: 'Recuérdame',
+    mensagemUsuarioSenhaNaoInformado: 'Usuario o contraseña no informados',
+    atencao: 'Atención',
   },
 }
 
