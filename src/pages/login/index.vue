@@ -1,23 +1,9 @@
 <template>
   <v-container class="conteudo-login" fluid>
-    <arena-alerta
-      v-model="exibeAlertaNaoInformado"
-      class="mt-4"
-      color="secondary-color-300"
-      density="comfortable"
-      location="top center"
-      position="fixed"
-      :text="$t('mensagemUsuarioSenhaNaoInformado')"
-      :title="$t('atencao')"
-      type="warning"
-    />
-    <v-card
-      class="d-flex flex-column pa-4"
-      color="#ffffff"
-      height="480"
-      rounded="xl"
-      width="400"
-    >
+    <arena-alerta v-model="exibeAlertaNaoInformado" class="mt-4" color="secondary-color-300" density="comfortable"
+      location="top center" position="fixed" :text="$t('mensagemUsuarioSenhaNaoInformado')" :title="$t('atencao')"
+      type="warning" />
+    <v-card class="d-flex flex-column pa-4" color="#ffffff" height="480" rounded="xl" width="400">
       <v-card-title class="arena-titulo-1">
         <div class="align-justify-center ga-4">
           <img alt="Arena" src="@/assets/arena.svg">
@@ -26,49 +12,22 @@
       </v-card-title>
       <v-card-text>
         <v-form>
-          <v-text-field
-            v-model="username"
-            class="mb-4"
-            color="primary-color-300"
-            hide-details
-            :label="$t('usuario')"
-            variant="outlined"
-          />
-          <v-text-field
-            v-model="password"
-            color="primary-color-300"
-            hide-details
-            :label="$t('senha')"
-            type="password"
-            variant="outlined"
-          />
-          <v-checkbox
-            v-model="lembreMe"
-            class="d-flex justify-end"
-            color="primary-color-300"
-            hide-details
-            label="Lembre-me"
-          />
-          <v-btn
-            block
-            class="rounded-xl mb-4"
-            color="primary-color-300"
-            height="50"
-            @click="realizarLogin()"
-          >{{ $t('entrar') }}</v-btn>
-          <v-btn
-            block
-            class="rounded-xl mb-2"
-            color="#000000"
-            height="50"
-            variant="outlined"
-            @click="realizarLoginGoogle()"
-          >
-            <div class="d-flex align-center">
-              <img alt="Google" src="@/assets/google.svg" style="width: 28px;">
-              <div class="ps-4">{{ $t('entrarComGoogle') }}</div>
-            </div>
-          </v-btn>
+          <v-text-field v-model="username" class="mb-4" color="primary-color-300" hide-details :label="$t('usuario')"
+            variant="outlined" />
+          <v-text-field v-model="password" color="primary-color-300" hide-details :label="$t('senha')" type="password"
+            variant="outlined" />
+          <v-checkbox v-model="lembreMe" class="d-flex justify-end" color="primary-color-300" hide-details
+            label="Lembre-me" />
+          <v-btn block class="rounded-xl mb-4" color="primary-color-300" height="50" @click="realizarLogin()">{{
+            $t('entrar') }}</v-btn>
+          <a :href="googleLoginUrl" style="text-decoration: none;">
+            <v-btn block class="rounded-xl mb-2" color="#000000" height="50" variant="outlined">
+              <div class="d-flex align-center">
+                <img alt="Google" src="@/assets/google.svg" style="width: 28px;">
+                <div class="ps-4">{{ $t('entrarComGoogle') }}</div>
+              </div>
+            </v-btn>
+          </a>
           <div class="registrar text-primary">
             {{ $t('naoTemConta') }}
           </div>
@@ -84,13 +43,15 @@
   import { useLoginStore } from '@/stores/login'
 
   const loginStore = useLoginStore()
-
   const router = useRouter()
 
   const username = ref('')
   const password = ref('')
   const lembreMe = ref(false)
   const exibeAlertaNaoInformado = ref(false)
+
+  const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9090';
+  const googleLoginUrl = `${apiUrl}/oauth2/authorization/google`;
 
   async function realizarLogin () {
     if (!username.value || !password.value) {
@@ -99,10 +60,6 @@
     }
     await loginStore.login(username.value, password.value, lembreMe.value)
     router.push('/home')
-  }
-
-  function realizarLoginGoogle () {
-    loginStore.loginGoogle()
   }
 
 </script>

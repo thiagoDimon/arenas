@@ -2,7 +2,14 @@ import { createApp } from 'vue'
 import { registerPlugins } from '@/plugins'
 import App from './App.vue'
 import 'unfonts.css'
+import { useLoginStore } from '@/stores/login' 
 
-const app = createApp(App)
-registerPlugins(app)
-app.mount('#app')
+async function initializeApp() {
+    const app = createApp(App)
+    registerPlugins(app)
+    const loginStore = useLoginStore()
+    await loginStore.checkAuthStatus()
+    app.mount('#app')
+}
+
+initializeApp();
