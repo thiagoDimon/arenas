@@ -1,11 +1,22 @@
 <template>
   <v-app>
-    <router-view />
+    <template v-if="!logado">
+      <router-view />
+    </template>
+    <template v-else>
+      <LayoutSidebar>
+        <router-view />
+      </LayoutSidebar>
+    </template>
   </v-app>
 </template>
 
 <script setup>
-//
+  import LayoutSidebar from '@/layouts/index.vue'
+  import { useAuthStore } from '@/stores/auth'
+
+  const authStore = useAuthStore()
+  const logado = computed(() => authStore.logado)
 </script>
 
 <style>

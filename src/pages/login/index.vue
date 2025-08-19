@@ -81,9 +81,10 @@
 <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import { useLoginStore } from '@/stores/login'
+  import { useAuthStore, useLoginStore } from '@/stores'
 
   const loginStore = useLoginStore()
+  const authStore = useAuthStore()
 
   const router = useRouter()
 
@@ -98,6 +99,7 @@
       return
     }
     await loginStore.login(username.value, password.value, lembreMe.value)
+    authStore.logado = true
     router.push('/home')
   }
 
