@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useLoginStore } from '@/stores/login'
 
 const routes = [
   {
@@ -10,6 +11,7 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: () => import('@/pages/home/index.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/:pathMatch(.*)*',
@@ -22,6 +24,18 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
+
+router.beforeEach((to, from, next) => {
+  const loginStore = useLoginStore();
+  
+  const requiresAuth = to.meta.requiresAuth;
+
+  if (requiresAuth && !loginStore.isLoggedIn) {
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
+});
 
 router.onError((err, to) => {
   if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
