@@ -60,7 +60,7 @@
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 16px;
-  
+
   @media (max-width: 768px) {
     font-size: 2rem;
   }
@@ -86,7 +86,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
@@ -123,11 +123,11 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .card {
     padding: 20px;
   }
-  
+
   .welcome-section {
     padding: 20px 0;
     margin-bottom: 24px;

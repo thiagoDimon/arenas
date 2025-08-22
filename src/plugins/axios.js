@@ -3,11 +3,12 @@ import axios from 'axios'
 const baseURL
   = process.env.NODE_ENV === 'production'
     ? import.meta.env.VITE_API_URL
-    : 'http://localhost:9090/api'
+    : 'http://localhost:9090/'
 
 const apiClient = axios.create({
   baseURL,
   headers: { 'Content-type': 'application/json' },
+  withCredentials: true,
 })
 
 // Request Interceptor

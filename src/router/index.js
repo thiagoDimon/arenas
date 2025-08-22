@@ -11,6 +11,7 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: () => import('@/pages/home/index.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/:pathMatch(.*)*',

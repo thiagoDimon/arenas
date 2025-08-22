@@ -16,7 +16,7 @@
 </template>
 
 <script setup name="arena-alerta">
-  import { defineEmits, defineProps, watch } from 'vue'
+  import { watch } from 'vue'
 
   const { duration, modelValue } = defineProps({
     modelValue: {

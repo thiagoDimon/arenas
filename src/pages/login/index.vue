@@ -55,20 +55,22 @@
             color="primary-color-300"
             height="50"
             @click="realizarLogin()"
-          >{{ $t('entrar') }}</v-btn>
-          <v-btn
-            block
-            class="rounded-xl mb-2"
-            color="#000000"
-            height="50"
-            variant="outlined"
-            @click="realizarLoginGoogle()"
-          >
-            <div class="d-flex align-center">
-              <img alt="Google" src="@/assets/google.svg" style="width: 28px;">
-              <div class="ps-4">{{ $t('entrarComGoogle') }}</div>
-            </div>
-          </v-btn>
+          >{{
+            $t('entrar') }}</v-btn>
+          <a :href="googleLoginUrl" style="text-decoration: none;">
+            <v-btn
+              block
+              class="rounded-xl mb-2"
+              color="#000000"
+              height="50"
+              variant="outlined"
+            >
+              <div class="d-flex align-center">
+                <img alt="Google" src="@/assets/google.svg" style="width: 28px;">
+                <div class="ps-4">{{ $t('entrarComGoogle') }}</div>
+              </div>
+            </v-btn>
+          </a>
           <div class="registrar text-primary">
             {{ $t('naoTemConta') }}
           </div>
@@ -98,13 +100,9 @@
       exibeAlertaNaoInformado.value = true
       return
     }
-    await loginStore.login(username.value, password.value, lembreMe.value)
+    await loginStore.login(username.value, password.value)
     authStore.logado = true
     router.push('/home')
-  }
-
-  function realizarLoginGoogle () {
-    loginStore.loginGoogle()
   }
 
 </script>
