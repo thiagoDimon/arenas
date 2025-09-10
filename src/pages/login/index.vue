@@ -21,7 +21,7 @@
       <v-card-title class="arena-titulo-1">
         <div class="align-justify-center ga-4">
           <img alt="Arena" src="@/assets/arena.svg">
-          <div class="pt-4">{{ $t('arenas') }}</div>
+          <div class="pt-4">{{ $t("arenas") }}</div>
         </div>
       </v-card-title>
       <v-card-text>
@@ -55,24 +55,23 @@
             color="primary-color-300"
             height="50"
             @click="realizarLogin()"
-          >{{
-            $t('entrar') }}</v-btn>
-          <a :href="googleLoginUrl" style="text-decoration: none;">
-            <v-btn
-              block
-              class="rounded-xl mb-2"
-              color="#000000"
-              height="50"
-              variant="outlined"
-            >
-              <div class="d-flex align-center">
-                <img alt="Google" src="@/assets/google.svg" style="width: 28px;">
-                <div class="ps-4">{{ $t('entrarComGoogle') }}</div>
-              </div>
-            </v-btn>
-          </a>
+          >
+            {{ $t("entrar") }}
+          </v-btn>
+          <v-btn
+            block
+            class="rounded-xl mb-2"
+            color="#000000"
+            height="50"
+            variant="outlined"
+          >
+            <div class="d-flex align-center">
+              <img alt="Google" src="@/assets/google.svg" style="width: 28px">
+              <div class="ps-4">{{ $t("entrarComGoogle") }}</div>
+            </div>
+          </v-btn>
           <div class="registrar text-primary">
-            {{ $t('naoTemConta') }}
+            {{ $t("naoTemConta") }}
           </div>
         </v-form>
       </v-card-text>
@@ -104,7 +103,6 @@
     authStore.logado = true
     router.push('/home')
   }
-
 </script>
 
 <style>
@@ -114,7 +112,7 @@
   align-items: center;
   width: 100% !important;
   height: 100% !important;
-  background: url('@/assets/campo.jpg') no-repeat center center fixed;
+  background: url("@/assets/campo.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
