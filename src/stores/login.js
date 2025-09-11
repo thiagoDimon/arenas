@@ -14,5 +14,9 @@ export const useLoginStore = defineStore('login', {
         throw error
       }
     },
+    loginGoogle () {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9090'
+      return `${apiUrl}/oauth2/authorization/google`
+    },
   },
 })

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <template v-if="!logado">
+    <template v-if="!logado || route.name === 'Login' || route.name === 'Redirect'">
       <router-view />
     </template>
     <template v-else>
@@ -15,6 +15,7 @@
   import LayoutSidebar from '@/layouts/index.vue'
   import { useAuthStore } from '@/stores/auth'
 
+  const route = useRoute()
   const authStore = useAuthStore()
   const logado = computed(() => authStore.logado)
 </script>

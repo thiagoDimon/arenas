@@ -63,6 +63,7 @@
             class="rounded-xl mb-2"
             color="#000000"
             height="50"
+            :href="loginStore.loginGoogle()"
             variant="outlined"
           >
             <div class="d-flex align-center">

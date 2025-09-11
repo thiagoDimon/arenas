@@ -11,6 +11,7 @@ const messages = {
     lembreMe: 'Lembre-me',
     mensagemUsuarioSenhaNaoInformado: 'Usuário ou senha não informados',
     atencao: 'Atenção',
+    carregando: 'Carregando...',
   },
   en: {
     entrar: 'Login',
@@ -22,6 +23,7 @@ const messages = {
     lembreMe: 'Remember me',
     mensagemUsuarioSenhaNaoInformado: 'Username or password not provided',
     atencao: 'Attention',
+    carregando: 'Loading...',
   },
   es: {
     entrar: 'Iniciar',
@@ -33,6 +35,7 @@ const messages = {
     lembreMe: 'Recuérdame',
     mensagemUsuarioSenhaNaoInformado: 'Usuario o contraseña no informados',
     atencao: 'Atención',
+    carregando: 'Cargando...',
   },
 }
 

@@ -8,10 +8,14 @@ const routes = [
     component: () => import('@/pages/login/index.vue'),
   },
   {
+    path: '/redirect',
+    name: 'Redirect',
+    component: () => import('@/pages/login/Redirect.vue'),
+  },
+  {
     path: '/home',
     name: 'Home',
     component: () => import('@/pages/home/index.vue'),
-    meta: { requiresAuth: true },
   },
   {
     path: '/:pathMatch(.*)*',
@@ -29,7 +33,7 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const isAuthenticated = authStore.logado
 
-  if (to.name !== 'Login' && !isAuthenticated) {
+  if (to.name !== 'Login' && to.name !== 'Redirect' && !isAuthenticated) {
     next({ name: 'Login' })
   } else {
     next()
