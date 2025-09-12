@@ -1,10 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const routes = [
   {
     path: '/',
     name: 'Login',
     component: () => import('@/pages/login/index.vue'),
+  },
+  {
+    path: '/redirect',
+    name: 'Redirect',
+    component: () => import('@/pages/login/Redirect.vue'),
   },
   {
     path: '/home',
@@ -21,6 +27,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  const isAuthenticated = authStore.logado
+
+  if (to.name !== 'Login' && to.name !== 'Redirect' && !isAuthenticated) {
+    next({ name: 'Login' })
+  } else {
+    next()
+  }
 })
 
 router.onError((err, to) => {
