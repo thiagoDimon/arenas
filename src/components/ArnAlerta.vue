@@ -15,7 +15,7 @@
   </transition>
 </template>
 
-<script setup name="arena-alerta">
+<script setup name="arn-alerta">
   import { watch } from 'vue'
 
   const { duration, modelValue } = defineProps({

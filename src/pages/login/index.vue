@@ -1,6 +1,6 @@
 <template>
   <v-container class="conteudo-login" fluid>
-    <arena-alerta
+    <arn-alerta
       v-model="exibeAlertaNaoInformado"
       class="mt-4"
       color="secondary-color-300"
@@ -20,7 +20,7 @@
     >
       <v-card-title class="arena-titulo-1">
         <div class="align-justify-center ga-4">
-          <img alt="Arena" src="@/assets/arena.svg">
+          <arn-icon icon="arena" size="60" />
           <div class="pt-4">{{ $t("arenas") }}</div>
         </div>
       </v-card-title>
@@ -67,7 +67,7 @@
             variant="outlined"
           >
             <div class="d-flex align-center">
-              <img alt="Google" src="@/assets/google.svg" style="width: 28px">
+              <arn-icon icon="google" />
               <div class="ps-4">{{ $t("entrarComGoogle") }}</div>
             </div>
           </v-btn>
@@ -113,7 +113,7 @@
   align-items: center;
   width: 100% !important;
   height: 100% !important;
-  background: url("@/assets/campo.jpg") no-repeat center center fixed;
+  background: url("../../../public/campo.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
