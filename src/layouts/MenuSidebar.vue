@@ -3,7 +3,7 @@
     <div class="sidebar-content">
       <div class="logo-section">
         <div class="logo">
-          <img alt="Arena" src="@/assets/arena.svg" style="width: 36px;">
+          <arn-icon color="#E5AF00" icon="arena" size="40" />
           <span class="logo-text">{{ $t('arenas') }}</span>
         </div>
       </div>

@@ -20,7 +20,7 @@
     >
       <v-card-title class="arena-titulo-1">
         <div class="align-justify-center ga-4">
-          <arn-icon icon="arena" size="60" />
+          <arn-icon color="#E5AF00" icon="arena" size="60" />
           <div class="pt-4">{{ $t("arenas") }}</div>
         </div>
       </v-card-title>
@@ -113,7 +113,7 @@
   align-items: center;
   width: 100% !important;
   height: 100% !important;
-  background: url("../../../public/campo.jpg") no-repeat center center fixed;
+  background: url("/campo.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
