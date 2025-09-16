@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="w-100">
     <v-tabs v-model="tabActive" bg-color="white" dark grow>
       <v-tab value="1">Tab 1</v-tab>
       <v-tab value="2">Tab 2</v-tab>
@@ -23,11 +23,3 @@
   import ProximasPartidas from './ProximasPartidas.vue'
   const tabActive = ref(0)
 </script>
-
-<style lang="scss" scoped>
-.home-page {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-</style>
