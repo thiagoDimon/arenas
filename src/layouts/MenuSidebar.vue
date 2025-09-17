@@ -9,18 +9,12 @@
       </div>
 
       <nav class="nav-menu">
-        <div class="nav-item active">
-          <v-icon class="nav-icon">mdi-home-outline</v-icon>
-          <span class="nav-text">Home</span>
-        </div>
-        <div class="nav-item">
-          <v-icon class="nav-icon">mdi-calendar-outline</v-icon>
-          <span class="nav-text">Calendário</span>
-        </div>
-        <div class="nav-item">
-          <v-icon class="nav-icon">mdi-soccer</v-icon>
-          <span class="nav-text">Partidas</span>
-        </div>
+        <template v-for="menu in menus" :key="menu.route">
+          <div :class="`nav-item ${route.path === menu.route ? 'active' : ''}`" @click="navegarRota(menu.route)">
+            <v-icon class="nav-icon">{{ menu.icon }}</v-icon>
+            <span class="nav-text">{{ $t(menu.text) }}</span>
+          </div>
+        </template>
       </nav>
 
       <div class="sidebar-bottom">
@@ -28,19 +22,39 @@
           <div class="avatar">
             <v-icon>mdi-account-outline</v-icon>
           </div>
-          <span class="user-name">Perfil</span>
+          <span class="user-name">{{ $t('perfil') }}</span>
         </div>
-        <div class="nav-item logout-item">
+        <div class="nav-item logout-item" @click="realizarLogout()">
           <v-icon class="nav-icon">mdi-logout</v-icon>
-          <span class="nav-text">Sair</span>
+          <span class="nav-text">{{ $t('sair') }}</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
- //
+<script setup>
+  import { useRoute, useRouter } from 'vue-router'
+  import { useAuthStore } from '@/stores/auth'
+
+  const router = useRouter()
+  const route = useRoute()
+  const authStore = useAuthStore()
+
+  const menus = [
+    { icon: 'mdi-home-outline', text: 'home', route: '/home' },
+    { icon: 'mdi-calendar-outline', text: 'calendario', route: '/calendario' },
+    { icon: 'mdi-soccer', text: 'partidas', route: '/partidas' },
+  ]
+
+  function navegarRota (rota) {
+    router.push(rota)
+  }
+
+  function realizarLogout () {
+    authStore.logado = false
+    router.push('/')
+  }
 </script>
 
 <style scoped lang="scss">
