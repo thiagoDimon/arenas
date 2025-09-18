@@ -11,6 +11,17 @@
       :title="$t('atencao')"
       type="warning"
     />
+    <arn-alerta
+      v-model="exibeErro"
+      class="mt-4"
+      color="tertiary"
+      density="comfortable"
+      location="top center"
+      position="fixed"
+      :text="$t('mensagemUsuarioSenhaInvalido')"
+      :title="$t('erro')"
+      type="error"
+    />
     <v-card
       class="d-flex flex-column pa-4"
       color="#ffffff"
@@ -94,13 +105,21 @@
   const password = ref('')
   const lembreMe = ref(false)
   const exibeAlertaNaoInformado = ref(false)
+  const exibeErro = ref(false)
 
   async function realizarLogin () {
     if (!username.value || !password.value) {
       exibeAlertaNaoInformado.value = true
       return
     }
-    await loginStore.login(username.value, password.value)
+
+    try {
+      await loginStore.login(username.value, password.value)
+    } catch(e) {
+      exibeErro.value = true
+      return
+    }
+
     authStore.logado = true
     router.push('/home')
   }
