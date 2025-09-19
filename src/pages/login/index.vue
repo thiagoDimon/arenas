@@ -115,7 +115,7 @@
 
     try {
       await loginStore.login(username.value, password.value)
-    } catch(e) {
+    } catch {
       exibeErro.value = true
       return
     }
