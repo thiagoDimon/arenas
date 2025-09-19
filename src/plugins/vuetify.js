@@ -7,6 +7,7 @@ import 'vuetify/styles'
 const colors = {
   'primary': '#1B5E20',
   'secondary': '#FFD54F',
+  'tertiary': '#B00020',
   'primary-color-100': '#32AE3B',
   'primary-color-200': '#27872E',
   'primary-color-300': '#1B5E20',
