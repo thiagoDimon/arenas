@@ -18,9 +18,19 @@ const routes = [
     component: () => import('@/pages/home/index.vue'),
   },
   {
+    path: '/calendario',
+    name: 'Calendario',
+    component: () => import('@/pages/calendario/index.vue'),
+  },
+  {
+    path: '/partidas',
+    name: 'Partidas',
+    component: () => import('@/pages/partidas/index.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('@/pages/login/index.vue'), // Redireciona para a página inicial
+    component: () => import('@/pages/login/index.vue'),
   },
 ]
 

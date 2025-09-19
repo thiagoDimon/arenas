@@ -8,7 +8,12 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ArenaAlerta: typeof import('./src/components/ArenaAlerta.vue')['default']
+    ArenaAlerta: typeof import('./src/components/ArnAlerta.vue')['default']
+    ArnAlerta: typeof import('./src/components/ArnAlerta.vue')['default']
+    ArnButton: typeof import('./src/components/buttons/ArnButton.vue')['default']
+    ArnCard: typeof import('./src/components/cards/ArnCard.vue')['default']
+    ArnIcon: typeof import('./src/components/ArnIcon.vue')['default']
+    Card: typeof import('./src/components/cards/Card.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

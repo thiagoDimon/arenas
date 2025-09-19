@@ -31,6 +31,7 @@ apiClient.interceptors.response.use(
   error => {
     // Trate códigos de erro específicos ou exiba notificações
     if (error.response && error.response.status === 401) {
+      console.log('error 401 - Unauthorized')
       // Trate acesso não autorizado
     }
     return Promise.reject(error)

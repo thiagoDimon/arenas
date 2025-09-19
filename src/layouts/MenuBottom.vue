@@ -1,22 +1,29 @@
 <template>
   <div class="bottom-bar-mobile">
-    <div class="nav-item-mobile active">
-      <v-icon class="nav-icon-mobile">mdi-home-outline</v-icon>
-    </div>
-    <div class="nav-item-mobile">
-      <v-icon class="nav-icon-mobile">mdi-calendar-outline</v-icon>
-    </div>
-    <div class="nav-item-mobile">
-      <v-icon class="nav-icon-mobile">mdi-soccer</v-icon>
-    </div>
-    <div class="nav-item-mobile">
-      <v-icon class="nav-icon-mobile">mdi-account-outline</v-icon>
-    </div>
+    <template v-for="menu in menus" :key="menu.route">
+      <div :class="`nav-item-mobile ${route.path === menu.route ? 'active' : ''}`" @click="navegarRota(menu.route)">
+        <v-icon class="nav-icon-mobile">{{ menu.icon }}</v-icon>
+      </div>
+    </template>
   </div>
 </template>
 
-<script>
-  //
+<script setup>
+  import { useRoute, useRouter } from 'vue-router'
+
+  const router = useRouter()
+  const route = useRoute()
+
+  const menus = [
+    { icon: 'mdi-home-outline', text: 'home', route: '/home' },
+    { icon: 'mdi-calendar-outline', text: 'calendario', route: '/calendario' },
+    { icon: 'mdi-soccer', text: 'partidas', route: '/partidas' },
+    { icon: 'mdi-account-outline', text: 'perfil', route: '/perfil' },
+  ]
+
+  function navegarRota (rota) {
+    router.push(rota)
+  }
 </script>
 
 <style scoped lang="scss">

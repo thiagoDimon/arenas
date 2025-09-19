@@ -35,16 +35,35 @@ body {
 .arena-titulo-1 {
   font-size: 48px;
   font-weight: bold;
+  color: #0A0A0A;
 }
 
 .arena-titulo-2 {
   font-size: 36px;
   font-weight: bold;
+  color: #0A0A0A;
 }
 
 .arena-titulo-3 {
   font-size: 24px;
   font-weight: bold;
+  color: #0A0A0A;
+}
+
+.arena-titulo-4 {
+  font-size: 20px;
+  font-weight: normal;
+  color: #0A0A0A;
+}
+
+.arena-texto-1 {
+  font-size: 16px;
+  color: #0A0A0A;
+}
+
+.arena-texto-2 {
+  font-size: 14px;
+  color: #0A0A0A;
 }
 
 .align-justify-center {
