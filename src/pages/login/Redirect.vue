@@ -20,17 +20,22 @@
 <script setup>
   import { onMounted, onUnmounted } from 'vue'
   import { useRouter } from 'vue-router'
-  // import axios from '@/plugins/axios'
+  import axios from '@/plugins/axios'
   import { useAuthStore } from '@/stores/auth'
 
   const loader = ref(false)
   const router = useRouter()
+  const route = useRoute()
   const authStore = useAuthStore()
 
   onMounted(async () => {
+    const token = route.query.token
+    if (token != null) {
+      localStorage.setItem('accessToken', token)
+    }
+
     try {
-      // TODO: Realizar chamada de API para verificar autenticação
-      // const { data } = await axios.get('/user/me')
+      await axios.get('/user/me')
       loader.value = true
       authStore.logado = true
       router.push('/home')

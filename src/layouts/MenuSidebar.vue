@@ -35,11 +35,12 @@
 
 <script setup>
   import { useRoute, useRouter } from 'vue-router'
-  import { useAuthStore } from '@/stores/auth'
+  import { useAuthStore, useLoginStore } from '@/stores'
 
   const router = useRouter()
   const route = useRoute()
   const authStore = useAuthStore()
+  const loginStore = useLoginStore()
 
   const menus = [
     { icon: 'mdi-home-outline', text: 'home', route: '/home' },
@@ -51,7 +52,8 @@
     router.push(rota)
   }
 
-  function realizarLogout () {
+  async function realizarLogout () {
+    await loginStore.logout()
     authStore.logado = false
     router.push('/')
   }

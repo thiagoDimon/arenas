@@ -12,16 +12,24 @@
       type="warning"
     />
     <arn-alerta
-      v-model="exibeErro"
+      v-if="mensagemErroLogin"
+      v-model="exibeErroLogin"
       class="mt-4"
-      color="tertiary"
+      closable
+      color="error"
       density="comfortable"
       location="top center"
       position="fixed"
-      :text="$t('mensagemUsuarioSenhaInvalido')"
+      :text="mensagemErroLogin"
       :title="$t('erro')"
       type="error"
-    />
+    >
+      <template #action>
+        <v-btn icon size="small" @click="exibeErroLogin = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </arn-alerta>
     <v-card
       class="d-flex flex-column pa-4"
       color="#ffffff"
@@ -94,6 +102,7 @@
 <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
+  import axios from '@/plugins/axios'
   import { useAuthStore, useLoginStore } from '@/stores'
 
   const loginStore = useLoginStore()
@@ -105,23 +114,40 @@
   const password = ref('')
   const lembreMe = ref(false)
   const exibeAlertaNaoInformado = ref(false)
-  const exibeErro = ref(false)
+  const exibeErroLogin = ref(false)
+  const mensagemErroLogin = ref('')
+
+  onMounted(async () => {
+    try {
+      await axios.get('/user/me')
+      authStore.logado = true
+      router.push('/home')
+    } catch (error) {
+      console.error(error)
+    }
+  })
 
   async function realizarLogin () {
     if (!username.value || !password.value) {
       exibeAlertaNaoInformado.value = true
       return
     }
-
+    mensagemErroLogin.value = ''
+    exibeErroLogin.value = false
     try {
-      await loginStore.login(username.value, password.value)
-    } catch {
-      exibeErro.value = true
-      return
+      const response = await loginStore.login(username.value, password.value)
+      if (response != null && response.data != null && response.data.accessToken != null) {
+        localStorage.setItem('accessToken', response.data.accessToken)
+      }
+      authStore.logado = true
+      router.push('/home')
+    } catch (error) {
+      mensagemErroLogin.value = error.message || 'Erro ao realizar login.'
+      exibeErroLogin.value = true
+      setTimeout(() => {
+        exibeErroLogin.value = false
+      }, 3000)
     }
-
-    authStore.logado = true
-    router.push('/home')
   }
 </script>
 

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { refreshToken } from '@/plugins/tokenService'
 
 const baseURL
   = process.env.NODE_ENV === 'production'
@@ -14,8 +15,10 @@ const apiClient = axios.create({
 // Request Interceptor
 apiClient.interceptors.request.use(
   config => {
-    // Adicione token de autorização ou outros headers aqui, se necessário
-    // config.headers.Authorization = `Bearer ${yourAuthToken}`;
+    const token = localStorage.getItem('accessToken')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
     return config
   },
   error => {
@@ -30,9 +33,25 @@ apiClient.interceptors.response.use(
   },
   error => {
     // Trate códigos de erro específicos ou exiba notificações
-    if (error.response && error.response.status === 401) {
-      console.log('error 401 - Unauthorized')
-      // Trate acesso não autorizado
+    console.error('Erro na resposta da API:', error)
+    const originalRequest = error.config
+    if (
+      error.response
+      && error.response.status === 401
+      && !originalRequest._retry
+      && !originalRequest.url.includes('/user/refresh-token')
+    ) {
+      originalRequest._retry = true
+      return refreshToken().then(newToken => {
+        if (newToken) {
+          originalRequest.headers.Authorization = `Bearer ${newToken}`
+          return apiClient.request(originalRequest)
+        }
+        throw error
+      }).catch(() => {
+        // Se não conseguir renovar, rejeita o erro original
+        throw error
+      })
     }
     return Promise.reject(error)
   },
