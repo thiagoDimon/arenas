@@ -18,7 +18,6 @@ const messages = {
     detalhes: 'Detalhes',
     participar: 'Participar',
     proximasPartidas: 'Próximas partidas',
-    criarPartidas: 'Criar partida',
     procurarPartidas: 'Procurar partida',
     solicitacoes: 'Solicitações',
     historico: 'Histórico',
@@ -27,6 +26,43 @@ const messages = {
     perfil: 'Perfil',
     sair: 'Sair',
     home: 'Início',
+    criarPartidas: {
+      titulo: 'Criar partida',
+      informacoesBasicas: {
+        titulo: 'Informações Básicas',
+        detalhes: 'Defina os detalhes principais da sua partida',
+        tituloPartida: 'Titulo da Partida',
+        partidaExemplo: 'Ex: Pelada da Quinta',
+        tituloNumeroJogadores: 'Máximo de Jogadores',
+        tituloDescricao: 'Descrição (Opcional)',
+        descricaoExemplo: 'Adicione detalhes sobre a partida, regras especiais, etc.',
+      },
+      local: {
+        titulo: 'Local',
+        detalhes: 'Onde será realizada a partida',
+        tituloNomelLocal: 'Nome do Local',
+        nomeLocalExemplo: 'Ex: Arena Central',
+        tituloEndereco: 'Local',
+        enderecoExemplo: 'Rua, número, bairro',
+        tituloPontoRefencia: 'Ponto de Referência (Opcional)',
+        pontoRefenciaExemplo: 'Ex: Próximo ao shopping',
+      },
+      data: {
+        titulo: 'Data e Horário',
+        detalhes: 'Quando será a partida',
+        tituloPartidaRecorrente: 'Partida recorrente',
+        tituloData: 'Data',
+        tituloHorario: 'Horário',
+      },
+      configutacoesAdicionais: {
+        titulo: 'Configurações Adicionais',
+        detalhes: 'Personalize sua partida',
+        tituloValorPorPessoa: 'Valor por Pessoa (R$)',
+        partidaPrivada: 'Partida privada (apenas convidados)',
+        tituloNivel: 'Nível',
+        nivelExemplo: 'Selecione o nível',
+      }
+    }
   },
   en: {
     entrar: 'Login',
@@ -45,7 +81,6 @@ const messages = {
     detalhes: 'Details',
     participar: 'Participate',
     proximasPartidas: 'Upcoming matches',
-    criarPartidas: 'Create Match',
     procurarPartidas: 'Search Match',
     solicitacoes: 'Requests',
     historico: 'History',
@@ -54,6 +89,43 @@ const messages = {
     perfil: 'Profile',
     sair: 'Logout',
     home: 'Home',
+    criarPartidas: {
+      titulo: 'Create Match',
+      informacoesBasicas: {
+        titulo: 'Basic Information',
+        detalhes: 'Define the main details of your match',
+        tituloPartida: 'Match\'s Title',
+        partidaExemplo: 'Ex: Wednesday\'s Game',
+        tituloNumeroJogadores: 'Maximum number of players',
+        tituloDescricao: 'Description (Optional)',
+        descricaoExemplo: 'Add details about the match such as special rules and uniforms',
+      },
+      local: {
+        titulo: 'Local',
+        detalhes: 'Where the match will happen',
+        tituloNomelLocal: 'Local\'s Name',
+        nomeLocalExemplo: 'Ex: Central Arena',
+        tituloEndereco: 'Local',
+        enderecoExemplo: 'Street, number, neighborhood',
+        tituloPontoRefencia: 'Reference Point (Opcional)',
+        pontoRefenciaExemplo: 'Ex: Next to the shopping mall',
+      },
+      data: {
+        titulo: 'Date and Time',
+        detalhes: 'When the match will happen',
+        tituloPartidaRecorrente: 'Recurring Match',
+        tituloData: 'Date',
+        tituloHorario: 'Time',
+      },
+      configutacoesAdicionais: {
+        titulo: 'Adicional Configurations',
+        detalhes: 'Personalize your match',
+        tituloValorPorPessoa: 'Value per Person (R$)',
+        partidaPrivada: 'Private Match (only guests)',
+        tituloNivel: 'Level',
+        nivelExemplo: 'Select Level',
+      }
+    }
   },
   es: {
     entrar: 'Iniciar',
@@ -69,7 +141,6 @@ const messages = {
     erro: 'Error',
     carregando: 'Cargando...',
     removerParticipacao: 'Eliminar participación',
-    criarPartidas: 'Crear partido',
     procurarPartidas: 'Buscar partido',
     detalhes: 'Detalles',
     participar: 'Participar',
@@ -81,6 +152,43 @@ const messages = {
     perfil: 'Perfil',
     sair: 'Cerrar sesión',
     home: 'Inicio',
+    criarPartidas: {
+      titulo: 'Crear partido',
+      informacoesBasicas: {
+        titulo: 'Información básica',
+        detalhes: 'Define los detalles principales de tu partido',
+        tituloPartida: 'Título del partido',
+        partidaExemplo: 'Ex: Juego del jueves',
+        tituloNumeroJogadores: 'Jugadores máximos',
+        tituloDescricao: 'Descripción (Opcional)',
+        descricaoExemplo: 'Añade detalles sobre el partido, reglas especiales, etc.',
+      },
+      local: {
+        titulo: 'Ubicación',
+        detalhes: '¿Donde se disputará el partido?',
+        tituloNomelLocal: 'Nombre de la ubicación',
+        nomeLocalExemplo: 'Ej: Arena Central',
+        tituloEndereco: 'Ubicación',
+        enderecoExemplo: 'Calle, número, barrio',
+        tituloPontoRefencia: 'Punto de referencia (opcional)',
+        pontoRefenciaExemplo: 'Ej: Cerca del centro comercial',
+      },
+      data: {
+        titulo: 'Fecha y hora',
+        detalhes: '¿Cuándo será el partido?',
+        tituloPartidaRecorrente: 'Partido recurrente',
+        tituloData: 'Fecha',
+        tituloHorario: 'Tiempo',
+      },
+      configutacoesAdicionais: {
+        titulo: 'Configuraciones adicionales',
+        detalhes: 'Personaliza tu partido',
+        tituloValorPorPessoa: 'Valor por Persona (R$)',
+        partidaPrivada: 'Salida privada (sólo con invitación)',
+        tituloNivel: 'Nivel',
+        nivelExemplo: 'Seleccionar nivel',
+      }
+    }
   },
 }
 

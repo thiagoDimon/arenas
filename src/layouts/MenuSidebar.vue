@@ -56,7 +56,7 @@
     { icon: 'mdi-home-outline', text: 'home', route: '/home', openIndex: false, submenus: null },
     { icon: 'mdi-calendar-outline', text: 'calendario', route: '/calendario', openIndex: false , submenus: null },
     { icon: 'mdi-soccer', text: 'partidas', route: '/partidas', openIndex: false ,submenus: [
-      {text: 'criarPartidas', route:'/partidas/criar'},
+      {text: 'criarPartidas.titulo', route:'/partidas/criar'},
       {text: 'procurarPartidas', route:'/partidas/procurar'}
     ]},
   ])
