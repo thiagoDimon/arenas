@@ -9,12 +9,22 @@
       </div>
 
       <nav class="nav-menu">
-        <template v-for="menu in menus" :key="menu.route">
-          <div :class="`nav-item ${route.path === menu.route ? 'active' : ''}`" @click="navegarRota(menu.route)">
+        <div v-for="menu in menus" :key="menu.route">
+
+          <div :class="`nav-item ${route.path === menu.route ? 'active' : ''}`" @click="menuBtnClick(menu)">
             <v-icon class="nav-icon">{{ menu.icon }}</v-icon>
             <span class="nav-text">{{ $t(menu.text) }}</span>
           </div>
-        </template>
+
+          <div class="submenu" v-if="menu.openIndex === true">
+            <div v-for="submenu in menu.submenus" :key="submenu.route">
+              <div :class="`nav-item ${route.path === submenu.route ? 'active' : ''}`" @click="navegarRota(submenu.route)">
+                <span class="nav-text">{{ $t(submenu.text) }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </nav>
 
       <div class="sidebar-bottom">
@@ -34,6 +44,7 @@
 </template>
 
 <script setup>
+  import { ref } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useAuthStore } from '@/stores/auth'
 
@@ -41,14 +52,33 @@
   const route = useRoute()
   const authStore = useAuthStore()
 
-  const menus = [
-    { icon: 'mdi-home-outline', text: 'home', route: '/home' },
-    { icon: 'mdi-calendar-outline', text: 'calendario', route: '/calendario' },
-    { icon: 'mdi-soccer', text: 'partidas', route: '/partidas' },
-  ]
+  const menus = ref([
+    { icon: 'mdi-home-outline', text: 'home', route: '/home', openIndex: false, submenus: null },
+    { icon: 'mdi-calendar-outline', text: 'calendario', route: '/calendario', openIndex: false , submenus: null },
+    { icon: 'mdi-soccer', text: 'partidas', route: '/partidas', openIndex: false ,submenus: [
+      {text: 'criarPartidas', route:'/partidas/criar'},
+      {text: 'procurarPartidas', route:'/partidas/procurar'}
+    ]},
+  ])
 
-  function navegarRota (rota) {
-    router.push(rota)
+  function menuBtnClick(menu) {
+    if(menu.submenus == null) {
+      navegarRota(menu.route)
+      closeSubMenus()
+
+    } else {
+      menu.openIndex = !menu.openIndex;
+    }
+  }
+
+  function closeSubMenus() {
+    menus.value.forEach(menu => {
+      menu.openIndex = false
+    })
+  }
+
+  function navegarRota (route) {
+    router.push(route)
   }
 
   function realizarLogout () {
@@ -226,5 +256,9 @@
     font-weight: 400;
     color: #000000;
   }
+}
+
+.submenu {
+  padding: 0 0 0 10px
 }
 </style>
