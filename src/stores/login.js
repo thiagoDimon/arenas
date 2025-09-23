@@ -8,10 +8,10 @@ export const useLoginStore = defineStore('login', {
   actions: {
     async login (email, password) {
       try {
-        return await axios.post('/user/login', { email, password })
-      } catch (error) {
-        const error_ = error.response && error.response.status === 401 ? new Error('E-mail ou senha incorretos.') : new Error('Falha ao realizar login. Tente novamente mais tarde.')
-        throw error_
+        const { data } = await axios.post('/user/login', { email, password })
+        return data.accessToken || ''
+      } catch {
+        throw new Error('mensagemUsuarioSenhaInvalido')
       }
     },
     loginGoogle () {

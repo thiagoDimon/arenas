@@ -20,7 +20,7 @@
       density="comfortable"
       location="top center"
       position="fixed"
-      :text="mensagemErroLogin"
+      :text="$t(mensagemErroLogin)"
       :title="$t('erro')"
       type="error"
     >
@@ -137,14 +137,14 @@
     mensagemErroLogin.value = ''
     exibeErroLogin.value = false
     try {
-      const response = await loginStore.login(username.value, password.value)
-      if (response != null && response.data != null && response.data.accessToken != null) {
-        localStorage.setItem('accessToken', response.data.accessToken)
+      const token = await loginStore.login(username.value, password.value)
+      if (token) {
+        localStorage.setItem('accessToken', token)
       }
       authStore.logado = true
       router.push('/home')
     } catch (error) {
-      mensagemErroLogin.value = error.message || 'Erro ao realizar login.'
+      mensagemErroLogin.value = error.message
       exibeErroLogin.value = true
       setTimeout(() => {
         exibeErroLogin.value = false
