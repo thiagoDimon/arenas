@@ -119,6 +119,8 @@
 
   onMounted(async () => {
     try {
+      const token = localStorage.getItem('accessToken')
+      if (!token) return
       await axios.get('/user/me')
       authStore.logado = true
       router.push('/home')
