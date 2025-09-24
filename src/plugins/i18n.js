@@ -26,6 +26,7 @@ const messages = {
     perfil: 'Perfil',
     sair: 'Sair',
     home: 'Início',
+    cancelar: 'Cancelar',
     criarPartidas: {
       titulo: 'Criar partida',
       informacoesBasicas: {
@@ -89,6 +90,7 @@ const messages = {
     perfil: 'Profile',
     sair: 'Logout',
     home: 'Home',
+    cancelar: 'Cancel',
     criarPartidas: {
       titulo: 'Create Match',
       informacoesBasicas: {
@@ -152,6 +154,7 @@ const messages = {
     perfil: 'Perfil',
     sair: 'Cerrar sesión',
     home: 'Inicio',
+    cancelar: 'Cancelar',
     criarPartidas: {
       titulo: 'Crear partido',
       informacoesBasicas: {

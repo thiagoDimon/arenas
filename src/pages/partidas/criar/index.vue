@@ -214,6 +214,16 @@
         </template>
       </arn-card>
     </div>
+    <div>
+      <v-row justify="end">
+        <v-col class="align-justify-center" cols="1" sm="2">
+          <v-btn color="tertiary" rounded="lg">{{ $t("cancelar") }}</v-btn>
+        </v-col>
+        <v-col class="align-justify-center" cols="1" sm="2">
+          <v-btn color="primary-color-100" rounded="lg">{{ $t("criarPartidas.titulo") }}</v-btn>
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 
