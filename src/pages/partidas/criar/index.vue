@@ -3,24 +3,43 @@
     <arn-card>
       <template #header>
         <v-row class="pa-4" no-gutters>
-          <v-col class="align-center" cols="1" sm="3">
+          <v-col class="align-start" cols="1" sm="3">
             <arn-icon color="#5f5f5f" icon="jogadores" />
           </v-col>
           <v-col class="arena-titulo-4" cols="11" sm="6">
             <div class="d-flex flex-column">
-              <span>Joguinho na quinta</span>
-              <span class="arena-texto-2" style="color: #5f5f5f">Criado por João Silva</span>
+              <span>{{ $t("criarPartidas.informacoesBasicas.titulo") }}</span>
+              <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("criarPartidas.informacoesBasicas.detalhes") }}</span>
             </div>
           </v-col>
         </v-row>
       </template>
       <template #content>
+        <span>{{ $t("criarPartidas.informacoesBasicas.tituloPartida") }}</span>
         <v-text-field
-          v-model="username"
+          v-model="tituloPartida"
           class="mb-4"
           color="primary-color-300"
           hide-details
-          :label="$t('usuario')"
+          :placeholder= "$t('criarPartidas.informacoesBasicas.partidaExemplo')"
+          variant="outlined"
+        />
+        <span>{{ $t("criarPartidas.informacoesBasicas.tituloNumeroJogadores") }}</span>
+        <v-text-field
+          v-model="maximoJogadores"
+          class="mb-4"
+          color="primary-color-300"
+          hide-details
+          :placeholder="0"
+          variant="outlined"
+        />
+        <span>{{ $t("criarPartidas.informacoesBasicas.tituloDescricao") }}</span>
+        <v-text-field
+          v-model="partidaDescricao"
+          class="mb-4"
+          color="primary-color-300"
+          hide-details
+          :placeholder="$t('criarPartidas.informacoesBasicas.descricaoExemplo')"
           variant="outlined"
         />
       </template>
@@ -31,8 +50,14 @@
 </template>
 
 <script setup>
+  import { ref } from 'vue'
   import { useDisplay } from 'vuetify'
   const { smAndUp } = useDisplay()
+
+  const tituloPartida = ref('')
+  const maximoJogadores = ref('')
+  const partidaDescricao = ref('')
+
 </script>
 
 <style>
