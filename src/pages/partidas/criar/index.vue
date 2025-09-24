@@ -119,6 +119,17 @@
                 <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("criarPartidas.data.detalhes") }}</span>
               </div>
             </v-col>
+            <v-col>
+              <div class="d-flex align-justify-start">
+                <v-checkbox
+                  v-model="formulario.partidaRecorrente"
+                  class="d-flex justify-end"
+                  color="primary-color-300"
+                  hide-details
+                  :label="$t('criarPartidas.data.tituloPartidaRecorrente')"
+                />
+              </div>
+            </v-col>
           </v-row>
         </template>
         <template #content>
@@ -130,7 +141,6 @@
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('criarPartidas.local.nomeLocalExemplo')"
                 variant="outlined"
                 type="date"
               />
@@ -142,9 +152,62 @@
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('criarPartidas.local.enderecoExemplo')"
                 variant="outlined"
                 type="time"
+              />
+            </v-col>
+          </v-row>
+        </template>
+      </arn-card>
+    </div>
+    <div class="cards">
+      <arn-card>
+        <template #header>
+          <v-row class="pa-4">
+            <v-col class="align-justify-center" cols="1" sm="1">
+              <arn-icon color="#5f5f5f" icon="engrenagem" />
+            </v-col>
+            <v-col class="arena-titulo-4" cols="1" sm="6">
+              <div class="d-flex flex-column">
+                <span>{{ $t("criarPartidas.configuracoesAdicionais.titulo") }}</span>
+                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("criarPartidas.configuracoesAdicionais.detalhes") }}</span>
+              </div>
+            </v-col>
+            <v-col>
+              <div class="d-flex align-justify-start">
+                <v-checkbox
+                  v-model="formulario.partidaPrivada"
+                  class="d-flex justify-end"
+                  color="primary-color-300"
+                  hide-details
+                  :label="$t('criarPartidas.configuracoesAdicionais.partidaPrivada')"
+                />
+              </div>
+            </v-col>
+          </v-row>
+        </template>
+        <template #content>
+          <v-row >
+            <v-col>
+              <span>{{ $t("criarPartidas.configuracoesAdicionais.tituloValorPorPessoa") }}</span>
+              <v-text-field
+                v-model="formulario.valorPorPessoa"
+                class="mb-4"
+                color="primary-color-300"
+                hide-details
+                variant="outlined"
+                type="number"
+              />
+            </v-col>
+            <v-col>
+              <span>{{ $t("criarPartidas.configuracoesAdicionais.tituloNivel") }}</span>
+              <v-text-field
+                v-model="formulario.nivel"
+                class="mb-4"
+                color="primary-color-300"
+                hide-details
+                :placeholder= "$t('criarPartidas.configuracoesAdicionais.nivelExemplo')"
+                variant="outlined"
               />
             </v-col>
           </v-row>

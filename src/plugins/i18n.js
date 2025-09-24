@@ -54,7 +54,7 @@ const messages = {
         tituloData: 'Data',
         tituloHorario: 'Horário',
       },
-      configutacoesAdicionais: {
+      configuracoesAdicionais: {
         titulo: 'Configurações Adicionais',
         detalhes: 'Personalize sua partida',
         tituloValorPorPessoa: 'Valor por Pessoa (R$)',
