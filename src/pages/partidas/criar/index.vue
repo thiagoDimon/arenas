@@ -9,8 +9,8 @@
             </v-col>
             <v-col class="arena-titulo-4" cols="1" sm="6">
               <div class="d-flex flex-column">
-                <span>{{ $t("criarPartidas.informacoesBasicas.titulo") }}</span>
-                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("criarPartidas.informacoesBasicas.detalhes") }}</span>
+                <span>{{ $t("informacoesBasicas") }}</span>
+                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("definaOsDetalhesPrincipaisDaSuaPartida") }}</span>
               </div>
             </v-col>
           </v-row>
@@ -18,18 +18,18 @@
         <template #content>
           <v-row >
             <v-col>
-              <span>{{ $t("criarPartidas.informacoesBasicas.tituloPartida") }}</span>
+              <span>{{ $t("tituloDaPartida") }}</span>
               <v-text-field
-                v-model="formulario.tituloPartida"
+                v-model="tituloDaPartida"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('criarPartidas.informacoesBasicas.partidaExemplo')"
+                :placeholder= "$t('exPeladaQuinta')"
                 variant="outlined"
               />
             </v-col>
             <v-col>
-              <span>{{ $t("criarPartidas.informacoesBasicas.tituloNumeroJogadores") }}</span>
+              <span>{{ $t("maximoDeJogadores") }}</span>
               <v-text-field
                 v-model="formulario.maximoJogadores"
                 class="mb-4"
@@ -41,13 +41,13 @@
               />
             </v-col>
           </v-row>
-          <span>{{ $t("criarPartidas.informacoesBasicas.tituloDescricao") }}</span>
+          <span>{{ $t("descricaoOpcional") }}</span>
           <v-textarea
             v-model="formulario.partidaDescricao"
             class="mb-4"
             color="primary-color-300"
             hide-details
-            :placeholder="$t('criarPartidas.informacoesBasicas.descricaoExemplo')"
+            :placeholder="$t('adicioneDetalhesSobreAPartida')"
             variant="outlined"
             rows="2"
           />
@@ -63,8 +63,8 @@
             </v-col>
             <v-col class="arena-titulo-4" cols="1" sm="6">
               <div class="d-flex flex-column">
-                <span>{{ $t("criarPartidas.local.titulo") }}</span>
-                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("criarPartidas.local.detalhes") }}</span>
+                <span>{{ $t("local") }}</span>
+                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("ondeSeraRealizadaAPartida") }}</span>
               </div>
             </v-col>
           </v-row>
@@ -72,35 +72,35 @@
         <template #content>
           <v-row >
             <v-col>
-              <span>{{ $t("criarPartidas.local.tituloNomelLocal") }}</span>
+              <span>{{ $t("nomeDoLocal") }}</span>
               <v-text-field
-                v-model="formulario.nomeLocal"
+                v-model="nomeDoLocal"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('criarPartidas.local.nomeLocalExemplo')"
+                :placeholder= "$t('exArenaCentral')"
                 variant="outlined"
               />
             </v-col>
             <v-col>
-              <span>{{ $t("criarPartidas.local.tituloEndereco") }}</span>
+              <span>{{ $t("local") }}</span>
               <v-text-field
                 v-model="formulario.endereco"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('criarPartidas.local.enderecoExemplo')"
+                :placeholder= "$t('ruaNumeroBairro')"
                 variant="outlined"
               />
             </v-col>
           </v-row>
           <span>{{ $t("criarPartidas.local.tituloPontoRefencia") }}</span>
           <v-text-field
-            v-model="formulario.pontoReferencia"
+            v-model="pontoReferenciaOpicional"
             class="mb-4"
             color="primary-color-300"
             hide-details
-            :placeholder= "$t('criarPartidas.local.pontoRefenciaExemplo')"
+            :placeholder= "$t('exProximoAoShopping')"
             variant="outlined"
           />
         </template>
@@ -115,8 +115,8 @@
             </v-col>
             <v-col class="arena-titulo-4" cols="1" sm="6">
               <div class="d-flex flex-column">
-                <span>{{ $t("criarPartidas.data.titulo") }}</span>
-                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("criarPartidas.data.detalhes") }}</span>
+                <span>{{ $t("dataEHorario") }}</span>
+                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("quandoSeraAPartida") }}</span>
               </div>
             </v-col>
             <v-col>
@@ -126,7 +126,7 @@
                   class="d-flex justify-end"
                   color="primary-color-300"
                   hide-details
-                  :label="$t('criarPartidas.data.tituloPartidaRecorrente')"
+                  :label="$t('partidaRecorrente')"
                 />
               </div>
             </v-col>
@@ -135,7 +135,7 @@
         <template #content>
           <v-row >
             <v-col>
-              <span>{{ $t("criarPartidas.data.tituloData") }}</span>
+              <span>{{ $t("data") }}</span>
               <v-text-field
                 v-model="formulario.data"
                 class="mb-4"
@@ -146,7 +146,7 @@
               />
             </v-col>
             <v-col>
-              <span>{{ $t("criarPartidas.data.tituloHorario") }}</span>
+              <span>{{ $t("horario") }}</span>
               <v-text-field
                 v-model="formulario.horario"
                 class="mb-4"
@@ -169,8 +169,8 @@
             </v-col>
             <v-col class="arena-titulo-4" cols="1" sm="6">
               <div class="d-flex flex-column">
-                <span>{{ $t("criarPartidas.configuracoesAdicionais.titulo") }}</span>
-                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("criarPartidas.configuracoesAdicionais.detalhes") }}</span>
+                <span>{{ $t("configuracoesAdicionais") }}</span>
+                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("personalizeSuaPartida") }}</span>
               </div>
             </v-col>
             <v-col>
@@ -180,7 +180,7 @@
                   class="d-flex justify-end"
                   color="primary-color-300"
                   hide-details
-                  :label="$t('criarPartidas.configuracoesAdicionais.partidaPrivada')"
+                  :label="$t('partidaPrivada')"
                 />
               </div>
             </v-col>
@@ -189,7 +189,7 @@
         <template #content>
           <v-row >
             <v-col>
-              <span>{{ $t("criarPartidas.configuracoesAdicionais.tituloValorPorPessoa") }}</span>
+              <span>{{ $t("valorPorPessoa") }}</span>
               <v-text-field
                 v-model="formulario.valorPorPessoa"
                 class="mb-4"
@@ -200,13 +200,13 @@
               />
             </v-col>
             <v-col>
-              <span>{{ $t("criarPartidas.configuracoesAdicionais.tituloNivel") }}</span>
+              <span>{{ $t("nivel") }}</span>
               <v-text-field
                 v-model="formulario.nivel"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('criarPartidas.configuracoesAdicionais.nivelExemplo')"
+                :placeholder= "$t('selecioneONivel')"
                 variant="outlined"
               />
             </v-col>
@@ -220,7 +220,7 @@
           <v-btn color="tertiary" rounded="lg">{{ $t("cancelar") }}</v-btn>
         </v-col>
         <v-col class="align-justify-center" cols="1" sm="2">
-          <v-btn color="primary-color-100" rounded="lg">{{ $t("criarPartidas.titulo") }}</v-btn>
+          <v-btn color="primary-color-100" rounded="lg">{{ $t("criarPartida") }}</v-btn>
         </v-col>
       </v-row>
     </div>
