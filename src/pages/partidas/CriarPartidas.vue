@@ -10,46 +10,46 @@
             <v-col class="arena-titulo-4" cols="1" sm="6">
               <div class="d-flex flex-column">
                 <span>{{ $t("informacoesBasicas") }}</span>
-                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("definaOsDetalhesPrincipaisDaSuaPartida") }}</span>
+                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("definaDetalhesPartida") }}</span>
               </div>
             </v-col>
           </v-row>
         </template>
         <template #content>
-          <v-row >
+          <v-row>
             <v-col>
-              <span>{{ $t("tituloDaPartida") }}</span>
+              <span>{{ $t("titulo") }}</span>
               <v-text-field
                 v-model="tituloDaPartida"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('exPeladaQuinta')"
+                :placeholder="$t('exemploPeladaQuinta')"
                 variant="outlined"
               />
             </v-col>
             <v-col>
-              <span>{{ $t("maximoDeJogadores") }}</span>
+              <span>{{ $t("maximoJogadores") }}</span>
               <v-text-field
-                v-model="formulario.maximoJogadores"
+                v-model="partida.maximoJogadores"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
                 :placeholder="0"
-                variant="outlined"
                 type="number"
+                variant="outlined"
               />
             </v-col>
           </v-row>
           <span>{{ $t("descricaoOpcional") }}</span>
           <v-textarea
-            v-model="formulario.partidaDescricao"
+            v-model="partida.descricao"
             class="mb-4"
             color="primary-color-300"
             hide-details
-            :placeholder="$t('adicioneDetalhesSobreAPartida')"
-            variant="outlined"
+            :placeholder="$t('adicioneDetalhesPartida')"
             rows="2"
+            variant="outlined"
           />
         </template>
       </arn-card>
@@ -64,43 +64,43 @@
             <v-col class="arena-titulo-4" cols="1" sm="6">
               <div class="d-flex flex-column">
                 <span>{{ $t("local") }}</span>
-                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("ondeSeraRealizadaAPartida") }}</span>
+                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("ondeSeraRealizadaPartida") }}</span>
               </div>
             </v-col>
           </v-row>
         </template>
         <template #content>
-          <v-row >
+          <v-row>
             <v-col>
-              <span>{{ $t("nomeDoLocal") }}</span>
+              <span>{{ $t("nomeLocal") }}</span>
               <v-text-field
-                v-model="nomeDoLocal"
+                v-model="nomeLocal"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('exArenaCentral')"
+                :placeholder="$t('exemploArenaCentral')"
                 variant="outlined"
               />
             </v-col>
             <v-col>
               <span>{{ $t("local") }}</span>
               <v-text-field
-                v-model="formulario.endereco"
+                v-model="partida.endereco"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('ruaNumeroBairro')"
+                :placeholder="$t('ruaNumeroBairro')"
                 variant="outlined"
               />
             </v-col>
           </v-row>
-          <span>{{ $t("criarPartidas.local.tituloPontoRefencia") }}</span>
+          <span>{{ $t("localReferencia") }}</span>
           <v-text-field
             v-model="pontoReferenciaOpicional"
             class="mb-4"
             color="primary-color-300"
             hide-details
-            :placeholder= "$t('exProximoAoShopping')"
+            :placeholder="$t('exProximoAoShopping')"
             variant="outlined"
           />
         </template>
@@ -115,45 +115,45 @@
             </v-col>
             <v-col class="arena-titulo-4" cols="1" sm="6">
               <div class="d-flex flex-column">
-                <span>{{ $t("dataEHorario") }}</span>
-                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("quandoSeraAPartida") }}</span>
+                <span>{{ $t("dataHorario") }}</span>
+                <span class="arena-texto-2" style="color: #5f5f5f">{{ $t("quandoOcorrePartida") }}</span>
               </div>
             </v-col>
             <v-col>
               <div class="d-flex align-justify-start">
                 <v-checkbox
-                  v-model="formulario.partidaRecorrente"
+                  v-model="partida.recorrente"
                   class="d-flex justify-end"
                   color="primary-color-300"
                   hide-details
-                  :label="$t('partidaRecorrente')"
+                  :label="$t('recorrente')"
                 />
               </div>
             </v-col>
           </v-row>
         </template>
         <template #content>
-          <v-row >
+          <v-row>
             <v-col>
               <span>{{ $t("data") }}</span>
               <v-text-field
-                v-model="formulario.data"
+                v-model="partida.data"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                variant="outlined"
                 type="date"
+                variant="outlined"
               />
             </v-col>
             <v-col>
               <span>{{ $t("horario") }}</span>
               <v-text-field
-                v-model="formulario.horario"
+                v-model="partida.horario"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                variant="outlined"
                 type="time"
+                variant="outlined"
               />
             </v-col>
           </v-row>
@@ -176,37 +176,37 @@
             <v-col>
               <div class="d-flex align-justify-start">
                 <v-checkbox
-                  v-model="formulario.partidaPrivada"
+                  v-model="partida.privada"
                   class="d-flex justify-end"
                   color="primary-color-300"
                   hide-details
-                  :label="$t('partidaPrivada')"
+                  :label="$t('privada')"
                 />
               </div>
             </v-col>
           </v-row>
         </template>
         <template #content>
-          <v-row >
+          <v-row>
             <v-col>
               <span>{{ $t("valorPorPessoa") }}</span>
               <v-text-field
-                v-model="formulario.valorPorPessoa"
+                v-model="partida.valorPorPessoa"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                variant="outlined"
                 type="number"
+                variant="outlined"
               />
             </v-col>
             <v-col>
               <span>{{ $t("nivel") }}</span>
               <v-text-field
-                v-model="formulario.nivel"
+                v-model="partida.nivel"
                 class="mb-4"
                 color="primary-color-300"
                 hide-details
-                :placeholder= "$t('selecioneONivel')"
+                :placeholder="$t('selecioneNivel')"
                 variant="outlined"
               />
             </v-col>
@@ -229,22 +229,20 @@
 
 <script setup>
   import { ref } from 'vue'
-  import { useDisplay } from 'vuetify'
-  const { smAndUp } = useDisplay()
 
-  const formulario = ref({
-    tituloPartida: '',
+  const partida = ref({
+    titulo: '',
     maximoJogadores: '',
-    partidaDescricao: '',
+    descricao: '',
     nomeLocal: '',
     endereco: '',
     pontoReferencia: '',
-    partidaRecorrente: false,
+    recorrente: false,
     data: '',
     horario: '',
-    partidaPrivada: false,
+    privada: false,
     valorPorPessoa: '',
-    nivel: ''
+    nivel: '',
   })
 
 </script>

@@ -9,22 +9,19 @@
       </div>
 
       <nav class="nav-menu">
-        <div v-for="menu in menus" :key="menu.route">
-
-          <div :class="`nav-item ${route.path === menu.route ? 'active' : ''}`" @click="menuBtnClick(menu)">
+        <template v-for="menu in menus" :key="menu.route">
+          <div :class="`nav-item ${route.path === menu.route ? 'active' : ''}`" @click="abrirMenu(menu)">
             <v-icon class="nav-icon">{{ menu.icon }}</v-icon>
             <span class="nav-text">{{ $t(menu.text) }}</span>
           </div>
-
-          <div class="submenu" v-if="menu.openIndex === true">
+          <div v-if="menu.submenusIsOpen" class="d-flex flex-column pl-3 ga-2">
             <div v-for="submenu in menu.submenus" :key="submenu.route">
               <div :class="`nav-item ${route.path === submenu.route ? 'active' : ''}`" @click="navegarRota(submenu.route)">
                 <span class="nav-text">{{ $t(submenu.text) }}</span>
               </div>
             </div>
           </div>
-
-        </div>
+        </template>
       </nav>
 
       <div class="sidebar-bottom">
@@ -53,32 +50,49 @@
   const authStore = useAuthStore()
 
   const menus = ref([
-    { icon: 'mdi-home-outline', text: 'home', route: '/home', openIndex: false, submenus: null },
-    { icon: 'mdi-calendar-outline', text: 'calendario', route: '/calendario', openIndex: false , submenus: null },
-    { icon: 'mdi-soccer', text: 'partidas', route: '/partidas', openIndex: false ,submenus: [
-      {text: 'criarPartida', route:'/partidas/criar'},
-      {text: 'procurarPartidas', route:'/partidas/procurar'}
-    ]},
+    {
+      icon: 'mdi-home-outline',
+      text: 'home',
+      route: '/home',
+      submenusIsOpen: false,
+      submenus: [],
+    },
+    {
+      icon: 'mdi-calendar-outline',
+      text: 'calendario',
+      route: '/calendario',
+      submenusIsOpen: false,
+      submenus: [],
+    },
+    {
+      icon: 'mdi-soccer',
+      text: 'partidas',
+      route: '/partidas',
+      submenusIsOpen: false,
+      submenus: [
+        { text: 'criarPartida', route: '/partidas/criar' },
+        { text: 'procurarPartidas', route: '/partidas/procurar' },
+      ],
+    },
   ])
 
-  function menuBtnClick(menu) {
-    if(menu.submenus == null) {
-      navegarRota(menu.route)
-      closeSubMenus()
+  function abrirMenu (menu) {
+    if (menu.submenus.length > 0) {
+      menu.submenusIsOpen = !menu.submenusIsOpen
+      return
+    }
+    navegarRota(menu.route)
+    fecharSubmenus()
+  }
 
-    } else {
-      menu.openIndex = !menu.openIndex;
+  function fecharSubmenus () {
+    for (const menu of menus.value) {
+      menu.submenusIsOpen = false
     }
   }
 
-  function closeSubMenus() {
-    menus.value.forEach(menu => {
-      menu.openIndex = false
-    })
-  }
-
-  function navegarRota (route) {
-    router.push(route)
+  function navegarRota (rota) {
+    router.push(rota)
   }
 
   function realizarLogout () {
@@ -256,9 +270,5 @@
     font-weight: 400;
     color: #000000;
   }
-}
-
-.submenu {
-  padding: 0 0 0 10px
 }
 </style>

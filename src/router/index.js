@@ -25,12 +25,12 @@ const routes = [
   {
     path: '/partidas/procurar',
     name: 'Procurar Partidas',
-    component: () => import('@/pages/partidas/procurar/index.vue'),
+    component: () => import('@/pages/partidas/ProcurarPartidas.vue'),
   },
   {
     path: '/partidas/criar',
     name: 'Criar Partidas',
-    component: () => import('@/pages/partidas/criar/index.vue'),
+    component: () => import('@/pages/partidas/CriarPartidas.vue'),
   },
   {
     path: '/:pathMatch(.*)*',
