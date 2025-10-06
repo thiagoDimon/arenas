@@ -10,9 +10,16 @@
 
       <nav class="nav-menu">
         <template v-for="menu in menus" :key="menu.route">
-          <div :class="`nav-item ${route.path === menu.route ? 'active' : ''}`" @click="navegarRota(menu.route)">
+          <div :class="`nav-item ${route.path === menu.route ? 'active' : ''}`" @click="abrirMenu(menu)">
             <v-icon class="nav-icon">{{ menu.icon }}</v-icon>
             <span class="nav-text">{{ $t(menu.text) }}</span>
+          </div>
+          <div v-if="menu.submenusIsOpen" class="d-flex flex-column pl-3 ga-2">
+            <div v-for="submenu in menu.submenus" :key="submenu.route">
+              <div :class="`nav-item ${route.path === submenu.route ? 'active' : ''}`" @click="navegarRota(submenu.route)">
+                <span class="nav-text">{{ $t(submenu.text) }}</span>
+              </div>
+            </div>
           </div>
         </template>
       </nav>
@@ -34,6 +41,7 @@
 </template>
 
 <script setup>
+  import { ref } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useAuthStore, useLoginStore } from '@/stores'
 
@@ -42,11 +50,47 @@
   const authStore = useAuthStore()
   const loginStore = useLoginStore()
 
-  const menus = [
-    { icon: 'mdi-home-outline', text: 'home', route: '/home' },
-    { icon: 'mdi-calendar-outline', text: 'calendario', route: '/calendario' },
-    { icon: 'mdi-soccer', text: 'partidas', route: '/partidas' },
-  ]
+  const menus = ref([
+    {
+      icon: 'mdi-home-outline',
+      text: 'home',
+      route: '/home',
+      submenusIsOpen: false,
+      submenus: [],
+    },
+    {
+      icon: 'mdi-calendar-outline',
+      text: 'calendario',
+      route: '/calendario',
+      submenusIsOpen: false,
+      submenus: [],
+    },
+    {
+      icon: 'mdi-soccer',
+      text: 'partidas',
+      route: '/partidas',
+      submenusIsOpen: false,
+      submenus: [
+        { text: 'criarPartida', route: '/partidas/criar' },
+        { text: 'procurarPartidas', route: '/partidas/procurar' },
+      ],
+    },
+  ])
+
+  function abrirMenu (menu) {
+    if (menu.submenus.length > 0) {
+      menu.submenusIsOpen = !menu.submenusIsOpen
+      return
+    }
+    navegarRota(menu.route)
+    fecharSubmenus()
+  }
+
+  function fecharSubmenus () {
+    for (const menu of menus.value) {
+      menu.submenusIsOpen = false
+    }
+  }
 
   function navegarRota (rota) {
     router.push(rota)

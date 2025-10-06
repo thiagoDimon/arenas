@@ -23,9 +23,14 @@ const routes = [
     component: () => import('@/pages/calendario/index.vue'),
   },
   {
-    path: '/partidas',
-    name: 'Partidas',
-    component: () => import('@/pages/partidas/index.vue'),
+    path: '/partidas/procurar',
+    name: 'Procurar Partidas',
+    component: () => import('@/pages/partidas/ProcurarPartidas.vue'),
+  },
+  {
+    path: '/partidas/criar',
+    name: 'Criar Partidas',
+    component: () => import('@/pages/partidas/CriarPartidas.vue'),
   },
   {
     path: '/:pathMatch(.*)*',
