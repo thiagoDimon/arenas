@@ -39,7 +39,7 @@ apiClient.interceptors.response.use(
       error.response
       && error.response.status === 401
       && !originalRequest._retry
-      && !originalRequest.url.includes('/user/refresh-token')
+      && !originalRequest.url.includes('/auth/refresh-token')
     ) {
       originalRequest._retry = true
       return refreshToken().then(newToken => {

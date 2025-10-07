@@ -8,8 +8,8 @@ import axios from '@/plugins/axios'
  */
 export async function refreshToken () {
   try {
-    const response = await axios.get('/user/refresh-token')
-    if (response.data && response.data.accessToken) {
+    const response = await axios.get('/auth/refresh-token')
+    if (response?.data?.accessToken) {
       localStorage.setItem('accessToken', response.data.accessToken)
       return response.data.accessToken
     } else {
