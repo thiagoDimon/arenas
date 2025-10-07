@@ -1,6 +1,7 @@
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { VCalendar } from 'vuetify/labs/VCalendar'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
@@ -21,7 +22,10 @@ const colors = {
 }
 
 export default createVuetify({
-  components,
+  components: {
+    ...components,
+    VCalendar,
+  },
   directives,
   theme: {
     defaultTheme: 'system',
