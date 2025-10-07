@@ -8,7 +8,7 @@ export const useLoginStore = defineStore('login', {
   actions: {
     async login (email, password) {
       try {
-        const { data } = await axios.post('/user/login', { email, password })
+        const { data } = await axios.post('/auth/login', { email, password })
         return data.accessToken || ''
       } catch {
         throw new Error('mensagemUsuarioSenhaInvalido')
@@ -20,7 +20,7 @@ export const useLoginStore = defineStore('login', {
     },
     async logout () {
       try {
-        await axios.post('/user/logout')
+        await axios.post('/auth/logout')
         localStorage.removeItem('accessToken')
         this.user = null
       } catch (error) {
