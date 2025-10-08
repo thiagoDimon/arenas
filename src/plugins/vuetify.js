@@ -1,6 +1,7 @@
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { pt } from 'vuetify/locale'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
@@ -33,5 +34,9 @@ export default createVuetify({
         colors,
       },
     },
+  },
+  locale: {
+    locale: 'pt',
+    messages: { pt },
   },
 })

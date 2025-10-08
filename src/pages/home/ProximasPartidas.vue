@@ -6,7 +6,7 @@
           <v-col class="arena-titulo-4" cols="11" sm="6">
             <div class="d-flex flex-column">
               <span>Joguinho na quinta</span>
-              <span class="arena-texto-2" style="color: #5f5f5f">Criado por João Silva</span>
+              <span class="arena-texto-3" style="color: #5f5f5f">Criado por João Silva</span>
             </div>
           </v-col>
           <v-col class="align-justify-center" cols="1" sm="3">
@@ -17,7 +17,7 @@
               <v-icon color="#32ae3b" size="small">mdi-circle</v-icon>
             </div>
           </v-col>
-          <v-col class="horario-partida arena-texto-2" cols="12" sm="3" style="color: #5f5f5f">
+          <v-col class="horario-partida arena-texto-3" cols="12" sm="3" style="color: #5f5f5f">
             <v-icon size="large">mdi-calendar-outline</v-icon>
             <span>17/01/2025 às 19:00</span>
           </v-col>
