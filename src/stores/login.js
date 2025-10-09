@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from '@/plugins/axios'
+import axios from '@/services/axios'
 
 export const useLoginStore = defineStore('login', {
   state: () => ({
@@ -15,7 +15,7 @@ export const useLoginStore = defineStore('login', {
       }
     },
     loginGoogle () {
-      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://arenas-backend.gustavotbett.com.br'
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9090'
       return `${apiUrl}/oauth2/authorization/google`
     },
     async logout () {

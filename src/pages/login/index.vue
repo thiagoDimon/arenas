@@ -102,7 +102,7 @@
 <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import axios from '@/plugins/axios'
+  import axios from '@/services/axios'
   import { useAuthStore, useLoginStore } from '@/stores'
 
   const loginStore = useLoginStore()

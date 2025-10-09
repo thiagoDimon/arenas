@@ -20,7 +20,7 @@
 <script setup>
   import { onMounted, onUnmounted } from 'vue'
   import { useRouter } from 'vue-router'
-  import axios from '@/plugins/axios'
+  import axios from '@/services/axios'
   import { useAuthStore } from '@/stores/auth'
 
   const loader = ref(false)

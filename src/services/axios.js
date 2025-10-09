@@ -4,7 +4,7 @@ import { refreshToken } from '@/plugins/tokenService'
 const baseURL
   = process.env.NODE_ENV === 'production'
     ? import.meta.env.VITE_API_URL
-    : 'https://arenas-backend.gustavotbett.com.br'
+    : 'http://localhost:9090'
 
 const apiClient = axios.create({
   baseURL,
