@@ -5,13 +5,13 @@
       color="primary-color-300"
       density="comfortable"
       hide-details
-      :model-value="dataFormatada"
+      :model-value="modelValue"
+      placeholder="dd/mm/aaaa"
       readonly
       variant="outlined"
       @click="abrirPicker()"
       @click:append="abrirPicker()"
     />
-    {{ modelValue }}
     <teleport to="body">
       <transition name="fade">
         <div
@@ -24,7 +24,8 @@
             color="primary-color-300"
             elevation="10"
             hide-title
-            :model-value="modelValue"
+            :model-value="dataPicker"
+            rounded="lg"
             show-adjacent-months
             @update:model-value="updateModelValue"
           />
@@ -36,7 +37,7 @@
 
 <script setup>
   import { format, parse } from 'date-fns'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
 
   const props = defineProps({
     modelValue: {
@@ -48,7 +49,7 @@
   const emit = defineEmits(['update:modelValue'])
 
   const selecionaData = ref(false)
-  const data = ref(null)
+  const dataPicker = ref(null)
 
   function abrirPicker () {
     selecionaData.value = true
@@ -59,19 +60,14 @@
   }
 
   function updateModelValue (value) {
-    data.value = value
-    emit('update:modelValue', dataFormatada.value)
+    emit('update:modelValue', format(value, 'dd/MM/yyyy'))
     fecharPicker()
   }
 
-  const dataFormatada = computed(() => {
-    if (!data.value) return ''
-    return format(new Date(data.value), 'dd/MM/yyyy')
-  })
-
   watch(() => props.modelValue, newValue => {
-    console.log(newValue)
-    data.value = parse(newValue, 'dd/MM/yyyy', new Date())
+    if (newValue) {
+      dataPicker.value = parse(newValue, 'dd/MM/yyyy', new Date())
+    }
   })
 
 </script>
@@ -145,9 +141,5 @@
 
 :deep(.v-date-picker-years__content > .v-btn > .v-btn__content) {
   font-weight: 400;
-}
-
-:deep(.v-picker.v-sheet) {
-  border-radius: 8px;
 }
 </style>

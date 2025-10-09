@@ -1,6 +1,7 @@
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { VMaskInput } from 'vuetify/labs/VMaskInput'
 import { pt } from 'vuetify/locale'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
@@ -22,10 +23,13 @@ const colors = {
 }
 
 export default createVuetify({
-  components,
+  components: {
+    ...components,
+    VMaskInput,
+  },
   directives,
   theme: {
-    defaultTheme: 'system',
+    defaultTheme: 'light',
     themes: {
       light: {
         colors,
