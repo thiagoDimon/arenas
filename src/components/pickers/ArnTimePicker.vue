@@ -32,7 +32,7 @@
               <arn-button bg-color="#B00020" :flat="true" @click="cancelar()">
                 <span>{{ $t('cancelar') }}</span>
               </arn-button>
-              <arn-button :flat="true" @click="fecharPicker()">
+              <arn-button bg-color="#32AE3B" :flat="true" @click="fecharPicker()">
                 <span>{{ $t('salvar') }}</span>
               </arn-button>
             </div>

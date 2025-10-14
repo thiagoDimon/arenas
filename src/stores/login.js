@@ -2,9 +2,7 @@ import { defineStore } from 'pinia'
 import axios from '@/services/axios'
 
 export const useLoginStore = defineStore('login', {
-  state: () => ({
-    user: null,
-  }),
+  state: () => ({}),
   actions: {
     async login (email, password) {
       try {
@@ -22,7 +20,6 @@ export const useLoginStore = defineStore('login', {
       try {
         await axios.post('/auth/logout')
         localStorage.removeItem('accessToken')
-        this.user = null
       } catch (error) {
         console.error('Erro ao realizar logout:', error)
       }

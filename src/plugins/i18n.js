@@ -61,6 +61,12 @@ const messages = {
     iniciante: 'Iniciante',
     intermediario: 'Intermediário',
     avancado: 'Avançado',
+    criadoPor: 'Criado por {nomeUsuario}',
+    confirmada: 'Confirmada',
+    cancelada: 'Cancelada',
+    finalizada: 'Finalizada',
+    datetime: '{date} às {time}',
+    jogadores: 'Jogadores',
   },
   en: {
     entrar: 'Login',
@@ -122,6 +128,12 @@ const messages = {
     iniciante: 'Beginner',
     intermediario: 'Intermediate',
     avancado: 'Advanced',
+    criadoPor: 'Created by {nomeUsuario}',
+    confirmada: 'Confirmed',
+    cancelada: 'Canceled',
+    finalizada: 'Finished',
+    datetime: '{date} at {time}',
+    jogadores: 'Players',
   },
   es: {
     entrar: 'Iniciar',
@@ -183,6 +195,12 @@ const messages = {
     iniciante: 'Principiante',
     intermediario: 'Intermedio',
     avancado: 'Avanzado',
+    criadoPor: 'Creado por {nomeUsuario}',
+    confirmada: 'Confirmado',
+    cancelada: 'Cancelado',
+    finalizada: 'Finalizado',
+    datetime: '{date} a las {time}',
+    jogadores: 'Jugadores',
   },
 }
 

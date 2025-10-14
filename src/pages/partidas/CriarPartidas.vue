@@ -283,7 +283,7 @@
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
-  import NivelENUM from '@/utils/enums/nivel.js'
+  import NivelENUM from '@/util/enums/nivel.js'
 
   const { smAndUp } = useDisplay()
   const { t } = useI18n()

@@ -3,13 +3,13 @@ export function createENUM (obj) {
 
   const lista = Object.entries(ENUM).map(([key, value]) => ({ key, ...value }))
 
-  function getByChave (chave) {
-    return lista.find(item => item.chave === chave)
+  function getChave (value) {
+    return lista.find(item => item.valor === value).chave
   }
 
   return {
     ...ENUM,
     lista,
-    getByChave,
+    getChave,
   }
 }

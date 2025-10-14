@@ -102,11 +102,11 @@
 <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import axios from '@/services/axios'
-  import { useAuthStore, useLoginStore } from '@/stores'
+  import { useAuthStore, useLoginStore, useUserStore } from '@/stores'
 
   const loginStore = useLoginStore()
   const authStore = useAuthStore()
+  const userStore = useUserStore()
 
   const router = useRouter()
 
@@ -121,7 +121,7 @@
     try {
       const token = localStorage.getItem('accessToken')
       if (!token) return
-      await axios.get('/user/me')
+      await userStore.getMe()
       authStore.logado = true
       router.push('/home')
     } catch (error) {
@@ -138,11 +138,7 @@
     exibeErroLogin.value = false
     try {
       const token = await loginStore.login(username.value, password.value)
-      if (token) {
-        localStorage.setItem('accessToken', token)
-      }
-      authStore.logado = true
-      router.push('/home')
+      router.push({ path: '/redirect', query: { token } })
     } catch (error) {
       mensagemErroLogin.value = error.message
       exibeErroLogin.value = true
