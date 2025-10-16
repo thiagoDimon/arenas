@@ -11,7 +11,10 @@ declare module 'vue' {
     ArnAlerta: typeof import('./src/components/ArnAlerta.vue')['default']
     ArnButton: typeof import('./src/components/buttons/ArnButton.vue')['default']
     ArnCard: typeof import('./src/components/cards/ArnCard.vue')['default']
+    ArnDatePicker: typeof import('./src/components/pickers/ArnDatePicker.vue')['default']
     ArnIcon: typeof import('./src/components/ArnIcon.vue')['default']
+    ArnLoader: typeof import('./src/components/ArnLoader.vue')['default']
+    ArnTimePicker: typeof import('./src/components/pickers/ArnTimePicker.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

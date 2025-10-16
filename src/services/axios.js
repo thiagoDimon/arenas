@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { refreshToken } from '@/plugins/tokenService'
+import { refreshToken } from './tokenService'
 
 const baseURL
   = process.env.NODE_ENV === 'production'

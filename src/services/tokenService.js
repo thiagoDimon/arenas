@@ -1,4 +1,4 @@
-import axios from '@/plugins/axios'
+import axios from '@/services/axios'
 
 /**
  * Faz o refresh do accessToken usando o refresh-token (cookie httpOnly).

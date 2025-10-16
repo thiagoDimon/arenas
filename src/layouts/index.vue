@@ -1,7 +1,7 @@
 <template>
   <div class="layout-sidebar">
-    <MenuSidebar />
-    <MenuBottom />
+    <MenuSidebar :menus="menus" />
+    <MenuBottom :menus="menus" />
     <div class="main-content">
       <slot />
     </div>
@@ -11,6 +11,43 @@
 <script setup>
   import MenuBottom from './MenuBottom.vue'
   import MenuSidebar from './MenuSidebar.vue'
+
+  const menus = ref([
+    {
+      icon: 'mdi-home-outline',
+      text: 'home',
+      route: '/home',
+      submenusIsOpen: false,
+      submenus: [],
+      showInDesktop: true,
+    },
+    {
+      icon: 'mdi-calendar-outline',
+      text: 'calendario',
+      route: '/calendario',
+      submenusIsOpen: false,
+      submenus: [],
+      showInDesktop: true,
+    },
+    {
+      icon: 'mdi-soccer',
+      text: 'partidas',
+      route: '/partidas',
+      submenusIsOpen: false,
+      submenus: [
+        { icon: 'mdi-pen', text: 'criarPartida', route: '/partidas/criar' },
+        { icon: 'mdi-magnify', text: 'procurarPartidas', route: '/partidas/procurar' },
+      ],
+      showInDesktop: true,
+    },
+    { icon: 'mdi-account-outline',
+      text: 'perfil',
+      route: '/perfil',
+      submenusIsOpen: false,
+      submenus: [],
+      showInDesktop: false,
+    },
+  ])
 </script>
 
 <style lang="scss" scoped>

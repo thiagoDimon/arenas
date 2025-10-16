@@ -9,7 +9,7 @@
       </div>
 
       <nav class="nav-menu">
-        <template v-for="menu in menus" :key="menu.route">
+        <template v-for="menu in reactiveMenus" :key="menu.route">
           <div :class="`nav-item ${route.path === menu.route ? 'active' : ''}`" @click="abrirMenu(menu)">
             <v-icon class="nav-icon">{{ menu.icon }}</v-icon>
             <span class="nav-text">{{ $t(menu.text) }}</span>
@@ -25,7 +25,7 @@
       </nav>
 
       <div class="sidebar-bottom">
-        <div class="user-profile">
+        <div class="user-profile" @click="abrirPerfil()">
           <div class="avatar">
             <v-icon>mdi-account-outline</v-icon>
           </div>
@@ -41,41 +41,22 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useAuthStore, useLoginStore } from '@/stores'
+
+  const props = defineProps({
+    menus: {
+      type: Array,
+      required: true,
+    },
+  })
+
+  const reactiveMenus = reactive(props.menus.filter(menu => menu.showInDesktop))
 
   const router = useRouter()
   const route = useRoute()
   const authStore = useAuthStore()
   const loginStore = useLoginStore()
-
-  const menus = ref([
-    {
-      icon: 'mdi-home-outline',
-      text: 'home',
-      route: '/home',
-      submenusIsOpen: false,
-      submenus: [],
-    },
-    {
-      icon: 'mdi-calendar-outline',
-      text: 'calendario',
-      route: '/calendario',
-      submenusIsOpen: false,
-      submenus: [],
-    },
-    {
-      icon: 'mdi-soccer',
-      text: 'partidas',
-      route: '/partidas',
-      submenusIsOpen: false,
-      submenus: [
-        { text: 'criarPartida', route: '/partidas/criar' },
-        { text: 'procurarPartidas', route: '/partidas/procurar' },
-      ],
-    },
-  ])
 
   function abrirMenu (menu) {
     if (menu.submenus.length > 0) {
@@ -87,9 +68,14 @@
   }
 
   function fecharSubmenus () {
-    for (const menu of menus.value) {
+    for (const menu of reactiveMenus) {
       menu.submenusIsOpen = false
     }
+  }
+
+  function abrirPerfil () {
+    fecharSubmenus()
+    navegarRota('/perfil')
   }
 
   function navegarRota (rota) {
