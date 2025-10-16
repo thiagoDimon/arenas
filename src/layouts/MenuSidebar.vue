@@ -25,7 +25,7 @@
       </nav>
 
       <div class="sidebar-bottom">
-        <div class="user-profile">
+        <div class="user-profile" @click="abrirPerfil()">
           <div class="avatar">
             <v-icon>mdi-account-outline</v-icon>
           </div>
@@ -71,6 +71,11 @@
     for (const menu of reactiveMenus) {
       menu.submenusIsOpen = false
     }
+  }
+
+  function abrirPerfil () {
+    fecharSubmenus()
+    navegarRota('/perfil')
   }
 
   function navegarRota (rota) {

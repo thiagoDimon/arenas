@@ -21,4 +21,8 @@ function getFormattedDate (date, time) {
   return i18n.global.t('datetime', { date: formattedDate, time: formattedTime })
 }
 
-export { getFormattedDate }
+function changeLanguage (language) {
+  i18n.global.locale.value = language
+}
+
+export { changeLanguage, getFormattedDate }

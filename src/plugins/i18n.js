@@ -67,6 +67,8 @@ const messages = {
     finalizada: 'Finalizada',
     datetime: '{date} às {time}',
     jogadores: 'Jogadores',
+    nenhumaPartidaAgendada: 'Nenhuma partida agendada no momento',
+    mensagemProximasPartidas: 'Suas próximas partidas serão exibidas aqui',
   },
   en: {
     entrar: 'Login',
@@ -134,6 +136,8 @@ const messages = {
     finalizada: 'Finished',
     datetime: '{date} at {time}',
     jogadores: 'Players',
+    nenhumaPartidaAgendada: 'No matches scheduled at the moment',
+    mensagemProximasPartidas: 'Your upcoming matches will be displayed here',
   },
   es: {
     entrar: 'Iniciar',
@@ -201,6 +205,8 @@ const messages = {
     finalizada: 'Finalizado',
     datetime: '{date} a las {time}',
     jogadores: 'Jugadores',
+    nenhumaPartidaAgendada: 'Ningún partido programado en este momento',
+    mensagemProximasPartidas: 'Tus próximos partidos se mostrarán aquí',
   },
 }
 
