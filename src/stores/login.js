@@ -13,7 +13,7 @@ export const useLoginStore = defineStore('login', {
       }
     },
     loginGoogle () {
-      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9090'
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://arenas-backend.gustavotbett.com.br'
       return `${apiUrl}/oauth2/authorization/google`
     },
     async logout () {
