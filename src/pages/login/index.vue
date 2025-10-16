@@ -44,30 +44,27 @@
         </div>
       </v-card-title>
       <v-card-text>
-        <v-form>
+        <v-form autocomplete="on">
           <v-text-field
             v-model="username"
+            autocomplete="username"
             class="mb-4"
             color="primary-color-300"
             hide-details
             :label="$t('usuario')"
+            type="email"
             variant="outlined"
           />
           <v-text-field
             v-model="password"
+            autocomplete="current-password"
             color="primary-color-300"
             hide-details
             :label="$t('senha')"
             type="password"
             variant="outlined"
           />
-          <v-checkbox
-            v-model="lembreMe"
-            class="d-flex justify-end"
-            color="primary-color-300"
-            hide-details
-            label="Lembre-me"
-          />
+          <v-divider class="my-7" />
           <v-btn
             block
             class="rounded-xl mb-4"
@@ -112,7 +109,6 @@
 
   const username = ref('')
   const password = ref('')
-  const lembreMe = ref(false)
   const exibeAlertaNaoInformado = ref(false)
   const exibeErroLogin = ref(false)
   const mensagemErroLogin = ref('')
