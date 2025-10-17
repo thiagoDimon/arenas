@@ -66,7 +66,7 @@
             class="d-flex justify-end"
             color="primary-color-300"
             hide-details
-            label="Lembre-me"
+            :label="$t('lembreMe')"
           />
           <v-btn
             block
