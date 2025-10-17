@@ -1,123 +1,324 @@
 <template>
-  <div>
-    <v-sheet class="d-flex" tile>
-      <v-btn
-        class="ma-2"
-        icon
-        variant="text"
-        @click="$refs.calendar.prev()"
+  <div class="calendario-page pa-3 mb-2" color="white">
+
+    <!-- Legenda de status -->
+    <v-sheet class="legenda-status d-flex flex-wrap align-center pa-3 mb-2" color="white">
+      <span class="text-subtitle-2 mr-4" style="color: #1B5E20; font-weight: 600;">{{ $t('legenda') }}:</span>
+      <v-chip
+        class="ma-1"
+        color="blue"
+        label
+        size="small"
       >
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
-      <v-select
-        v-model="type"
-        class="ma-2"
-        density="comfortable"
-        hide-details
-        :items="types"
-        label="type"
-        variant="outlined"
-      />
-      <v-select
-        v-model="mode"
-        class="ma-2"
-        density="comfortable"
-        hide-details
-        :items="modes"
-        label="event-overlap-mode"
-        variant="outlined"
-      />
-      <v-select
-        v-model="weekday"
-        class="ma-2"
-        density="comfortable"
-        hide-details
-        :items="weekdays"
-        label="weekdays"
-        variant="outlined"
-      />
-      <v-spacer />
-      <v-btn
-        class="ma-2"
-        icon
-        variant="text"
-        @click="calendar.next()"
+        {{ $t('statusAgendada') }}
+      </v-chip>
+      <v-chip
+        class="ma-1"
+        color="green"
+        label
+        size="small"
       >
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
+        {{ $t('statusFinalizada') }}
+      </v-chip>
+      <v-chip
+        class="ma-1"
+        color="red"
+        label
+        size="small"
+      >
+        {{ $t('statusCancelada') }}
+      </v-chip>
     </v-sheet>
-    <v-sheet height="600">
+
+    <!-- Alerta de erro -->
+    <arn-alerta
+      v-if="erro"
+      :mensagem="erro"
+      :tipo="'erro'"
+      @fechar="erro = null"
+    />
+
+    <!-- Calendário -->
+    <v-sheet>
       <v-calendar
         ref="calendar"
         v-model="value"
+        color="#1B5E20"
         :event-color="getEventColor"
-        :event-overlap-mode="mode"
-        :event-overlap-threshold="30"
         :events="events"
+        locale="pt-BR"
+        :show-week="false"
         :type="type"
-        :weekdays="weekday"
-        @change="getEvents"
+        :weekdays="[0, 1, 2, 3, 4, 5, 6]"
+        @change="carregarPartidas"
+        @click:event="abrirDetalhes"
       />
     </v-sheet>
+
+    <!-- Modal de detalhes -->
+    <partida-modal
+      v-model="showModal"
+      :partida="partidaSelecionada"
+    />
   </div>
 </template>
+
 <script setup>
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
+  import ArnAlerta from '@/components/ArnAlerta.vue'
+  import apiClient from '@/plugins/axios'
+  import PartidaModal from './PartidaModal.vue'
+
+  const { t: $t } = useI18n()
 
   const type = ref('month')
-  const types = ['month', 'week', 'day', '4day']
-  const mode = ref('stack')
-  const modes = ['stack', 'column']
-  const weekday = ref([0, 1, 2, 3, 4, 5, 6])
-  const weekdays = [
-    { title: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
-    { title: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },
-    { title: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
-    { title: 'Mon, Wed, Fri', value: [1, 3, 5] },
+  const types = [
+    { title: 'Mês', value: 'month' },
+    { title: 'Semana', value: 'week' },
+    { title: 'Dia', value: 'day' },
   ]
   const value = ref([])
   const events = ref([])
-  const colors = ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey-darken-1']
-  const names = ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party']
+  const erro = ref(null)
+  const showModal = ref(false)
+  const partidaSelecionada = ref(null)
 
-  function rnd (a, b) {
-    return Math.floor((b - a + 1) * Math.random()) + a
+  // Mapa de cores por status
+  const statusColors = {
+    AGENDADA: 'blue',
+    FINALIZADA: 'green',
+    CANCELADA: 'red',
   }
 
-  function getEvents ({ start, end }) {
-    const evts = []
+  onMounted(() => {
+    // Carrega as partidas ao montar o componente
+    carregarPartidas()
+  })
 
-    const min = new Date(`${start.date}T00:00:00`)
-    const max = new Date(`${end.date}T23:59:59`)
-    const days = (max.getTime() - min.getTime()) / 86_400_000
-    const eventCount = rnd(days, days + 20)
+  async function carregarPartidas () {
+    try {
+      erro.value = null
 
-    for (let i = 0; i < eventCount; i++) {
-      const allDay = rnd(0, 3) === 0
-      const firstTimestamp = rnd(min.getTime(), max.getTime())
-      const first = new Date(firstTimestamp - (firstTimestamp % 900_000))
-      const secondTimestamp = rnd(2, allDay ? 288 : 8) * 900_000
-      const second = new Date(first.getTime() + secondTimestamp)
+      // Busca partidas da API
+      const response = await apiClient.get('/partidas')
 
-      evts.push({
-        name: names[rnd(0, names.length - 1)],
-        start: first,
-        end: second,
-        color: colors[rnd(0, colors.length - 1)],
-        timed: !allDay,
-      })
+      // Transforma as partidas no formato do calendário
+      events.value = response.data.map(partida => ({
+        id: partida.id,
+        title: partida.titulo || 'Partida',
+        start: new Date(partida.dataHora),
+        end: new Date(new Date(partida.dataHora).getTime() + 2 * 60 * 60 * 1000), // +2h duração padrão
+        color: statusColors[partida.status] || 'grey',
+        status: partida.status,
+        partidaData: partida, // Guarda os dados completos da partida
+      }))
+    } catch (error) {
+      console.error('Erro ao carregar partidas:', error)
+      erro.value = $t('erroCarregarPartidas')
     }
-
-    events.value = evts
   }
 
   function getEventColor (event) {
     return event.color
   }
+
+  function abrirDetalhes ({ event }) {
+    partidaSelecionada.value = event.partidaData
+    showModal.value = true
+  }
 </script>
 
 <style scoped lang="scss">
-:deep(.v-calendar) {
-  --v-calendar-event-height: 28px;
+.calendario-page {
+  background-color: #ffffff !important;
+  border: 1px solid #e8f5e9;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(27, 94, 32, 0.05);
+  min-height: 100%;
 }
+
+.controles-calendario {
+  background-color: #ffffff !important;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(27, 94, 32, 0.1);
+  margin-bottom: 16px;
+  border: 1px solid #e8f5e9;
+}
+
+.legenda-status {
+  background-color: #ffffff !important;
+  border: 1px solid #e8f5e9;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(27, 94, 32, 0.05);
+  position: absolute;
+  right: 36px;
+  top: 34px;
+  z-index: 10;
+}
+
+.calendario-container {
+  background-color: #ffffff !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(27, 94, 32, 0.1);
+  overflow: hidden;
+}
+
+.btn-nav {
+  color: #1B5E20 !important;
+
+  &:hover {
+    background-color: #e8f5e9 !important;
+  }
+}
+
+.select-calendario {
+  :deep(.v-field--variant-outlined) {
+    .v-field__outline {
+      color: #1B5E20;
+    }
+  }
+
+  :deep(.v-field--focused) {
+    .v-field__outline {
+      color: #1B5E20;
+    }
+  }
+
+  :deep(.v-label) {
+    color: #1B5E20;
+  }
+}
+
+// Estilos do Calendário
+:deep(.v-calendar) {
+  --v-calendar-event-height: 20px;
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-header) {
+  background-color: #ffffff !important;
+  color: #1B5E20 !important;
+}
+
+:deep(.v-calendar-weekly) {
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-weekly__head) {
+  background-color: #ffffff !important;
+  border-bottom: 2px solid #1B5E20 !important;
+}
+
+:deep(.v-calendar-weekly__day-label) {
+  color: #1B5E20 !important;
+  font-weight: 600;
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-weekly__week) {
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-weekly__day) {
+  border-color: #e8f5e9 !important;
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-day) {
+  transition: background-color 0.2s ease;
+  background-color: #ffffff !important;
+
+  &:hover {
+    background-color: #f1f8e9 !important;
+  }
+}
+
+:deep(.v-calendar-day__day) {
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-monthly) {
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-monthly__day) {
+  border-color: #e8f5e9 !important;
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-monthly__day-label) {
+  color: #333333 !important;
+}
+
+:deep(.v-calendar-daily) {
+  background-color: #ffffff !important;
+}
+
+:deep(.v-calendar-daily__head) {
+  background-color: #ffffff !important;
+  border-bottom: 2px solid #1B5E20 !important;
+}
+
+:deep(.v-calendar-daily__day) {
+  background-color: #ffffff !important;
+}
+
+// Eventos
+:deep(.v-calendar-event) {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  height: 20px;
+  font-size: 12px;
+  padding: 2px 4px;
+
+  &:hover {
+    opacity: 0.85;
+    transform: scale(1.02);
+    box-shadow: 0 2px 4px rgba(27, 94, 32, 0.25);
+  }
+}
+
+// Botão TODAY
+:deep(.v-btn) {
+  background-color: #ffffff !important;
+  color: #1B5E20 !important;
+
+  &:hover {
+    background-color: #e8f5e9 !important;
+  }
+}
+
+:deep(.v-chip) {
+  font-weight: 500;
+}
+
+// Números dos dias
+:deep(.v-calendar-weekly__day-month) {
+  color: #666666 !important;
+}
+
+// Dia atual
+:deep(.v-calendar-day--today) {
+  .v-calendar-day__day {
+    background-color: #e8f5e9 !important;
+    border: 2px solid #1B5E20 !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .calendario {
+    padding: 16px;
+  }
+
+  .controles-calendario {
+    padding: 8px !important;
+  }
+
+  .legenda-status {
+    padding: 12px !important;
+  }
+}
+
 </style>
