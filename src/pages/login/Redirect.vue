@@ -20,13 +20,13 @@
 <script setup>
   import { onMounted, onUnmounted } from 'vue'
   import { useRouter } from 'vue-router'
-  import axios from '@/plugins/axios'
-  import { useAuthStore } from '@/stores/auth'
+  import { useAuthStore, useUserStore } from '@/stores'
 
   const loader = ref(false)
   const router = useRouter()
   const route = useRoute()
   const authStore = useAuthStore()
+  const userStore = useUserStore()
 
   onMounted(async () => {
     const token = route.query.token
@@ -35,7 +35,7 @@
     }
 
     try {
-      await axios.get('/user/me')
+      await userStore.getMe()
       loader.value = true
       authStore.logado = true
       router.push('/home')

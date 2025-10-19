@@ -1,9 +1,18 @@
 <template>
   <div class="bottom-bar-mobile">
-    <template v-for="menu in menus" :key="menu.route">
-      <div :class="`nav-item-mobile ${route.path === menu.route ? 'active' : ''}`" @click="navegarRota(menu.route)">
-        <v-icon class="nav-icon-mobile">{{ menu.icon }}</v-icon>
-      </div>
+    <template v-for="menu in reactiveMenus" :key="menu.route">
+      <v-menu>
+        <template #activator="{ props }">
+          <div v-bind="props" :class="`nav-item-mobile ${isActive(menu) ? 'active' : ''}`" @click="abrirMenu(menu)">
+            <v-icon class="nav-icon-mobile">{{ menu.icon }}</v-icon>
+          </div>
+        </template>
+        <v-list v-if="menu.submenus.length > 0">
+          <v-list-item v-for="(submenu, index) in menu.submenus" :key="index" @click="navegarRota(submenu.route)">
+            <v-list-item-title>{{ $t(submenu.text) }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </template>
   </div>
 </template>
@@ -11,15 +20,36 @@
 <script setup>
   import { useRoute, useRouter } from 'vue-router'
 
+  const propsValue = defineProps({
+    menus: {
+      type: Array,
+      required: true,
+    },
+  })
+
+  const reactiveMenus = reactive(propsValue.menus)
+
   const router = useRouter()
   const route = useRoute()
 
-  const menus = [
-    { icon: 'mdi-home-outline', text: 'home', route: '/home' },
-    { icon: 'mdi-calendar-outline', text: 'calendario', route: '/calendario' },
-    { icon: 'mdi-soccer', text: 'partidas', route: '/partidas' },
-    { icon: 'mdi-account-outline', text: 'perfil', route: '/perfil' },
-  ]
+  const isActive = menu => {
+    return route.path === menu.route || menu.submenus.some(submenu => submenu.route == route.path)
+  }
+
+  function abrirMenu (menu) {
+    if (menu.submenus.length > 0) {
+      menu.submenusIsOpen = !menu.submenusIsOpen
+      return
+    }
+    navegarRota(menu.route)
+    fecharSubmenus()
+  }
+
+  function fecharSubmenus () {
+    for (const menu of reactiveMenus) {
+      menu.submenusIsOpen = false
+    }
+  }
 
   function navegarRota (rota) {
     router.push(rota)
