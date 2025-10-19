@@ -2,6 +2,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { VCalendar } from 'vuetify/labs/VCalendar'
+import { VMaskInput } from 'vuetify/labs/VMaskInput'
 import { pt } from 'vuetify/locale'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
@@ -26,6 +27,7 @@ export default createVuetify({
   components: {
     ...components,
     VCalendar,
+    VMaskInput,
   },
   directives,
   locale: {
@@ -33,7 +35,7 @@ export default createVuetify({
     messages: { pt },
   },
   theme: {
-    defaultTheme: 'system',
+    defaultTheme: 'light',
     themes: {
       light: {
         colors,

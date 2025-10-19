@@ -44,30 +44,27 @@
         </div>
       </v-card-title>
       <v-card-text>
-        <v-form>
+        <v-form autocomplete="on">
           <v-text-field
             v-model="username"
+            autocomplete="username"
             class="mb-4"
             color="primary-color-300"
             hide-details
             :label="$t('usuario')"
+            type="email"
             variant="outlined"
           />
           <v-text-field
             v-model="password"
+            autocomplete="current-password"
             color="primary-color-300"
             hide-details
             :label="$t('senha')"
             type="password"
             variant="outlined"
           />
-          <v-checkbox
-            v-model="lembreMe"
-            class="d-flex justify-end"
-            color="primary-color-300"
-            hide-details
-            :label="$t('lembreMe')"
-          />
+          <v-divider class="my-7" />
           <v-btn
             block
             class="rounded-xl mb-4"
@@ -102,17 +99,16 @@
 <script setup>
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import axios from '@/plugins/axios'
-  import { useAuthStore, useLoginStore } from '@/stores'
+  import { useAuthStore, useLoginStore, useUserStore } from '@/stores'
 
   const loginStore = useLoginStore()
   const authStore = useAuthStore()
+  const userStore = useUserStore()
 
   const router = useRouter()
 
   const username = ref('')
   const password = ref('')
-  const lembreMe = ref(false)
   const exibeAlertaNaoInformado = ref(false)
   const exibeErroLogin = ref(false)
   const mensagemErroLogin = ref('')
@@ -121,7 +117,7 @@
     try {
       const token = localStorage.getItem('accessToken')
       if (!token) return
-      await axios.get('/user/me')
+      await userStore.getMe()
       authStore.logado = true
       router.push('/home')
     } catch (error) {
@@ -138,11 +134,7 @@
     exibeErroLogin.value = false
     try {
       const token = await loginStore.login(username.value, password.value)
-      if (token) {
-        localStorage.setItem('accessToken', token)
-      }
-      authStore.logado = true
-      router.push('/home')
+      router.push({ path: '/redirect', query: { token } })
     } catch (error) {
       mensagemErroLogin.value = error.message
       exibeErroLogin.value = true

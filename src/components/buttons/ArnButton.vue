@@ -1,13 +1,16 @@
 <template>
-  <button :class="size" :disabled="desabilitado" :style="estilos" @click="$emit('click')">
+  <button :class="classe" :disabled="desabilitado" :style="estilos" @click="$emit('click')">
     <slot />
   </button>
 </template>
 
 <script setup>
   import { computed } from 'vue'
+  import { useDisplay } from 'vuetify'
 
   defineEmits(['click'])
+
+  const { smAndDown } = useDisplay()
 
   const props = defineProps({
     bgColor: {
@@ -43,6 +46,8 @@
       default: false,
     },
   })
+
+  const classe = ref(smAndDown ? 'md' : props.size)
 
   const estilos = computed(() => {
     const styles = {}

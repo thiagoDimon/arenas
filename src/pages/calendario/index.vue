@@ -1,7 +1,5 @@
 <template>
   <div class="calendario-page pa-3 mb-2" color="white">
-
-    <!-- Legenda de status -->
     <v-sheet class="legenda-status d-flex flex-wrap align-center pa-3 mb-2" color="white">
       <span class="text-subtitle-2 mr-4" style="color: #1B5E20; font-weight: 600;">{{ $t('legenda') }}:</span>
       <v-chip
@@ -29,16 +27,13 @@
         {{ $t('statusCancelada') }}
       </v-chip>
     </v-sheet>
-
-    <!-- Alerta de erro -->
     <arn-alerta
-      v-if="erro"
-      :mensagem="erro"
-      :tipo="'erro'"
-      @fechar="erro = null"
+      :model-value="Boolean(erro)"
+      :text="erro"
+      tipo="erro"
+      :title="$t('erroBuscarPartidas')"
+      @fechar="erro = ''"
     />
-
-    <!-- Calendário -->
     <v-sheet>
       <v-calendar
         ref="calendar"
@@ -54,8 +49,6 @@
         @click:event="abrirDetalhes"
       />
     </v-sheet>
-
-    <!-- Modal de detalhes -->
     <partida-modal
       v-model="showModal"
       :partida="partidaSelecionada"
@@ -67,7 +60,7 @@
   import { onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import ArnAlerta from '@/components/ArnAlerta.vue'
-  import apiClient from '@/plugins/axios'
+  import apiClient from '@/services/axios'
   import PartidaModal from './PartidaModal.vue'
 
   const { t: $t } = useI18n()
@@ -80,7 +73,7 @@
   ]
   const value = ref([])
   const events = ref([])
-  const erro = ref(null)
+  const erro = ref('')
   const showModal = ref(false)
   const partidaSelecionada = ref(null)
 
@@ -98,7 +91,7 @@
 
   async function carregarPartidas () {
     try {
-      erro.value = null
+      erro.value = ''
 
       // Busca partidas da API
       const response = await apiClient.get('/partidas')
