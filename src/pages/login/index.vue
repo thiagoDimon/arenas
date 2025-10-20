@@ -87,7 +87,7 @@
               <div class="ps-4">{{ $t("entrarComGoogle") }}</div>
             </div>
           </v-btn>
-          <div class="registrar text-primary">
+          <div class="registrar text-primary" @click="goToSignUp()">
             {{ $t("naoTemConta") }}
           </div>
         </v-form>
@@ -124,6 +124,10 @@
       console.error(error)
     }
   })
+
+  function goToSignUp () {
+    router.push({ path: '/novo-usuario' })
+  }
 
   async function realizarLogin () {
     if (!username.value || !password.value) {
