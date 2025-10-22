@@ -25,11 +25,7 @@
           <div class="text-subtitle-2 text-medium-emphasis mb-1">
             {{ $t('status') }}
           </div>
-          <v-chip
-            :color="getStatusColor(partida.status)"
-            label
-            size="small"
-          >
+          <v-chip :color="getStatusColor(partida.status)" label size="small">
             {{ getStatusLabel(partida.status) }}
           </v-chip>
         </div>
@@ -91,6 +87,7 @@
   import { computed } from 'vue'
   import { useI18n } from 'vue-i18n'
 
+  // Ajustar forma de importar, igual no ./index.vue
   const { t: $t } = useI18n()
 
   const props = defineProps({
@@ -111,6 +108,7 @@
     set: value => emit('update:modelValue', value),
   })
 
+  // Criar enum
   function getStatusColor (status) {
     const colors = {
       AGENDADA: 'blue',
@@ -120,6 +118,7 @@
     return colors[status] || 'grey'
   }
 
+  // Criar enum
   function getStatusLabel (status) {
     const labels = {
       AGENDADA: 'statusAgendada',
@@ -129,6 +128,7 @@
     return labels[status] ? $t(labels[status]) : status
   }
 
+  // Já existe uma função que formata data e hora em "functions.js"
   function formatarData (dataHora) {
     if (!dataHora) return ''
     const data = new Date(dataHora)
@@ -139,6 +139,7 @@
     })
   }
 
+  // Já existe uma função que formata data e hora em "functions.js"
   function formatarHorario (dataHora) {
     if (!dataHora) return ''
     const data = new Date(dataHora)

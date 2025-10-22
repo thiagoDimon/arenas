@@ -1,5 +1,6 @@
 <template>
   <div class="calendario-page pa-3 mb-2" color="white">
+    <arn-loader :loading="calendarStore.loading" />
     <v-sheet class="legenda-status d-flex flex-wrap align-center pa-3 mb-2" color="white">
       <span class="text-subtitle-2 mr-4" style="color: #1B5E20; font-weight: 600;">{{ $t('legenda') }}:</span>
       <v-chip
@@ -27,26 +28,17 @@
         {{ $t('statusCancelada') }}
       </v-chip>
     </v-sheet>
-    <arn-alerta
-      :model-value="Boolean(erro)"
-      :text="erro"
-      tipo="erro"
-      :title="$t('erroBuscarPartidas')"
-      @fechar="erro = ''"
-    />
     <v-sheet>
       <v-calendar
-        ref="calendar"
-        v-model="value"
         color="#1B5E20"
         :event-color="getEventColor"
-        :events="events"
-        locale="pt-BR"
+        :events="partidas"
+        locale="en-US"
         :show-week="false"
-        :type="type"
+        type="month"
         :weekdays="[0, 1, 2, 3, 4, 5, 6]"
         @change="carregarPartidas"
-        @click:event="abrirDetalhes"
+        @click:event="abrirDetalhesPartida"
       />
     </v-sheet>
     <partida-modal
@@ -58,26 +50,21 @@
 
 <script setup>
   import { onMounted, ref } from 'vue'
-  import { useI18n } from 'vue-i18n'
+  // OBS.: Não é necessário importar components, eles estão global, basta apenas utilizar.
+  // Os components são automaticamente registrados quando criados em: components.d.ts
   import ArnAlerta from '@/components/ArnAlerta.vue'
-  import apiClient from '@/services/axios'
+  import { useCalendarStore } from '@/stores'
   import PartidaModal from './PartidaModal.vue'
 
-  const { t: $t } = useI18n()
+  // TODO: padronizar: Tudo em ingles ou tudo em portugues
 
-  const type = ref('month')
-  const types = [
-    { title: 'Mês', value: 'month' },
-    { title: 'Semana', value: 'week' },
-    { title: 'Dia', value: 'day' },
-  ]
-  const value = ref([])
-  const events = ref([])
-  const erro = ref('')
+  const calendarStore = useCalendarStore()
+
   const showModal = ref(false)
   const partidaSelecionada = ref(null)
+  const partidas = ref([])
 
-  // Mapa de cores por status
+  // TODO: deve ser criado um ENUM em /util/enums
   const statusColors = {
     AGENDADA: 'blue',
     FINALIZADA: 'green',
@@ -85,30 +72,26 @@
   }
 
   onMounted(() => {
-    // Carrega as partidas ao montar o componente
+    // TODO: sempre utilizar async/await em chamadas http
     carregarPartidas()
   })
 
   async function carregarPartidas () {
     try {
-      erro.value = ''
-
-      // Busca partidas da API
-      const response = await apiClient.get('/partidas')
-
-      // Transforma as partidas no formato do calendário
-      events.value = response.data.map(partida => ({
-        id: partida.id,
-        title: partida.titulo || 'Partida',
-        start: new Date(partida.dataHora),
-        end: new Date(new Date(partida.dataHora).getTime() + 2 * 60 * 60 * 1000), // +2h duração padrão
+      const partidasRetorno = await calendarStore.buscarPartidas()
+      partidas.value = partidasRetorno.map(partida => ({
+        ...partida,
+        id: partida.id, // Não é necessário, já vai ter no destruct acima
+        title: partida.titulo, // Não é necessário, já vai ter no destruct acima
+        start: new Date(partida.dataHora), // TODO: avaliar se assim vai ser o formato correto de data
+        end: new Date(new Date(partida.dataHora).getTime() + 2 * 60 * 60 * 1000), // TODO: criar coluna no BD para fim da partida
         color: statusColors[partida.status] || 'grey',
-        status: partida.status,
+        status: partida.status, // Não é necessário, já vai ter no destruct acima
+        // TODO: partidaData não é necessário, basta apenas fazer lá no inicio o destruct, ...partida
         partidaData: partida, // Guarda os dados completos da partida
       }))
     } catch (error) {
       console.error('Erro ao carregar partidas:', error)
-      erro.value = $t('erroCarregarPartidas')
     }
   }
 
@@ -116,7 +99,7 @@
     return event.color
   }
 
-  function abrirDetalhes ({ event }) {
+  function abrirDetalhesPartida ({ event }) {
     partidaSelecionada.value = event.partidaData
     showModal.value = true
   }
