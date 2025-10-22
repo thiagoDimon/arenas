@@ -8,6 +8,11 @@ const routes = [
     component: () => import('@/pages/login/index.vue'),
   },
   {
+    path: '/novo-usuario',
+    name: 'NovoUsuario',
+    component: () => import('@/pages/login/novo_usuario/index.vue'),
+  },
+  {
     path: '/redirect',
     name: 'Redirect',
     component: () => import('@/pages/login/Redirect.vue'),
@@ -59,7 +64,9 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const isAuthenticated = authStore.logado
 
-  if (to.name !== 'Login' && to.name !== 'Redirect' && !isAuthenticated) {
+  const rotasPublicas = ['Login', 'Redirect', 'NovoUsuario']
+
+  if (!rotasPublicas.includes(to.name) && !isAuthenticated) {
     next({ name: 'Login' })
   } else {
     next()
