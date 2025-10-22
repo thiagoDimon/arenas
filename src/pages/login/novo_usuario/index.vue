@@ -59,7 +59,7 @@
         <v-card-text>{{ $t('mensagemCadastroSucesso') }}</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="primary-color-300" variant="flat" @click="voltarParaLogin">
+          <v-btn class="rounded-xl px-6" color="primary-color-300" variant="flat" @click="voltarParaLogin">
             {{ $t('voltarParaLogin') }}
           </v-btn>
         </v-card-actions>
@@ -72,7 +72,7 @@
         <v-card-text>{{ mensagemErroDialog }}</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="error" variant="flat" @click="fecharDialogErro">
+          <v-btn class="rounded-xl px-6" color="error" variant="flat" @click="fecharDialogErro">
             {{ $t('cancelar') }}
           </v-btn>
         </v-card-actions>
@@ -84,10 +84,11 @@
 <script setup>
   import { useI18n } from 'vue-i18n'
   import { useRouter } from 'vue-router'
-  import apiClient from '@/services/axios'
+  import { useAuthStore } from '@/stores'
 
   const router = useRouter()
   const { t } = useI18n()
+  const authStore = useAuthStore()
 
   const formRef = ref(null)
   const email = ref('')
@@ -117,11 +118,7 @@
     mensagemErroDialog.value = ''
 
     try {
-      await apiClient.post('/user', {
-        email: email.value,
-        password: password.value,
-      })
-
+      await authStore.criarUsuario({ email: email.value, password: password.value })
       email.value = ''
       password.value = ''
       formRef.value?.resetValidation()
