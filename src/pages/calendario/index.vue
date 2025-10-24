@@ -32,75 +32,67 @@
       <v-calendar
         color="#1B5E20"
         :event-color="getEventColor"
-        :events="partidas"
+        :events="matches"
         locale="en-US"
         :show-week="false"
         type="month"
         :weekdays="[0, 1, 2, 3, 4, 5, 6]"
-        @change="carregarPartidas"
+        @change="loadMatches"
         @click:event="abrirDetalhesPartida"
       />
     </v-sheet>
-    <partida-modal
+    <match-modal
       v-model="showModal"
-      :partida="partidaSelecionada"
+      :partida="matchSelected"
     />
   </div>
 </template>
 
 <script setup>
   import { onMounted, ref } from 'vue'
-  // OBS.: Não é necessário importar components, eles estão global, basta apenas utilizar.
-  // Os components são automaticamente registrados quando criados em: components.d.ts
-  import ArnAlerta from '@/components/ArnAlerta.vue'
   import { useCalendarStore } from '@/stores'
-  import PartidaModal from './PartidaModal.vue'
-
-  // TODO: padronizar: Tudo em ingles ou tudo em portugues
+  // import StatusColorENUM from '@/util/enums/statusColors.js'
+  import MatchModal from './MatchModal.vue'
 
   const calendarStore = useCalendarStore()
 
   const showModal = ref(false)
-  const partidaSelecionada = ref(null)
-  const partidas = ref([])
+  const matchSelected = ref(null)
+  const matches = ref([])
 
-  // TODO: deve ser criado um ENUM em /util/enums
-  const statusColors = {
-    AGENDADA: 'blue',
-    FINALIZADA: 'green',
-    CANCELADA: 'red',
-  }
+  // const statusColors = StatusColorENUM.lista.map(status => ({
+  //   [status.chave]: status.color,
+  // }))
 
-  onMounted(() => {
-    // TODO: sempre utilizar async/await em chamadas http
-    carregarPartidas()
+  onMounted(async () => {
+    matches.value = await calendarStore.buscarPartidas(userStore.user.id)
   })
 
-  async function carregarPartidas () {
-    try {
-      const partidasRetorno = await calendarStore.buscarPartidas()
-      partidas.value = partidasRetorno.map(partida => ({
-        ...partida,
-        id: partida.id, // Não é necessário, já vai ter no destruct acima
-        title: partida.titulo, // Não é necessário, já vai ter no destruct acima
-        start: new Date(partida.dataHora), // TODO: avaliar se assim vai ser o formato correto de data
-        end: new Date(new Date(partida.dataHora).getTime() + 2 * 60 * 60 * 1000), // TODO: criar coluna no BD para fim da partida
-        color: statusColors[partida.status] || 'grey',
-        status: partida.status, // Não é necessário, já vai ter no destruct acima
-        // TODO: partidaData não é necessário, basta apenas fazer lá no inicio o destruct, ...partida
-        partidaData: partida, // Guarda os dados completos da partida
-      }))
-    } catch (error) {
-      console.error('Erro ao carregar partidas:', error)
-    }
-  }
+  // async function loadMatches () {
+  //   try {
+  //     const partidasRetorno = await calendarStore.buscarPartidas()
+  //     matches.value = partidasRetorno.map(partida => ({
+  //       ...partida,
+  //       id: partida.id, // Não é necessário, já vai ter no destruct acima
+  //       title: partida.titulo, // Não é necessário, já vai ter no destruct acima
+  //       start: new Date(partida.dataHora), // TODO: avaliar se assim vai ser o formato correto de data
+  //       end: new Date(new Date(partida.dataHora).getTime() + 2 * 60 * 60 * 1000), // TODO: criar coluna no BD para fim da partida
+  //       color: statusColors[partida.status] || 'grey',
+  //       status: partida.status, // Não é necessário, já vai ter no destruct acima
+  //       // TODO: partidaData não é necessário, basta apenas fazer lá no inicio o destruct, ...partida
+  //       partidaData: partida, // Guarda os dados completos da partida
+  //     }))
+  //   } catch (error) {
+  //     console.error('Erro ao carregar partidas:', error)
+  //   }
+  // }
 
   function getEventColor (event) {
     return event.color
   }
 
   function abrirDetalhesPartida ({ event }) {
-    partidaSelecionada.value = event.partidaData
+    matchSelected.value = event.partidaData
     showModal.value = true
   }
 </script>

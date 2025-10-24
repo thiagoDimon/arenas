@@ -6,12 +6,13 @@ export const useCalendarStore = defineStore('calendar', {
     loading: false,
   }),
   actions: {
-    async buscarPartidas () {
+    async buscarPartidas (userId) {
       try {
-        // TODO: Buscar por id do usuário
         this.loading = true
-        const { data } = await axios.get('/partidas')
+        const { data } = await axios.get(`/partidas?userId=${userId}`)
         return data || []
+      } catch (error) {
+        console.error('Erro ao buscar partidas:', error)
       } finally {
         this.loading = false
       }

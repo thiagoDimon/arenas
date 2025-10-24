@@ -19,12 +19,13 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/calendario/': RouteRecordInfo<'/calendario/', '/calendario', Record<never, never>, Record<never, never>>,
-    '/calendario/PartidaModal': RouteRecordInfo<'/calendario/PartidaModal', '/calendario/PartidaModal', Record<never, never>, Record<never, never>>,
+    '/calendario/MatchModal': RouteRecordInfo<'/calendario/MatchModal', '/calendario/MatchModal', Record<never, never>, Record<never, never>>,
     '/home/': RouteRecordInfo<'/home/', '/home', Record<never, never>, Record<never, never>>,
     '/home/Historico': RouteRecordInfo<'/home/Historico', '/home/Historico', Record<never, never>, Record<never, never>>,
     '/home/ProximasPartidas': RouteRecordInfo<'/home/ProximasPartidas', '/home/ProximasPartidas', Record<never, never>, Record<never, never>>,
     '/home/Solicitacoes': RouteRecordInfo<'/home/Solicitacoes', '/home/Solicitacoes', Record<never, never>, Record<never, never>>,
     '/login/': RouteRecordInfo<'/login/', '/login', Record<never, never>, Record<never, never>>,
+    '/login/novo_usuario/': RouteRecordInfo<'/login/novo_usuario/', '/login/novo_usuario', Record<never, never>, Record<never, never>>,
     '/login/Redirect': RouteRecordInfo<'/login/Redirect', '/login/Redirect', Record<never, never>, Record<never, never>>,
     '/partidas/': RouteRecordInfo<'/partidas/', '/partidas', Record<never, never>, Record<never, never>>,
     '/partidas/CriarPartidas': RouteRecordInfo<'/partidas/CriarPartidas', '/partidas/CriarPartidas', Record<never, never>, Record<never, never>>,
