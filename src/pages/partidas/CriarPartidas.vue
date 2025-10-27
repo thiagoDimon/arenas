@@ -100,13 +100,13 @@
                 <span>{{ $t("cep") }}</span>
                 <span style="color: #B00020"> *</span>
               </div>
-              <v-text-field
+              <v-mask-input
                 v-model="partida.cep"
-                clearable
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
-                placeholder="00000-000"
+                :mask="$t('mascaraCep')"
+                :placeholder="$t('mascaraCepPlaceholder')"
                 variant="outlined"
               />
             </v-col>
@@ -155,7 +155,7 @@
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
-                :placeholder="$t('exemploRua')"
+                :placeholder="$t('ruaExemplo')"
                 variant="outlined"
               />
             </v-col>
@@ -171,6 +171,7 @@
                 density="comfortable"
                 hide-details
                 placeholder="123"
+                type="number"
                 variant="outlined"
               />
             </v-col>
