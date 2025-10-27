@@ -298,15 +298,21 @@
     titulo: '',
     maximoJogadores: '',
     descricao: '',
-    nomeLocal: '',
-    endereco: '',
     pontoReferencia: '',
     recorrente: false,
     data: '',
     horario: '',
     privada: false,
     valorPessoa: '',
-    nivel: null,
+    nivel: 'INICIANTE',
+    nomeLocal: '',
+    cep: '',
+    rua: '',
+    numeroLocal: '',
+    complemento: null,
+    cidade: '',
+    estado: '',
+    bairro: ''
   })
 
   function criarPartida () {
@@ -318,15 +324,20 @@
       titulo: '',
       maximoJogadores: '',
       descricao: '',
-      nomeLocal: '',
-      endereco: '',
       pontoReferencia: '',
       recorrente: false,
       data: '',
       horario: '',
       privada: false,
       valorPessoa: '',
-      nivel: null,
+      nivel: 'INICIANTE',
+      nomeLocal: '',
+      cep: '',
+      rua: '',
+      complemento: null,
+      cidade: '',
+      estado: '',
+      bairro: ''
     }
   }
 
