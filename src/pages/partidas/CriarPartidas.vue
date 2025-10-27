@@ -97,28 +97,93 @@
             </v-col>
             <v-col cols="12" sm="6">
               <div>
-                <span>{{ $t("endereco") }}</span>
+                <span>{{ $t("cep") }}</span>
                 <span style="color: #B00020"> *</span>
               </div>
               <v-text-field
-                v-model="partida.endereco"
+                v-model="partida.cep"
                 clearable
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
-                :placeholder="$t('exemploEndereco')"
+                placeholder="00000-000"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("cidade") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-text-field
+                v-model="partida.cidade"
+                clearable
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                placeholder=""
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("estado") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-select
+                v-model="partida.estado"
+                bg-color="white"
+                clearable
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                item-title="descricao"
+                :items="listEstados"
+                :menu-props="{ contentClass: '' }"
+                :placeholder="$t('selecioneEstado')"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("rua") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-text-field
+                v-model="partida.nomeLocal"
+                clearable
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                :placeholder="$t('exemploRua')"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("numero") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-text-field
+                v-model="partida.numeroLocal"
+                clearable
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                placeholder="123"
                 variant="outlined"
               />
             </v-col>
             <v-col cols="12">
-              <span>{{ $t("pontoReferencia") }}</span>
-              <v-text-field
-                v-model="partida.pontoReferencia"
-                clearable
+              <span>{{ $t("complemento") }}</span>
+              <v-textarea
+                v-model="partida.complemento"
+                class="mb-4"
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
                 :placeholder="$t('exProximoAoShopping')"
+                rows="2"
                 variant="outlined"
               />
             </v-col>
@@ -284,6 +349,7 @@
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
   import NivelENUM from '@/util/enums/nivel.js'
+  import EstadoENUM from '@/util/enums/state.js'
 
   const { smAndUp } = useDisplay()
   const { t } = useI18n()
@@ -294,11 +360,16 @@
     descricao: t(nivel.chave),
   }))
 
+  const listEstados = EstadoENUM.lista.map(estado => ({
+    valor: estado.valor,
+    chave: estado.chave,
+    descricao: t(estado.chave),
+  }))
+
   const partida = ref({
     titulo: '',
     maximoJogadores: '',
     descricao: '',
-    pontoReferencia: '',
     recorrente: false,
     data: '',
     horario: '',
