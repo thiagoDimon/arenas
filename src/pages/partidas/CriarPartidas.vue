@@ -121,7 +121,7 @@
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
-                placeholder=""
+                :placeholder="$t('exemploCidade')"
                 variant="outlined"
               />
             </v-col>
