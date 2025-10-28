@@ -144,18 +144,33 @@
                 variant="outlined"
               />
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12">
               <div>
                 <span>{{ $t("rua") }}</span>
                 <span style="color: #B00020"> *</span>
               </div>
               <v-text-field
-                v-model="partida.nomeLocal"
+                v-model="partida.rua"
                 clearable
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
                 :placeholder="$t('ruaExemplo')"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("bairro") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-text-field
+                v-model="partida.bairro"
+                clearable
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                :placeholder="$t('exemploBairro')"
                 variant="outlined"
               />
             </v-col>
@@ -171,6 +186,7 @@
                 density="comfortable"
                 hide-details
                 placeholder="123"
+                :hide-spin-buttons="true"
                 type="number"
                 variant="outlined"
               />
@@ -343,17 +359,36 @@
       </arn-button>
     </div>
   </div>
+
+  <v-dialog v-model="showDialogError" max-width="420">
+    <v-card>
+      <v-card-title class="text-h6">{{ $t('tituloCadastroErro') }}</v-card-title>
+      <v-card-text>{{ errorMessage }}</v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn class="rounded-xl px-6" color="error" variant="flat" @click="closeErrorDialog">
+          {{ $t('cancelar') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
+  import { useMatchStore } from '@/stores/match'
   import NivelENUM from '@/util/enums/nivel.js'
   import EstadoENUM from '@/util/enums/state.js'
 
   const { smAndUp } = useDisplay()
   const { t } = useI18n()
+  const matchStore = useMatchStore()
+
+  const isSubmitting = ref(false)
+  const showDialogError = ref(false)
+  const errorMessage = ref('')
 
   const listaNiveis = NivelENUM.lista.map(nivel => ({
     valor: nivel.valor,
@@ -376,19 +411,37 @@
     horario: '',
     privada: false,
     valorPessoa: '',
-    nivel: 'INICIANTE',
+    nivel: null,
     nomeLocal: '',
     cep: '',
     rua: '',
     numeroLocal: '',
     complemento: null,
     cidade: '',
-    estado: '',
+    estado: null,
     bairro: ''
   })
 
-  function criarPartida () {
-    console.log('Criar partida', partida.value)
+  async function criarPartida () {
+    isSubmitting.value = true
+
+    try {
+      await matchStore.saveMatch(partida.value);
+    } catch (error) {
+      const backendMessage = typeof error.response?.data?.message === 'string'
+        ? error.response.data.message
+        : ''
+
+      errorMessage.value = backendMessage || t('mensagemPartidaErro')
+
+      showDialogError.value = true
+    } finally {
+      isSubmitting.value = false
+    }
+  }
+
+  function closeErrorDialog() {
+    showDialogError.value = false
   }
 
   function cancelar () {

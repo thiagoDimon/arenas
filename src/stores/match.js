@@ -7,7 +7,7 @@ export const useMatchStore = defineStore('match', {
     async saveMatch (partida) {
       try {
         const partidaApi = {
-            matchData: partida.data + partida.horario,
+            matchData: partida.data + 'T' + partida.horario + ':00.000+02:00',
             text: partida.titulo,
             maxPlayers: partida.maximoJogadores,
             description: partida.descricao,
@@ -31,7 +31,9 @@ export const useMatchStore = defineStore('match', {
             }
         }
 
-        const response = await axios.post('/match', { partidaApi })
+        console.log(partidaApi);
+
+        const response = await axios.post('/match',  partidaApi )
         return response.status == 200
       } catch {
         throw new Error('mensagemPartidaErro')
