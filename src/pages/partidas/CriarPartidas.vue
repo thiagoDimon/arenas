@@ -138,6 +138,7 @@
                 density="comfortable"
                 hide-details
                 item-title="descricao"
+                item-value="valor"
                 :items="listEstados"
                 :menu-props="{ contentClass: '' }"
                 :placeholder="$t('selecioneEstado')"
@@ -317,6 +318,7 @@
                 density="comfortable"
                 hide-details
                 item-title="descricao"
+                item-value="chave"
                 :items="listaNiveis"
                 :menu-props="{ contentClass: '' }"
                 :placeholder="$t('selecioneNivel')"
@@ -372,27 +374,41 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-dialog v-model="showDialogSuccess" max-width="420">
+    <v-card>
+      <v-card-title class="text-h6">{{ $t('tituloCadastroSucesso') }}</v-card-title>
+      <v-card-text>{{ $t('mensagemCadastroPartidaSucesso') }}</v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn class="rounded-xl px-6" color="success" variant="flat" @click="closeSucessDialog">
+          {{ $t('ok') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
-  import { useMatchStore } from '@/stores/match'
+  import { useMatchStore, useUserStore } from '@/stores'
   import NivelENUM from '@/util/enums/nivel.js'
   import EstadoENUM from '@/util/enums/state.js'
 
   const { smAndUp } = useDisplay()
   const { t } = useI18n()
   const matchStore = useMatchStore()
+  const userStore = useUserStore()
 
   const isSubmitting = ref(false)
   const showDialogError = ref(false)
+  const showDialogSuccess = ref(false)
   const errorMessage = ref('')
 
   const listaNiveis = NivelENUM.lista.map(nivel => ({
     valor: nivel.valor,
-    chave: nivel.chave,
+    chave: nivel.chave.toUpperCase(),
     descricao: t(nivel.chave),
   }))
 
@@ -426,11 +442,16 @@
     isSubmitting.value = true
 
     try {
-      await matchStore.saveMatch(partida.value);
+      await matchStore.saveMatch(partida.value, userStore.user.id);
+
+      showDialogSuccess.value = true
+
     } catch (error) {
       const backendMessage = typeof error.response?.data?.message === 'string'
         ? error.response.data.message
         : ''
+
+      console.log(backendMessage)
 
       errorMessage.value = backendMessage || t('mensagemPartidaErro')
 
@@ -444,6 +465,11 @@
     showDialogError.value = false
   }
 
+  function closeSucessDialog() {
+    cancelar()
+    showDialogSuccess.value = false
+  }
+
   function cancelar () {
     partida.value = {
       titulo: '',
@@ -455,13 +481,13 @@
       horario: '',
       privada: false,
       valorPessoa: '',
-      nivel: 'INICIANTE',
+      nivel: null,
       nomeLocal: '',
       cep: '',
       rua: '',
       complemento: null,
       cidade: '',
-      estado: '',
+      estado: null,
       bairro: ''
     }
   }

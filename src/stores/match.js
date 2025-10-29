@@ -4,14 +4,17 @@ import axios from '@/services/axios'
 export const useMatchStore = defineStore('match', {
   state: () => ({}),
   actions: {
-    async saveMatch (partida) {
+    async saveMatch (partida, userId) {
       try {
+        const [day, month, year] = partida.data.split("/");
+        const formatedDate = `${year}-${month}-${day}`;
+
         const partidaApi = {
-            matchData: partida.data + 'T' + partida.horario + ':00.000+02:00',
+            matchData: formatedDate + 'T' + partida.horario + ':00.000+02:00',
             text: partida.titulo,
             maxPlayers: partida.maximoJogadores,
             description: partida.descricao,
-            creatorUserId: 1, //TODO fix this
+            creatorUserId: userId,
             matchParameterDto: {
                 user_value: partida.valorPessoa,
                 match_level: partida.nivel,
@@ -31,12 +34,18 @@ export const useMatchStore = defineStore('match', {
             }
         }
 
-        console.log(partidaApi);
+        const token = localStorage.getItem('accessToken')
 
-        const response = await axios.post('/match',  partidaApi )
+        const response = await axios.post('/match',  partidaApi,  {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+
         return response.status == 200
-      } catch {
-        throw new Error('mensagemPartidaErro')
+
+      } catch(error) {
+        throw new Error('mensagemPartidaErro', error)
       }
     },
   },
