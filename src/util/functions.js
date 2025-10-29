@@ -24,6 +24,7 @@ function getFormattedDate (date, time) {
 function changeLanguage (language) {
   i18n.global.locale.value = language
   localStorage.setItem('language', language)
+  window.location.reload()
 }
 
 export { changeLanguage, getFormattedDate }

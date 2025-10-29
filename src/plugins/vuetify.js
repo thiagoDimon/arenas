@@ -1,8 +1,9 @@
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { VCalendar } from 'vuetify/labs/VCalendar'
 import { VMaskInput } from 'vuetify/labs/VMaskInput'
-import { pt } from 'vuetify/locale'
+import { en, es, pt } from 'vuetify/locale'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
@@ -22,25 +23,29 @@ const colors = {
   'secondary-color-500': '#E5AF00',
 }
 
-export default createVuetify({
-  components: {
-    ...components,
-    VMaskInput,
-  },
-  directives,
-  theme: {
-    defaultTheme: 'light',
-    themes: {
-      light: {
-        colors,
-      },
-      dark: {
-        colors,
+export function criarVuetify (locale = 'pt') {
+  return createVuetify({
+    components: {
+      ...components,
+      VCalendar,
+      VMaskInput,
+    },
+    directives,
+    locale: {
+      locale: String(locale),
+      fallback: 'en',
+      messages: { pt, en, es },
+    },
+    theme: {
+      defaultTheme: 'light',
+      themes: {
+        light: {
+          colors,
+        },
+        dark: {
+          colors,
+        },
       },
     },
-  },
-  locale: {
-    locale: 'pt',
-    messages: { pt },
-  },
-})
+  })
+}
