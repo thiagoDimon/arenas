@@ -9,7 +9,7 @@ export const useCalendarStore = defineStore('calendar', {
     async buscarPartidas (userId) {
       try {
         this.loading = true
-        const { data } = await axios.get(`/partidas?userId=${userId}`)
+        const { data } = await axios.get(`/match/calendario/${userId}`)
         return data || []
       } catch (error) {
         console.error('Erro ao buscar partidas:', error)

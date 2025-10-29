@@ -19,7 +19,6 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/calendario/': RouteRecordInfo<'/calendario/', '/calendario', Record<never, never>, Record<never, never>>,
-    '/calendario/MatchModal': RouteRecordInfo<'/calendario/MatchModal', '/calendario/MatchModal', Record<never, never>, Record<never, never>>,
     '/home/': RouteRecordInfo<'/home/', '/home', Record<never, never>, Record<never, never>>,
     '/home/Historico': RouteRecordInfo<'/home/Historico', '/home/Historico', Record<never, never>, Record<never, never>>,
     '/home/ProximasPartidas': RouteRecordInfo<'/home/ProximasPartidas', '/home/ProximasPartidas', Record<never, never>, Record<never, never>>,

@@ -38,62 +38,170 @@
         type="month"
         :weekdays="[0, 1, 2, 3, 4, 5, 6]"
         @change="loadMatches"
-        @click:event="abrirDetalhesPartida"
+        @click:event="openEvent"
       />
     </v-sheet>
-    <match-modal
-      v-model="showModal"
-      :partida="matchSelected"
-    />
+
+    <v-menu
+      v-model="selectedOpen"
+      :activator="selectedElement"
+      :close-on-content-click="false"
+      location="end"
+      offset="10"
+    >
+      <v-card
+        v-if="selectedEvent"
+        color="white"
+        elevation="8"
+        max-width="400px"
+        min-width="350px"
+      >
+        <v-toolbar
+          :color="selectedEvent.color"
+          dark
+        >
+          <v-toolbar-title>{{ selectedEvent.name || selectedEvent.title }}</v-toolbar-title>
+          <v-spacer />
+          <v-btn
+            icon
+            @click="selectedOpen = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+
+        <v-card-text class="pt-4">
+          <v-list class="bg-transparent" density="compact">
+            <v-list-item>
+              <template #prepend>
+                <v-icon color="#1B5E20">mdi-clock-start</v-icon>
+              </template>
+              <v-list-item-title class="text-subtitle-2 font-weight-bold">Início</v-list-item-title>
+              <v-list-item-subtitle>{{ formatDateTime(selectedEvent.start) }}</v-list-item-subtitle>
+            </v-list-item>
+
+            <v-list-item>
+              <template #prepend>
+                <v-icon color="#1B5E20">mdi-clock-end</v-icon>
+              </template>
+              <v-list-item-title class="text-subtitle-2 font-weight-bold">Término</v-list-item-title>
+              <v-list-item-subtitle>{{ formatDateTime(selectedEvent.end) }}</v-list-item-subtitle>
+            </v-list-item>
+
+            <v-list-item v-if="selectedEvent.statusText">
+              <template #prepend>
+                <v-icon color="#1B5E20">mdi-information</v-icon>
+              </template>
+              <v-list-item-title class="text-subtitle-2 font-weight-bold">Status</v-list-item-title>
+              <v-list-item-subtitle>
+                <v-chip
+                  :color="selectedEvent.color"
+                  label
+                  size="small"
+                >
+                  {{ selectedEvent.status }}
+                </v-chip>
+              </v-list-item-subtitle>
+            </v-list-item>
+
+            <v-list-item v-if="selectedEvent.details">
+              <template #prepend>
+                <v-icon color="#1B5E20">mdi-text</v-icon>
+              </template>
+              <v-list-item-title class="text-subtitle-2 font-weight-bold">Detalhes</v-list-item-title>
+              <v-list-item-subtitle class="text-wrap">
+                {{ selectedEvent.details.descricao || 'Sem descrição' }}
+              </v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+
+        <v-card-actions class="px-4 pb-4">
+          <v-spacer />
+          <v-btn
+            color="#1B5E20"
+            variant="text"
+            @click="selectedOpen = false"
+          >
+            Fechar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-menu>
   </div>
 </template>
 
 <script setup>
   import { onMounted, ref } from 'vue'
-  import { useCalendarStore } from '@/stores'
-  // import StatusColorENUM from '@/util/enums/statusColors.js'
-  import MatchModal from './MatchModal.vue'
+  import { useCalendarStore, useUserStore } from '@/stores'
+  import StatusColorENUM from '@/util/enums/statusColors.js'
 
   const calendarStore = useCalendarStore()
 
-  const showModal = ref(false)
-  const matchSelected = ref(null)
+  const selectedOpen = ref(false)
+  const selectedEvent = ref(null)
+  const selectedElement = ref(null)
   const matches = ref([])
+  const userStore = useUserStore()
 
-  // const statusColors = StatusColorENUM.lista.map(status => ({
-  //   [status.chave]: status.color,
-  // }))
+  const statusColors = StatusColorENUM.lista.reduce((acc, status) => {
+    acc[status.chave] = status.color
+    return acc
+  }, {})
 
   onMounted(async () => {
-    matches.value = await calendarStore.buscarPartidas(userStore.user.id)
+    await loadMatches()
   })
 
-  // async function loadMatches () {
-  //   try {
-  //     const partidasRetorno = await calendarStore.buscarPartidas()
-  //     matches.value = partidasRetorno.map(partida => ({
-  //       ...partida,
-  //       id: partida.id, // Não é necessário, já vai ter no destruct acima
-  //       title: partida.titulo, // Não é necessário, já vai ter no destruct acima
-  //       start: new Date(partida.dataHora), // TODO: avaliar se assim vai ser o formato correto de data
-  //       end: new Date(new Date(partida.dataHora).getTime() + 2 * 60 * 60 * 1000), // TODO: criar coluna no BD para fim da partida
-  //       color: statusColors[partida.status] || 'grey',
-  //       status: partida.status, // Não é necessário, já vai ter no destruct acima
-  //       // TODO: partidaData não é necessário, basta apenas fazer lá no inicio o destruct, ...partida
-  //       partidaData: partida, // Guarda os dados completos da partida
-  //     }))
-  //   } catch (error) {
-  //     console.error('Erro ao carregar partidas:', error)
-  //   }
-  // }
+  async function loadMatches () {
+    const partidas = await calendarStore.buscarPartidas(userStore.user.id)
+    matches.value = partidas.map(partida => {
+      const dataHora = new Date(partida.dataHora)
+      const horario = dataHora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+
+      return {
+        title: `${horario} - ${partida.titulo}`,
+        name: partida.titulo,
+        start: dataHora,
+        end: new Date(dataHora.getTime() + 2 * 60 * 60 * 1000),
+        color: statusColors[partida.status] || 'grey',
+        status: partida.status,
+        statusText: StatusColorENUM.lista.find(s => s.chave === partida.status)?.valor || partida.status,
+        details: partida,
+      }
+    })
+  }
 
   function getEventColor (event) {
     return event.color
   }
 
-  function abrirDetalhesPartida ({ event }) {
-    matchSelected.value = event.partidaData
-    showModal.value = true
+  function openEvent (nativeEvent, { event }) {
+    const open = () => {
+      selectedEvent.value = event
+      selectedElement.value = nativeEvent.target
+      requestAnimationFrame(() => requestAnimationFrame(() => selectedOpen.value = true))
+    }
+
+    if (selectedOpen.value) {
+      selectedOpen.value = false
+      requestAnimationFrame(() => requestAnimationFrame(() => open()))
+    } else {
+      open()
+    }
+
+    nativeEvent.stopPropagation()
+  }
+
+  function formatDateTime (date) {
+    if (!date) return '-'
+    return new Date(date).toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
   }
 </script>
 
@@ -138,6 +246,16 @@
   &:hover {
     background-color: #e8f5e9 !important;
   }
+}
+
+:deep(.v-chip .v-chip__content) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:deep(.v-toolbar-title .v-toolbar-title__placeholder) {
+  width: 250px;
 }
 
 .select-calendario {
