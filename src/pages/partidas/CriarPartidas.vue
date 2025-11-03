@@ -441,17 +441,31 @@
   async function criarPartida () {
     isSubmitting.value = true
 
+    let backendMessage = ''
+
     try {
+      backendMessage = ''
+
+      if(partida.value.data == '') {
+        console.log('data invalida')
+        backendMessage = t('mensagemDataObrigatorio');
+        throw new Error('Invalid field')
+      }
+
+      if(partida.value.horario == '') {
+        console.log('horario invalida')
+        backendMessage = t('mensagemHorarioObrigatorio');
+        throw new Error('Invalid field')
+      }
+
       await matchStore.saveMatch(partida.value, userStore.user.id);
 
       showDialogSuccess.value = true
 
     } catch (error) {
-      const backendMessage = typeof error.response?.data?.message === 'string'
-        ? error.response.data.message
-        : ''
-
-      console.log(backendMessage)
+      if(typeof error.response?.data?.detail === 'string'){
+        backendMessage = error.response.data.detail
+      }
 
       errorMessage.value = backendMessage || t('mensagemPartidaErro')
 
