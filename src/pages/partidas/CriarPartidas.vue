@@ -97,28 +97,111 @@
             </v-col>
             <v-col cols="12" sm="6">
               <div>
-                <span>{{ $t("endereco") }}</span>
+                <span>{{ $t("cep") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-mask-input
+                v-model="partida.cep"
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                :mask="$t('mascaraCep')"
+                :placeholder="$t('mascaraCepPlaceholder')"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("cidade") }}</span>
                 <span style="color: #B00020"> *</span>
               </div>
               <v-text-field
-                v-model="partida.endereco"
+                v-model="partida.cidade"
                 clearable
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
-                :placeholder="$t('exemploEndereco')"
+                :placeholder="$t('exemploCidade')"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("estado") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-select
+                v-model="partida.estado"
+                bg-color="white"
+                clearable
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                item-title="descricao"
+                item-value="valor"
+                :items="listEstados"
+                :menu-props="{ contentClass: '' }"
+                :placeholder="$t('selecioneEstado')"
                 variant="outlined"
               />
             </v-col>
             <v-col cols="12">
-              <span>{{ $t("pontoReferencia") }}</span>
+              <div>
+                <span>{{ $t("rua") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
               <v-text-field
-                v-model="partida.pontoReferencia"
+                v-model="partida.rua"
                 clearable
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
+                :placeholder="$t('ruaExemplo')"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("bairro") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-text-field
+                v-model="partida.bairro"
+                clearable
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                :placeholder="$t('exemploBairro')"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <div>
+                <span>{{ $t("numero") }}</span>
+                <span style="color: #B00020"> *</span>
+              </div>
+              <v-text-field
+                v-model="partida.numeroLocal"
+                clearable
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
+                :hide-spin-buttons="true"
+                placeholder="123"
+                type="number"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12">
+              <span>{{ $t("complemento") }}</span>
+              <v-textarea
+                v-model="partida.complemento"
+                class="mb-4"
+                color="primary-color-300"
+                density="comfortable"
+                hide-details
                 :placeholder="$t('exProximoAoShopping')"
+                rows="2"
                 variant="outlined"
               />
             </v-col>
@@ -235,6 +318,7 @@
                 density="comfortable"
                 hide-details
                 item-title="descricao"
+                item-value="chave"
                 :items="listaNiveis"
                 :menu-props="{ contentClass: '' }"
                 :placeholder="$t('selecioneNivel')"
@@ -277,40 +361,126 @@
       </arn-button>
     </div>
   </div>
+
+  <v-dialog v-model="showDialogError" max-width="420">
+    <v-card>
+      <v-card-title class="text-h6">{{ $t('tituloCadastroErro') }}</v-card-title>
+      <v-card-text>{{ errorMessage }}</v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn class="rounded-xl px-6" color="error" variant="flat" @click="closeErrorDialog">
+          {{ $t('cancelar') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <v-dialog v-model="showDialogSuccess" max-width="420">
+    <v-card>
+      <v-card-title class="text-h6">{{ $t('tituloCadastroSucesso') }}</v-card-title>
+      <v-card-text>{{ $t('mensagemCadastroPartidaSucesso') }}</v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn class="rounded-xl px-6" color="success" variant="flat" @click="closeSucessDialog">
+          {{ $t('ok') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
+  import { useMatchStore, useUserStore } from '@/stores'
+  import EstadoENUM from '@/util/enums/estados.js'
   import NivelENUM from '@/util/enums/nivel.js'
 
   const { smAndUp } = useDisplay()
   const { t } = useI18n()
+  const matchStore = useMatchStore()
+  const userStore = useUserStore()
+
+  const isSubmitting = ref(false)
+  const showDialogError = ref(false)
+  const showDialogSuccess = ref(false)
+  const errorMessage = ref('')
 
   const listaNiveis = NivelENUM.lista.map(nivel => ({
     valor: nivel.valor,
-    chave: nivel.chave,
+    chave: nivel.chave.toUpperCase(),
     descricao: t(nivel.chave),
+  }))
+
+  const listEstados = EstadoENUM.lista.map(estado => ({
+    valor: estado.valor,
+    chave: estado.chave,
+    descricao: t(estado.chave),
   }))
 
   const partida = ref({
     titulo: '',
     maximoJogadores: '',
     descricao: '',
-    nomeLocal: '',
-    endereco: '',
-    pontoReferencia: '',
     recorrente: false,
     data: '',
     horario: '',
     privada: false,
     valorPessoa: '',
     nivel: null,
+    nomeLocal: '',
+    cep: '',
+    rua: '',
+    numeroLocal: '',
+    complemento: null,
+    cidade: '',
+    estado: null,
+    bairro: '',
   })
 
-  function criarPartida () {
-    console.log('Criar partida', partida.value)
+  async function criarPartida () {
+    isSubmitting.value = true
+
+    let backendMessage = ''
+
+    try {
+      backendMessage = ''
+
+      if (partida.value.data == '') {
+        console.log('data invalida')
+        backendMessage = t('mensagemDataObrigatorio')
+        throw new Error('Invalid field')
+      }
+
+      if (partida.value.horario == '') {
+        console.log('horario invalida')
+        backendMessage = t('mensagemHorarioObrigatorio')
+        throw new Error('Invalid field')
+      }
+
+      await matchStore.saveMatch(partida.value, userStore.user.id)
+
+      showDialogSuccess.value = true
+    } catch (error) {
+      if (typeof error.response?.data?.detail === 'string') {
+        backendMessage = error.response.data.detail
+      }
+
+      errorMessage.value = backendMessage || t('mensagemPartidaErro')
+
+      showDialogError.value = true
+    } finally {
+      isSubmitting.value = false
+    }
+  }
+
+  function closeErrorDialog () {
+    showDialogError.value = false
+  }
+
+  function closeSucessDialog () {
+    cancelar()
+    showDialogSuccess.value = false
   }
 
   function cancelar () {
@@ -318,8 +488,6 @@
       titulo: '',
       maximoJogadores: '',
       descricao: '',
-      nomeLocal: '',
-      endereco: '',
       pontoReferencia: '',
       recorrente: false,
       data: '',
@@ -327,6 +495,13 @@
       privada: false,
       valorPessoa: '',
       nivel: null,
+      nomeLocal: '',
+      cep: '',
+      rua: '',
+      complemento: null,
+      cidade: '',
+      estado: null,
+      bairro: '',
     }
   }
 
