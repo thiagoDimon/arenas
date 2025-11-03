@@ -186,8 +186,8 @@
                 color="primary-color-300"
                 density="comfortable"
                 hide-details
-                placeholder="123"
                 :hide-spin-buttons="true"
+                placeholder="123"
                 type="number"
                 variant="outlined"
               />
@@ -393,8 +393,8 @@
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
   import { useMatchStore, useUserStore } from '@/stores'
+  import EstadoENUM from '@/util/enums/estados.js'
   import NivelENUM from '@/util/enums/nivel.js'
-  import EstadoENUM from '@/util/enums/state.js'
 
   const { smAndUp } = useDisplay()
   const { t } = useI18n()
@@ -435,7 +435,7 @@
     complemento: null,
     cidade: '',
     estado: null,
-    bairro: ''
+    bairro: '',
   })
 
   async function criarPartida () {
@@ -446,24 +446,23 @@
     try {
       backendMessage = ''
 
-      if(partida.value.data == '') {
+      if (partida.value.data == '') {
         console.log('data invalida')
-        backendMessage = t('mensagemDataObrigatorio');
+        backendMessage = t('mensagemDataObrigatorio')
         throw new Error('Invalid field')
       }
 
-      if(partida.value.horario == '') {
+      if (partida.value.horario == '') {
         console.log('horario invalida')
-        backendMessage = t('mensagemHorarioObrigatorio');
+        backendMessage = t('mensagemHorarioObrigatorio')
         throw new Error('Invalid field')
       }
 
-      await matchStore.saveMatch(partida.value, userStore.user.id);
+      await matchStore.saveMatch(partida.value, userStore.user.id)
 
       showDialogSuccess.value = true
-
     } catch (error) {
-      if(typeof error.response?.data?.detail === 'string'){
+      if (typeof error.response?.data?.detail === 'string') {
         backendMessage = error.response.data.detail
       }
 
@@ -475,11 +474,11 @@
     }
   }
 
-  function closeErrorDialog() {
+  function closeErrorDialog () {
     showDialogError.value = false
   }
 
-  function closeSucessDialog() {
+  function closeSucessDialog () {
     cancelar()
     showDialogSuccess.value = false
   }
@@ -502,7 +501,7 @@
       complemento: null,
       cidade: '',
       estado: null,
-      bairro: ''
+      bairro: '',
     }
   }
 
