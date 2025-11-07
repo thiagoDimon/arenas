@@ -320,7 +320,6 @@
                 item-title="descricao"
                 item-value="chave"
                 :items="listaNiveis"
-                :menu-props="{ contentClass: '' }"
                 :placeholder="$t('selecioneNivel')"
                 variant="outlined"
               />

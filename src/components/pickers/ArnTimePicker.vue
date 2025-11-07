@@ -5,7 +5,7 @@
     density="comfortable"
     hide-details
     :model-value="modelValue"
-    placeholder="hh:mm"
+    :placeholder="placeholder"
     readonly
     variant="outlined"
     @click="abrirPicker()"
@@ -50,6 +50,11 @@
     modelValue: {
       type: String,
       required: false,
+    },
+    placeholder: {
+      type: String,
+      required: false,
+      default: 'hh:mm',
     },
   })
 
