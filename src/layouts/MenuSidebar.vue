@@ -30,7 +30,7 @@
             <v-img v-if="profileImageUrl" cover :src="profileImageUrl" />
             <v-icon v-else>mdi-account-outline</v-icon>
           </div>
-          <span class="user-name">{{ userName || $t('perfil') }}</span>
+          <span class="user-name">{{ userStore.user.firstName || $t('perfil') }}</span>
         </div>
         <div class="nav-item logout-item" @click="realizarLogout()">
           <v-icon class="nav-icon">mdi-logout</v-icon>
@@ -61,18 +61,13 @@
   const userStore = useUserStore()
 
   const profileImageUrl = ref(null)
-  const userName = ref('')
 
-  // Carregar dados do usuário ao montar o componente
   onMounted(async () => {
     try {
-      const user = await userStore.getMe()
-      if (user) {
-        userName.value = `${user.firstName || ''} ${user.lastName || ''}`.trim()
-        if (user.id) {
-          const imageUrl = await userStore.getProfilePicture(user.id)
-          profileImageUrl.value = imageUrl
-        }
+      const user = userStore.user
+      if (userStore.user?.id) {
+        const imageUrl = await userStore.getProfilePicture(user.id)
+        profileImageUrl.value = imageUrl
       }
     } catch (error) {
       console.error('Erro ao carregar dados do usuário:', error)

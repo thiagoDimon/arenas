@@ -16,7 +16,6 @@ export const useUserStore = defineStore('user', {
     },
     async updateUser (id, userData) {
       const response = await axios.put(`/user/${id}`, userData)
-      // Recarregar dados do usuário após atualização
       if (this.user && this.user.id === id) {
         await this.getMe()
       }
@@ -28,17 +27,6 @@ export const useUserStore = defineStore('user', {
     },
     clearUser () {
       this.user = null
-    },
-  },
-  getters: {
-    isAuthenticated: state => !!state.user,
-    userId: state => state.user?.id,
-    userEmail: state => state.user?.email,
-    userFullName: state => {
-      if (!state.user) {
-        return ''
-      }
-      return `${state.user.firstName || ''} ${state.user.lastName || ''}`.trim()
     },
   },
 })

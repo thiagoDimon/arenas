@@ -161,7 +161,6 @@ const messages = {
     erroUploadImagem: 'Não foi possível fazer o upload da imagem.',
     imagemRemovidaSucesso: 'Imagem de perfil removida com sucesso!',
     erroRemoverImagem: 'Não foi possível remover a imagem.',
-    cancelar: 'Cancelar',
   },
   en: {
     entrar: 'Login',
@@ -484,7 +483,6 @@ const messages = {
     erroUploadImagem: 'No se pudo subir la imagen.',
     imagemRemovidaSucesso: '¡Imagen de perfil eliminada con éxito!',
     erroRemoverImagem: 'No se pudo eliminar la imagen.',
-    cancelar: 'Cancelar',
   },
 }
 

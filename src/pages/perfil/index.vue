@@ -1,6 +1,5 @@
 <template>
   <v-container class="pa-6">
-    <!-- Alertas -->
     <arn-alerta
       v-model="alert.show"
       :color="alert.color"
@@ -8,12 +7,8 @@
       :title="alert.title"
       :type="alert.type"
     />
-
-    <!-- Loading -->
     <v-progress-linear v-if="loading" class="mb-4" color="primary" indeterminate />
-
-    <!-- Header do Perfil -->
-    <v-card class="mb-4 pa-6" elevation="2">
+    <v-card class="mb-4 pa-6 rounded-lg" elevation="2">
       <v-row align="center">
         <v-col cols="auto">
           <v-badge
@@ -63,8 +58,6 @@
           </v-btn>
         </v-col>
       </v-row>
-
-      <!-- Preview da imagem selecionada -->
       <v-row v-if="selectedFile && !uploadingImage" class="mt-2">
         <v-col cols="12">
           <v-alert
@@ -77,8 +70,6 @@
           </v-alert>
         </v-col>
       </v-row>
-
-      <!-- Loading do upload -->
       <v-row v-if="uploadingImage" class="mt-2">
         <v-col cols="12">
           <v-progress-linear
@@ -89,9 +80,7 @@
         </v-col>
       </v-row>
     </v-card>
-
-    <!-- Informações Básicas -->
-    <v-card class="mb-4 pa-6" elevation="2">
+    <v-card class="mb-4 pa-6 rounded-lg" elevation="2">
       <div class="d-flex align-center mb-4">
         <v-icon class="mr-2">mdi-account-circle</v-icon>
         <div>
@@ -99,11 +88,11 @@
           <p class="text-caption text-medium-emphasis ma-0">{{ $t('definaDetalhesPerfilConta') }}</p>
         </div>
       </div>
-
       <v-row>
         <v-col cols="12" md="6">
           <v-text-field
             v-model="firstName"
+            color="primary"
             density="comfortable"
             :disabled="loading"
             :error-messages="firstNameErrors"
@@ -116,6 +105,7 @@
         <v-col cols="12" md="6">
           <v-text-field
             v-model="lastName"
+            color="primary"
             density="comfortable"
             :disabled="loading"
             :error-messages="lastNameErrors"
@@ -126,11 +116,11 @@
           />
         </v-col>
       </v-row>
-
       <v-row>
         <v-col cols="12" md="6">
           <v-text-field
             v-model="phone"
+            color="primary"
             density="comfortable"
             :disabled="loading"
             :error-messages="phoneErrors"
@@ -147,6 +137,7 @@
         <v-col cols="12" md="6">
           <v-text-field
             v-model="birthDate"
+            color="primary"
             density="comfortable"
             :disabled="loading"
             :error-messages="birthDateErrors"
@@ -159,11 +150,11 @@
           />
         </v-col>
       </v-row>
-
       <v-row>
         <v-col cols="12">
           <v-textarea
             v-model="description"
+            color="primary"
             counter="5000"
             density="comfortable"
             :disabled="loading"
@@ -175,9 +166,7 @@
         </v-col>
       </v-row>
     </v-card>
-
-    <!-- Preferências de Idioma -->
-    <v-card class="mb-4 pa-6" elevation="2">
+    <v-card class="mb-4 pa-6 rounded-lg" elevation="2">
       <div class="d-flex align-center mb-4">
         <v-icon class="mr-2">mdi-translate</v-icon>
         <div>
@@ -185,11 +174,11 @@
           <p class="text-caption text-medium-emphasis ma-0">{{ $t('selecioneIdiomaPreferencia') }}</p>
         </div>
       </div>
-
       <v-row>
         <v-col cols="12" md="6">
           <v-select
             v-model="selectedLanguage"
+            color="primary"
             density="comfortable"
             :items="languages"
             :label="$t('idiomaInterface')"
@@ -198,31 +187,16 @@
         </v-col>
       </v-row>
     </v-card>
-
-    <!-- Botões de Ação -->
     <v-row class="mt-4" justify="end">
       <v-col cols="auto">
-        <v-btn
-          color="error"
-          :disabled="loading || saving"
-          size="large"
-          variant="text"
-          @click="handleCancel"
-        >
-          {{ $t('cancelar') }}
-        </v-btn>
+        <arn-button bg-color="#B00020" :disabled="loading || saving" :flat="true" @click="handleCancel()">
+          <span>{{ $t('cancelar') }}</span>
+        </arn-button>
       </v-col>
       <v-col cols="auto">
-        <v-btn
-          color="success"
-          :disabled="loading"
-          :loading="saving"
-          size="large"
-          variant="flat"
-          @click="handleSave"
-        >
-          {{ $t('salvarAlteracoes') }}
-        </v-btn>
+        <arn-button bg-color="#32AE3B" :disabled="loading" :flat="true" @click="handleSave()">
+          <span>{{ $t('salvarAlteracoes') }}</span>
+        </arn-button>
       </v-col>
     </v-row>
   </v-container>
@@ -237,22 +211,16 @@
 
   const { locale, t } = useI18n()
 
-  // Estados
   const loading = ref(false)
   const saving = ref(false)
   const uploadingImage = ref(false)
   const userId = ref(null)
-
-  // Refs
   const fileInput = ref(null)
-
-  // Erros de validação
   const firstNameErrors = ref([])
   const lastNameErrors = ref([])
   const phoneErrors = ref([])
   const birthDateErrors = ref([])
 
-  // Alert
   const alert = ref({
     show: false,
     title: '',
@@ -261,7 +229,6 @@
     color: 'success',
   })
 
-  // Dados do perfil
   const firstName = ref('')
   const lastName = ref('')
   const description = ref('')
@@ -272,11 +239,9 @@
   const profileImageUrl = ref(null)
   const selectedFile = ref(null)
 
-  // Dados originais para cancelar
   const originalData = ref({})
   const originalProfileImageUrl = ref(null)
 
-  // Idioma
   const selectedLanguage = ref('pt')
   const originalLanguage = ref('pt')
   const languages = ref([
@@ -285,7 +250,6 @@
     { title: 'Español', value: 'es' },
   ])
 
-  // Computeds
   const fullName = computed(() => {
     const first = firstName.value || ''
     const last = lastName.value || ''
@@ -303,7 +267,6 @@
     return today.toISOString().split('T')[0]
   })
 
-  // Methods
   const showAlert = (title, text, type = 'success') => {
     alert.value = {
       show: true,
@@ -327,8 +290,6 @@
   const handleFileChange = async event => {
     const file = event.target.files[0]
     if (!file) return
-
-    // Validar tipo de arquivo
     if (!file.type.startsWith('image/')) {
       showAlert(
         t('erro'),
@@ -338,7 +299,6 @@
       return
     }
 
-    // Validar tamanho (máximo 5MB)
     const maxSize = 5 * 1024 * 1024 // 5MB
     if (file.size > maxSize) {
       showAlert(
@@ -351,7 +311,6 @@
 
     selectedFile.value = file
 
-    // Criar preview da imagem
     const reader = new FileReader()
     reader.addEventListener('load', e => {
       profileImageUrl.value = e.target.result
@@ -360,27 +319,21 @@
   }
 
   const removeProfileImage = () => {
-    // Apenas remove o preview e o arquivo selecionado
-    // A remoção no backend será feita ao clicar em Salvar
     profileImageUrl.value = null
     selectedFile.value = null
 
-    // Limpar o input file
     if (fileInput.value) {
       fileInput.value.value = ''
     }
   }
 
   const formatPhone = () => {
-    // Remove tudo que não é dígito
-    let cleaned = phone.value.replace(/\D/g, '')
+    let cleaned = phone.value.replaceAll(/\D/g, '')
 
-    // Limita a 11 dígitos
     if (cleaned.length > 11) {
       cleaned = cleaned.slice(0, 11)
     }
 
-    // Aplica formatação
     phone.value = cleaned.length <= 10
       ? cleaned.replace(/(\d{2})(\d{4})(\d{0,4})/, (match, p1, p2, p3) => {
         let result = `(${p1}) ${p2}`
@@ -395,12 +348,10 @@
   }
 
   const getCleanPhone = () => {
-    // Retorna apenas os dígitos do telefone
     return phone.value.replace(/\D/g, '')
   }
 
   const applyPhoneFormat = phoneNumber => {
-    // Aplica formatação a um número de telefone limpo
     if (!phoneNumber) return ''
 
     const cleaned = phoneNumber.replace(/\D/g, '')
@@ -471,10 +422,7 @@
   }
 
   const validateDescription = () => {
-    if (description.value && description.value.length > 5000) {
-      return false
-    }
-    return true
+    return description.value && description.value.length > 5000
   }
 
   const validateForm = () => {
@@ -504,28 +452,22 @@
       userId.value = userData.id
       email.value = userData.email || ''
 
-      // Buscar dados completos do usuário
       const userDetailResponse = await axios.get(`/user/${userData.id}`)
       const userDetail = userDetailResponse.data
 
-      // Carregar todos os dados do userDetail
       firstName.value = userDetail.firstName || ''
       lastName.value = userDetail.lastName || ''
       description.value = userDetail.profileDescription || ''
-      // Aplicar formatação ao telefone que vem do backend
       phone.value = applyPhoneFormat(userDetail.phone || '')
       birthDate.value = userDetail.birthDate || null
       rolePlayer.value = userDetail.rolePlayer || null
 
-      // Carregar imagem de perfil se existir
       if (userDetail.profilePic) {
-        // Se profilePic for uma string base64 ou URL
         if (typeof userDetail.profilePic === 'string') {
           profileImageUrl.value = userDetail.profilePic.startsWith('data:')
             ? userDetail.profilePic
             : `data:image/jpeg;base64,${userDetail.profilePic}`
         } else if (userDetail.profilePic instanceof ArrayBuffer || Array.isArray(userDetail.profilePic)) {
-          // Se for um array de bytes, converter para base64
           const base64 = btoa(
             new Uint8Array(userDetail.profilePic)
               .reduce((data, byte) => data + String.fromCodePoint(byte), ''),
@@ -536,10 +478,8 @@
         profileImageUrl.value = null
       }
 
-      // Salvar imagem original
       originalProfileImageUrl.value = profileImageUrl.value
 
-      // Salvar dados originais
       originalData.value = {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -563,7 +503,6 @@
   const handleSave = async () => {
     if (!userId.value) return
 
-    // Validar formulário antes de salvar
     if (!validateForm()) {
       showAlert(
         t('atencao'),
@@ -575,10 +514,8 @@
 
     saving.value = true
     try {
-      // Limpar telefone antes de enviar (apenas dígitos)
       const cleanPhone = getCleanPhone()
 
-      // Preparar dados para envio
       const userData = {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -588,18 +525,14 @@
         rolePlayer: rolePlayer.value,
       }
 
-      // Se houver uma nova imagem selecionada, converter para base64
       if (selectedFile.value) {
-        // profileImageUrl já contém a imagem em base64 (data:image/...)
         userData.profilePic = profileImageUrl.value
       } else if (!profileImageUrl.value && originalProfileImageUrl.value) {
-        // Se a imagem foi removida, enviar string vazia
         userData.profilePic = ''
       }
 
       await axios.put(`/user/${userId.value}`, userData)
 
-      // Limpar arquivo selecionado após envio bem-sucedido
       if (selectedFile.value) {
         selectedFile.value = null
         if (fileInput.value) {
@@ -607,7 +540,6 @@
         }
       }
 
-      // Atualizar dados originais após salvar
       originalData.value = {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -617,11 +549,9 @@
         rolePlayer: rolePlayer.value,
       }
 
-      // Atualizar imagem original e limpar arquivo selecionado
       originalProfileImageUrl.value = profileImageUrl.value
       selectedFile.value = null
 
-      // Aplicar mudança de idioma se houver alteração
       if (selectedLanguage.value !== originalLanguage.value) {
         changeLanguage(selectedLanguage.value)
         originalLanguage.value = selectedLanguage.value
@@ -645,7 +575,6 @@
   }
 
   const handleCancel = () => {
-    // Restaurar dados originais
     firstName.value = originalData.value.firstName
     lastName.value = originalData.value.lastName
     description.value = originalData.value.description
@@ -653,40 +582,27 @@
     birthDate.value = originalData.value.birthDate
     rolePlayer.value = originalData.value.rolePlayer
 
-    // Restaurar imagem original
     profileImageUrl.value = originalProfileImageUrl.value
     selectedFile.value = null
 
-    // Limpar o input file
     if (fileInput.value) {
       fileInput.value.value = ''
     }
 
-    // Restaurar idioma original
     selectedLanguage.value = originalLanguage.value
 
-    // Limpar erros de validação
     firstNameErrors.value = []
     lastNameErrors.value = []
     phoneErrors.value = []
     birthDateErrors.value = []
   }
 
-  // Lifecycle
   onMounted(async () => {
-    // Carregar idioma salvo
     const savedLanguage = localStorage.getItem('language') || 'pt'
     selectedLanguage.value = savedLanguage
     originalLanguage.value = savedLanguage
     locale.value = savedLanguage
 
-    // Carregar dados do usuário
     await loadUserData()
   })
 </script>
-
-<style scoped>
-  .v-card {
-    border-radius: 12px;
-  }
-</style>
