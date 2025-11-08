@@ -27,9 +27,10 @@
       <div class="sidebar-bottom">
         <div class="user-profile" @click="abrirPerfil()">
           <div class="avatar">
-            <v-icon>mdi-account-outline</v-icon>
+            <v-img v-if="profileImageUrl" cover :src="profileImageUrl" />
+            <v-icon v-else>mdi-account-outline</v-icon>
           </div>
-          <span class="user-name">{{ $t('perfil') }}</span>
+          <span class="user-name">{{ userName || $t('perfil') }}</span>
         </div>
         <div class="nav-item logout-item" @click="realizarLogout()">
           <v-icon class="nav-icon">mdi-logout</v-icon>
@@ -42,7 +43,7 @@
 
 <script setup>
   import { useRoute, useRouter } from 'vue-router'
-  import { useAuthStore, useLoginStore } from '@/stores'
+  import { useAuthStore, useLoginStore, useUserStore } from '@/stores'
 
   const props = defineProps({
     menus: {
@@ -57,6 +58,26 @@
   const route = useRoute()
   const authStore = useAuthStore()
   const loginStore = useLoginStore()
+  const userStore = useUserStore()
+
+  const profileImageUrl = ref(null)
+  const userName = ref('')
+
+  // Carregar dados do usuário ao montar o componente
+  onMounted(async () => {
+    try {
+      const user = await userStore.getMe()
+      if (user) {
+        userName.value = `${user.firstName || ''} ${user.lastName || ''}`.trim()
+        if (user.id) {
+          const imageUrl = await userStore.getProfilePicture(user.id)
+          profileImageUrl.value = imageUrl
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao carregar dados do usuário:', error)
+    }
+  })
 
   function abrirMenu (menu) {
     if (menu.submenus.length > 0) {
@@ -251,6 +272,17 @@
     align-items: center;
     justify-content: center;
     color: white;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    :deep(.v-img) {
+      width: 100%;
+      height: 100%;
+    }
+
+    :deep(.v-img__img) {
+      object-fit: cover;
+    }
   }
 
   .user-name {
