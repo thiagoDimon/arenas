@@ -24,7 +24,7 @@
         <v-row class="">
           <v-col cols="12" sm="8">
             <v-text-field
-              v-model="filtros.titulo"
+              v-model="filtros.title"
               clearable
               color="primary-color-300"
               density="comfortable"
@@ -50,7 +50,7 @@
           </v-col>
           <v-col cols="12" sm="4">
             <v-text-field
-              v-model="filtros.nomeLocal"
+              v-model="filtros.localName"
               clearable
               color="primary-color-300"
               density="comfortable"
@@ -61,7 +61,7 @@
           </v-col>
           <v-col cols="12" sm="4">
             <v-text-field
-              v-model="filtros.cidade"
+              v-model="filtros.city"
               clearable
               color="primary-color-300"
               density="comfortable"
@@ -72,7 +72,7 @@
           </v-col>
           <v-col cols="12" sm="4">
             <v-mask-input
-              v-model="filtros.cep"
+              v-model="filtros.zipCode"
               color="primary-color-300"
               density="comfortable"
               hide-details
@@ -100,7 +100,7 @@
           </v-col>
           <v-col cols="12" sm="6">
             <v-select
-              v-model="filtros.nivel"
+              v-model="filtros.matchLevel"
               bg-color="white"
               clearable
               color="primary-color-300"
@@ -142,11 +142,13 @@
 <script setup>
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
+  import { useMatchStore } from '@/stores'
   import NivelENUM from '@/util/enums/nivel.js'
   import StatusPartidaENUM from '@/util/enums/statusPartida.js'
 
   const { smAndDown } = useDisplay()
   const { t } = useI18n()
+  const matchStore = useMatchStore()
 
   const listaPartidas = ref([])
 
@@ -163,33 +165,34 @@
   }))
 
   const filtros = ref({
-    titulo: null,
+    title: null,
     status: null,
-    nomeLocal: null,
-    cidade: null,
-    cep: null,
-    horario: null,
+    localName: null,
+    city: null,
+    zipCode: null,
     data: null,
+    horario: null,
     valorPessoa: null,
-    nivel: null,
+    matchLevel: null,
   })
 
   function limparFiltros () {
     filtros.value = {
-      titulo: null,
+      title: null,
       status: null,
-      nomeLocal: null,
-      cidade: null,
-      cep: null,
+      localName: null,
+      city: null,
       horario: null,
+      zipCode: null,
       data: null,
       valorPessoa: null,
-      nivel: null,
+      matchLevel: null,
     }
   }
 
-  function buscarPartidas () {
+  async function buscarPartidas () {
     console.log('filtros', filtros.value)
+    await matchStore.searchMatches(filtros.value)
   }
 
 </script>
