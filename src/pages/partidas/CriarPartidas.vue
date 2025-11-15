@@ -318,7 +318,7 @@
                 density="comfortable"
                 hide-details
                 item-title="descricao"
-                item-value="chave"
+                item-value="valor"
                 :items="listaNiveis"
                 :placeholder="$t('selecioneNivel')"
                 variant="outlined"

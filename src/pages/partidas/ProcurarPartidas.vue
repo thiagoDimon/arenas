@@ -1,5 +1,6 @@
 <template>
   <div class="pa-6" style="min-height: 100vh;">
+    <arn-loader :loading="loading" />
     <arn-card>
       <template #header>
         <v-row class="pa-4">
@@ -82,14 +83,14 @@
             />
           </v-col>
           <v-col cols="12" sm="6">
-            <arn-date-picker :model-value="filtros.data" :placeholder="$t('data')" @update:model-value="filtros.data = $event" />
+            <arn-date-picker :model-value="filtros.date" :placeholder="$t('data')" @update:model-value="filtros.date = $event" />
           </v-col>
           <v-col cols="12" sm="6">
-            <arn-time-picker :model-value="filtros.horario" :placeholder="$t('horario')" @update:model-value="filtros.horario = $event" />
+            <arn-time-picker :model-value="filtros.time" :placeholder="$t('horario')" @update:model-value="filtros.time = $event" />
           </v-col>
           <v-col cols="12" sm="6">
             <v-mask-input
-              v-model="filtros.valorPessoa"
+              v-model="filtros.userValue"
               color="primary-color-300"
               density="comfortable"
               hide-details
@@ -107,7 +108,7 @@
               density="comfortable"
               hide-details
               item-title="descricao"
-              item-value="chave"
+              item-value="valor"
               :items="listaNiveis"
               :placeholder="$t('nivel')"
               variant="outlined"
@@ -128,8 +129,59 @@
         </v-row>
       </template>
     </arn-card>
-    <div v-if="listaPartidas.length > 0">
-      Partidas aqui
+    <div v-if="listaPartidas.length > 0" class="overflow-y-auto">
+      <template v-for="match in listaPartidas" :key="match.id">
+        <arn-card class="mt-4">
+          <template #header>
+            <v-row class="pa-4" no-gutters>
+              <v-col class="arena-titulo-4" cols="11" sm="6">
+                <div class="d-flex flex-column">
+                  <span>{{ match.title }}</span>
+                  <span class="arena-texto-3" style="color: #5f5f5f">{{ $t('criadoPor', { nomeUsuario: match.createUserName }) }}</span>
+                </div>
+              </v-col>
+              <v-col class="align-justify-center" cols="1" sm="3">
+                <v-chip v-if="smAndUp" class="align-justify-center w-100 rounded-lg" color="primary-color-100" variant="flat">
+                  <span>{{ getStatusDescription(match.status) }}</span>
+                </v-chip>
+                <div v-else>
+                  <v-icon color="#32ae3b" size="small">mdi-circle</v-icon>
+                </div>
+              </v-col>
+              <v-col class="horario-partida arena-texto-3" cols="12" sm="3" style="color: #5f5f5f">
+                <v-icon size="large">mdi-calendar-outline</v-icon>
+                <span>{{ getFormattedDate(match.date, match.time) }}</span>
+              </v-col>
+            </v-row>
+          </template>
+          <template #content>
+            <div class="d-flex flex-row pa-1 align-center">
+              <arn-icon color="#5f5f5f" icon="jogadores" />
+              <span class="ml-2">{{ `${match.currentPlayers}/${match.maxPlayers} ${$t('jogadores')}` }}</span>
+            </div>
+            <v-progress-linear color="#32ae3b" height="4px" :max="match.maxPlayers" :model-value="match.currentPlayers" />
+          </template>
+          <template #actions>
+            <v-row no-gutters>
+              <v-col class="pa-2" cols="12" sm="6">
+                <arn-button
+                  class="w-100"
+                  :flat="true"
+                  :outlined="true"
+                  text-color="#051005"
+                >
+                  <span>{{ $t('detalhes') }}</span>
+                </arn-button>
+              </v-col>
+              <v-col class="pa-2" cols="12" sm="6">
+                <arn-button class="w-100 text-capitalize" :flat="true">
+                  <span>{{ $t('participar') }}</span>
+                </arn-button>
+              </v-col>
+            </v-row>
+          </template>
+        </arn-card>
+      </template>
     </div>
     <div v-else class="text-center pa-8">
       <v-icon color="grey" size="64">mdi-soccer-field</v-icon>
@@ -145,12 +197,14 @@
   import { useMatchStore } from '@/stores'
   import NivelENUM from '@/util/enums/nivel.js'
   import StatusPartidaENUM from '@/util/enums/statusPartida.js'
+  import { getFormattedDate } from '@/util/functions'
 
-  const { smAndDown } = useDisplay()
+  const { smAndDown, smAndUp } = useDisplay()
   const { t } = useI18n()
   const matchStore = useMatchStore()
 
   const listaPartidas = ref([])
+  const loading = ref(false)
 
   const listaStatus = StatusPartidaENUM.lista.map(status => ({
     valor: status.valor,
@@ -170,9 +224,9 @@
     localName: null,
     city: null,
     zipCode: null,
-    data: null,
-    horario: null,
-    valorPessoa: null,
+    date: null,
+    time: null,
+    userValue: null,
     matchLevel: null,
   })
 
@@ -182,17 +236,27 @@
       status: null,
       localName: null,
       city: null,
-      horario: null,
       zipCode: null,
-      data: null,
-      valorPessoa: null,
+      date: null,
+      time: null,
+      userValue: null,
       matchLevel: null,
     }
   }
 
   async function buscarPartidas () {
-    console.log('filtros', filtros.value)
-    await matchStore.searchMatches(filtros.value)
+    try {
+      loading.value = true
+      console.log('filtros', filtros.value)
+      listaPartidas.value = await matchStore.searchMatches(filtros.value)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  function getStatusDescription (status) {
+    console.log('status', status)
+    return t(StatusPartidaENUM.getChave(status))
   }
 
 </script>

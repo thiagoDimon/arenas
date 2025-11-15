@@ -15,10 +15,10 @@ export const useMatchStore = defineStore('match', {
         description: partida.descricao,
         creatorUserId: userId,
         matchParameterDto: {
-          user_value: partida.valorPessoa,
-          match_level: partida.nivel,
+          userValue: partida.valorPessoa,
+          matchLevel: partida.nivel,
           privateMatch: partida.privada,
-          notifyUser: false, // TODO fix this
+          notifyUser: false,
           reocuringMatch: partida.recorrente,
         },
         localMatchDto: {
@@ -39,7 +39,7 @@ export const useMatchStore = defineStore('match', {
     },
     async searchMatches (filters) {
       const { data } = await axios.post('/match/search', filters)
-      console.log(data)
+      return data || []
     },
   },
 })
