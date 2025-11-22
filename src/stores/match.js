@@ -41,5 +41,8 @@ export const useMatchStore = defineStore('match', {
       const { data } = await axios.post('/match/search', filters)
       return data || []
     },
+    async requestToJoinMatch (matchId) {
+      console.log('Requesting to join match with ID:', matchId)
+    },
   },
 })

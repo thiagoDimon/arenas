@@ -169,12 +169,18 @@
                   :flat="true"
                   :outlined="true"
                   text-color="#051005"
+                  @click="abrirDetalhesPartida(match)"
                 >
                   <span>{{ $t('detalhes') }}</span>
                 </arn-button>
               </v-col>
               <v-col class="pa-2" cols="12" sm="6">
-                <arn-button class="w-100 text-capitalize" :flat="true">
+                <arn-button
+                  class="w-100 text-capitalize"
+                  :desabilitado="match.currentPlayers >= match.maxPlayers"
+                  :flat="true"
+                  @click="solicitarParticipacao(match)"
+                >
                   <span>{{ $t('participar') }}</span>
                 </arn-button>
               </v-col>
@@ -247,7 +253,6 @@
   async function buscarPartidas () {
     try {
       loading.value = true
-      console.log('filtros', filtros.value)
       listaPartidas.value = await matchStore.searchMatches(filtros.value)
     } finally {
       loading.value = false
@@ -255,8 +260,15 @@
   }
 
   function getStatusDescription (status) {
-    console.log('status', status)
     return t(StatusPartidaENUM.getChave(status))
+  }
+
+  async function solicitarParticipacao (match) {
+    await matchStore.requestToJoinMatch(match.id)
+  }
+
+  function abrirDetalhesPartida (match) {
+    console.log('Abrir detalhes da partida:', match)
   }
 
 </script>
