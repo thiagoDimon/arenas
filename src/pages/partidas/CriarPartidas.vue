@@ -443,16 +443,12 @@
     let backendMessage = ''
 
     try {
-      backendMessage = ''
-
       if (partida.value.data == '') {
-        console.log('data invalida')
         backendMessage = t('mensagemDataObrigatorio')
         throw new Error('Invalid field')
       }
 
       if (partida.value.horario == '') {
-        console.log('horario invalida')
         backendMessage = t('mensagemHorarioObrigatorio')
         throw new Error('Invalid field')
       }
