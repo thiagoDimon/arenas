@@ -422,7 +422,7 @@
   }
 
   const validateDescription = () => {
-    return description.value && description.value.length > 5000
+    return description.value && description.value.length > 100
   }
 
   const validateForm = () => {

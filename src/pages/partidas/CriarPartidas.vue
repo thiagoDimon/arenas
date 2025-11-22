@@ -318,9 +318,8 @@
                 density="comfortable"
                 hide-details
                 item-title="descricao"
-                item-value="chave"
+                item-value="valor"
                 :items="listaNiveis"
-                :menu-props="{ contentClass: '' }"
                 :placeholder="$t('selecioneNivel')"
                 variant="outlined"
               />

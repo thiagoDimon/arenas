@@ -6,7 +6,7 @@
       density="comfortable"
       hide-details
       :model-value="modelValue"
-      placeholder="dd/mm/aaaa"
+      :placeholder="placeholder"
       readonly
       variant="outlined"
       @click="abrirPicker()"
@@ -43,6 +43,11 @@
     modelValue: {
       type: String,
       required: false,
+    },
+    placeholder: {
+      type: String,
+      required: false,
+      default: 'dd/mm/aaaa',
     },
   })
 
