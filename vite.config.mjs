@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import VueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import Layouts from 'vite-plugin-vue-layouts-next'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import svgLoader from 'vite-svg-loader'
@@ -13,6 +14,12 @@ import svgLoader from 'vite-svg-loader'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    VitePWA({
+      registerType: 'autoUpdate',
+      // devOptions: {
+      //   enabled: true,
+      // },
+    }),
     VueRouter(),
     Layouts(),
     svgLoader(),
