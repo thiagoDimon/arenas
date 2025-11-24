@@ -76,7 +76,43 @@
                 {{ selectedEvent.details.descricao || 'Sem descrição' }}
               </v-list-item-subtitle>
             </v-list-item>
+
+            <v-list-item v-if="getFullAddress(selectedEvent.details)">
+              <template #prepend>
+                <v-icon :color="selectedEvent.color">mdi-map-marker</v-icon>
+              </template>
+              <v-list-item-title class="text-subtitle-2 font-weight-bold">Local</v-list-item-title>
+            </v-list-item>
           </v-list>
+
+          <div v-if="getFullAddress(selectedEvent.details)" class="px-4 pb-2">
+            <p class="mb-1 text-body-2">{{ getFullAddress(selectedEvent.details) }}</p>
+
+            <div class="mt-3">
+              <iframe
+                allowfullscreen
+                class="google-maps-iframe"
+                frameborder="0"
+                height="200"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                :src="getGoogleMapsEmbedUrl(selectedEvent.details)"
+                width="100%"
+              />
+              <v-btn
+                block
+                class="mt-2"
+                :color="selectedEvent.color"
+                :href="getGoogleMapsDirectionsUrl(selectedEvent.details)"
+                prepend-icon="mdi-navigation"
+                size="small"
+                target="_blank"
+                variant="tonal"
+              >
+                Abrir no Maps
+              </v-btn>
+            </div>
+          </div>
         </v-card-text>
       </v-card>
     </v-menu>
@@ -87,7 +123,7 @@
   import { onMounted, ref } from 'vue'
   import { useDisplay } from 'vuetify'
   import { useCalendarStore, useUserStore } from '@/stores'
-  import StatusPartidaENUM from '@/util/enums/statusPartida.js'
+  import matchStatusEnum from '@/util/enums/matchStatus.js'
 
   const calendarStore = useCalendarStore()
   const { mdAndUp } = useDisplay()
@@ -98,8 +134,8 @@
   const matches = ref([])
   const userStore = useUserStore()
 
-  const statusColors = StatusPartidaENUM.lista.reduce((acc, status) => {
-    acc[status.chave] = status.color
+  const statusColors = matchStatusEnum.lista.reduce((acc, status) => {
+    acc[status.valor] = status.color
     return acc
   }, {})
 
@@ -118,9 +154,9 @@
         name: partida.titulo,
         start: dataHora,
         end: new Date(dataHora.getTime() + 2 * 60 * 60 * 1000),
-        color: statusColors[partida.status.toLowerCase()] || 'grey',
-        status: partida.status,
-        statusText: StatusPartidaENUM.lista.find(s => s.chave === partida.status)?.valor || partida.status,
+        color: statusColors[partida.status] || 'grey',
+        status: matchStatusEnum.lista.find(s => s.valor == partida.status)?.chave || partida.status,
+        statusText: matchStatusEnum.lista.find(s => s.valor == partida.status)?.chave || partida.status,
         details: partida,
       }
     })
@@ -163,8 +199,57 @@
 
     return `${hour12} ${suffix}`
   }
+
+  function getFullAddress (match) {
+    if (!match) return ''
+
+    if (match.local) {
+      return match.local.replace(/\s*\(\d+\)\s*$/, '')
+    }
+
+    if (match.endereco) {
+      const parts = [
+        match.endereco,
+        match.numero,
+        match.complemento,
+      ].filter(Boolean)
+      return parts.join(', ')
+    }
+
+    return ''
+  }
+
+  function getGoogleMapsEmbedUrl (match) {
+    const address = match.local
+      ? match.local.replace(/\s*\(\d+\)\s*$/, '') + ', Brasil'
+      : [match.endereco, match.numero, match.bairro, match.cidade, match.estado, 'Brasil'].filter(Boolean).join(', ')
+
+    const encodedAddress = encodeURIComponent(address)
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
+
+    if (!apiKey) {
+      return `https://maps.google.com/maps?q=${encodedAddress}&output=embed`
+    }
+
+    return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodedAddress}`
+  }
+
+  function getGoogleMapsDirectionsUrl (match) {
+    const address = match.local
+      ? match.local.replace(/\s*\(\d+\)\s*$/, '') + ', Brasil'
+      : [match.endereco, match.numero, match.bairro, match.cidade, match.estado, 'Brasil'].filter(Boolean).join(', ')
+
+    const encodedAddress = encodeURIComponent(address)
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`
+  }
 </script>
 
 <style scoped lang="scss">
   @import url('@/styles/calendar.scss');
+
+  .google-maps-iframe {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 </style>

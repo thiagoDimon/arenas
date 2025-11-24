@@ -27,4 +27,29 @@ function changeLanguage (language) {
   window.location.reload()
 }
 
-export { changeLanguage, getFormattedDate }
+function isValidUserName (name) {
+  if (!name || typeof name !== 'string') {
+    return false
+  }
+
+  const trimmedName = name.trim()
+  if (trimmedName === '') {
+    return false
+  }
+
+  const lowerName = trimmedName.toLowerCase()
+  const invalidPatterns = ['null', 'null null', 'nullnull']
+
+  if (invalidPatterns.includes(lowerName)) {
+    return false
+  }
+
+  const withoutNull = trimmedName.replace(/null/gi, '').trim()
+  if (withoutNull === '') {
+    return false
+  }
+
+  return true
+}
+
+export { changeLanguage, getFormattedDate, isValidUserName }

@@ -4,7 +4,8 @@ export function createENUM (obj) {
   const lista = Object.entries(ENUM).map(([key, value]) => ({ key, ...value }))
 
   function getChave (value) {
-    return lista.find(item => item.valor === value).chave
+    const found = lista.find(item => item.valor === value)
+    return found ? found.chave : null
   }
 
   return {
