@@ -14,6 +14,7 @@ declare module 'vue' {
     ArnDatePicker: typeof import('./src/components/pickers/ArnDatePicker.vue')['default']
     ArnIcon: typeof import('./src/components/ArnIcon.vue')['default']
     ArnLoader: typeof import('./src/components/ArnLoader.vue')['default']
+    ArnMatchDetailsModal: typeof import('./src/components/modals/ArnMatchDetailsModal.vue')['default']
     ArnTimePicker: typeof import('./src/components/pickers/ArnTimePicker.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

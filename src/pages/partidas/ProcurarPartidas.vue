@@ -137,15 +137,15 @@
               <v-col class="arena-titulo-4" cols="11" sm="6">
                 <div class="d-flex flex-column">
                   <span>{{ match.title }}</span>
-                  <span class="arena-texto-3" style="color: #5f5f5f">{{ $t('criadoPor', { nomeUsuario: match.createUserName }) }}</span>
+                  <span v-if="isValidUserName(match.createUserName)" class="arena-texto-3" style="color: #5f5f5f">{{ $t('criadoPor', { nomeUsuario: match.createUserName }) }}</span>
                 </div>
               </v-col>
               <v-col class="align-justify-center" cols="1" sm="3">
-                <v-chip v-if="smAndUp" class="align-justify-center w-100 rounded-lg" color="primary-color-100" variant="flat">
+                <v-chip v-if="smAndUp" class="align-justify-center w-100 rounded-lg" :color="getStatusColor(match.status)" variant="flat">
                   <span>{{ getStatusDescription(match.status) }}</span>
                 </v-chip>
                 <div v-else>
-                  <v-icon color="#32ae3b" size="small">mdi-circle</v-icon>
+                  <v-icon :color="getStatusColor(match.status)" size="small">mdi-circle</v-icon>
                 </div>
               </v-col>
               <v-col class="horario-partida arena-texto-3" cols="12" sm="3" style="color: #5f5f5f">
@@ -194,16 +194,23 @@
       <h3 class="mt-4">{{ $t('todasPartidas') }}</h3>
       <p class="text-grey">{{ $t('exploreTodasPartidas') }}</p>
     </div>
+
+    <arn-match-details-modal
+      v-model="showDetailsModal"
+      :match="selectedMatch"
+      :show-remove-button="false"
+    />
   </div>
 </template>
 
 <script setup>
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
+  import ArnMatchDetailsModal from '@/components/modals/ArnMatchDetailsModal.vue'
   import { useMatchStore } from '@/stores'
   import NivelENUM from '@/util/enums/nivel.js'
-  import StatusPartidaENUM from '@/util/enums/statusPartida.js'
-  import { getFormattedDate } from '@/util/functions'
+  import userMatchStatusEnum from '@/util/enums/userMatchStatus.js'
+  import { getFormattedDate, isValidUserName } from '@/util/functions'
 
   const { smAndDown, smAndUp } = useDisplay()
   const { t } = useI18n()
@@ -211,8 +218,10 @@
 
   const listaPartidas = ref([])
   const loading = ref(false)
+  const showDetailsModal = ref(false)
+  const selectedMatch = ref(null)
 
-  const listaStatus = StatusPartidaENUM.lista.map(status => ({
+  const listaStatus = userMatchStatusEnum.lista.map(status => ({
     valor: status.valor,
     chave: status.chave,
     descricao: t(status.chave),
@@ -260,7 +269,13 @@
   }
 
   function getStatusDescription (status) {
-    return t(StatusPartidaENUM.getChave(status))
+    const chave = userMatchStatusEnum.getChave(status)
+    return chave ? t(chave) : status
+  }
+
+  function getStatusColor (status) {
+    const item = userMatchStatusEnum.lista.find(item => item.valor === status)
+    return item ? item.color : 'primary-color-100'
   }
 
   async function solicitarParticipacao (match) {
@@ -268,7 +283,8 @@
   }
 
   function abrirDetalhesPartida (match) {
-    console.log('Abrir detalhes da partida:', match)
+    selectedMatch.value = match
+    showDetailsModal.value = true
   }
 
 </script>

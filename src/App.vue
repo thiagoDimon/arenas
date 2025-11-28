@@ -111,4 +111,12 @@ body {
   box-shadow: 0 0 0px 1000px white inset !important;
 }
 
+body.v-overlay-scroll-blocked {
+  padding-right: 0 !important;
+}
+
+.v-overlay-scroll-blocked .sidebar-desktop {
+  right: 0 !important;
+}
+
 </style>

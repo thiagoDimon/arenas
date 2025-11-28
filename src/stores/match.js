@@ -44,5 +44,19 @@ export const useMatchStore = defineStore('match', {
     async requestToJoinMatch (matchId) {
       console.log('Requesting to join match with ID:', matchId)
     },
+    async leaveMatch (matchId, userId) {
+      try {
+        const response = await axios.delete('/match/leave', {
+          data: {
+            matchId,
+            userId,
+          },
+        })
+        return response.status === 200
+      } catch (error) {
+        console.error('Erro ao remover participação:', error)
+        throw error
+      }
+    },
   },
 })
