@@ -14,7 +14,7 @@
               </v-col>
               <v-col class="align-justify-center" cols="1" sm="3">
                 <v-chip v-if="smAndUp" class="align-justify-center w-100 rounded-lg" :color="getStatusColor(match.status)" variant="flat">
-                  <span>{{ getStatusDescription(match.status) }}</span>
+                  <span style="color: white;">{{ getStatusDescription(match.status) }}</span>
                 </v-chip>
                 <div v-else>
                   <v-icon :color="getStatusColor(match.status)" size="small">mdi-circle</v-icon>
@@ -102,7 +102,6 @@
 <script setup>
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
-  import ArnMatchDetailsModal from '@/components/modals/ArnMatchDetailsModal.vue'
   import { useDashboardStore, useMatchStore, useUserStore } from '@/stores'
   import userMatchStatusEnum from '@/util/enums/userMatchStatus'
   import { getFormattedDate, isValidUserName } from '@/util/functions'

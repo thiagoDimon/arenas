@@ -226,6 +226,7 @@ const messages = {
     selecionePosicao: 'Selecione uma posição',
     posicaoObrigatoria: 'Posição é obrigatória',
     participacaoConfirmada: 'Participação confirmada com sucesso!',
+    finalizada: 'Finalizada',
   },
   en: {
     entrar: 'Login',
@@ -452,6 +453,7 @@ const messages = {
     selecionePosicao: 'Select a position',
     posicaoObrigatoria: 'Position is required',
     participacaoConfirmada: 'Participation confirmed successfully!',
+    finalizada: 'Finished',
   },
   es: {
     entrar: 'Iniciar',
@@ -678,6 +680,7 @@ const messages = {
     selecionePosicao: 'Selecciona una posición',
     posicaoObrigatoria: 'La posición es obligatoria',
     participacaoConfirmada: '¡Participación confirmada con éxito!',
+    finalizada: 'Finalizada',
   },
 }
 

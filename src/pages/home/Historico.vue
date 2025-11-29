@@ -6,16 +6,19 @@
         <arn-card class="mb-4">
           <template #header>
             <v-row class="pa-4" no-gutters>
-              <v-col class="arena-titulo-4" cols="12" sm="6">
+              <v-col class="arena-titulo-4" cols="11" sm="6">
                 <div class="d-flex flex-column">
                   <span>{{ match.title }}</span>
                   <span v-if="isValidUserName(match.createUserName)" class="arena-texto-3" style="color: #5f5f5f">{{ $t('criadoPor', { nomeUsuario: match.createUserName }) }}</span>
                 </div>
               </v-col>
-              <v-col class="align-justify-center" cols="12" sm="3">
+              <v-col class="align-justify-center" cols="1" sm="3">
                 <v-chip v-if="smAndUp" class="align-justify-center w-100 rounded-lg" color="grey" variant="flat">
                   <span>{{ $t('finalizada') }}</span>
                 </v-chip>
+                <div v-else>
+                  <v-icon color="grey" size="small">mdi-circle</v-icon>
+                </div>
               </v-col>
               <v-col class="horario-partida arena-texto-3" cols="12" sm="3" style="color: #5f5f5f">
                 <v-icon size="large">mdi-calendar-outline</v-icon>
@@ -63,18 +66,18 @@
 
 <script setup>
   import { useDisplay } from 'vuetify'
-  import ArnMatchDetailsModal from '@/components/modals/ArnMatchDetailsModal.vue'
-  import { useDashboardStore } from '@/stores'
+  import { useDashboardStore, useUserStore } from '@/stores'
   import { getFormattedDate, isValidUserName } from '@/util/functions'
 
   const { smAndUp } = useDisplay()
   const dashboardStore = useDashboardStore()
+  const userStore = useUserStore()
   const matchHistory = ref([])
   const showDetailsModal = ref(false)
   const selectedMatch = ref(null)
 
   onMounted(async () => {
-    matchHistory.value = []
+    matchHistory.value = await dashboardStore.listarHistoricoPartidas(userStore.user.id)
   })
 
   function openDetailsModal (match) {

@@ -244,7 +244,6 @@
 <script setup>
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
-  import ArnMatchDetailsModal from '@/components/modals/ArnMatchDetailsModal.vue'
   import { useMatchStore, useUserStore } from '@/stores'
   import matchStatusENUM from '@/util/enums/matchStatus.js'
   import NivelENUM from '@/util/enums/nivel.js'

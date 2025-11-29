@@ -44,5 +44,16 @@ export const useDashboardStore = defineStore('dashboard', {
         throw error
       }
     },
+    async listarHistoricoPartidas (userId) {
+      try {
+        this.loading = true
+        const { data } = await axios.get(`/dashboard/matches-history/${userId}`)
+        return data || []
+      } catch (error) {
+        throw new Error('Erro ao listar histórico de partidas', error)
+      } finally {
+        this.loading = false
+      }
+    },
   },
 })

@@ -19,10 +19,10 @@
               </v-col>
               <v-col class="align-justify-center" cols="1" sm="3">
                 <v-chip v-if="smAndUp" class="align-justify-center w-100 rounded-lg" color="orange" variant="flat">
-                  <span>{{ $t('pendente') }}</span>
+                  <span style="color: white;">{{ $t('pendente') }}</span>
                 </v-chip>
                 <div v-else>
-                  <v-icon color="orange" size="small">mdi-clock-outline</v-icon>
+                  <v-icon color="orange" size="small">mdi-circle</v-icon>
                 </div>
               </v-col>
               <v-col class="horario-partida arena-texto-3" cols="12" sm="3" style="color: #5f5f5f">
@@ -32,7 +32,7 @@
             </v-row>
           </template>
           <template #content>
-            <div class="d-flex flex-row pa-1 align-center gap-4">
+            <div class="d-flex flex-row pa-1 align-center flex-wrap gap-4">
               <v-avatar size="40">
                 <v-img v-if="request.userProfilePic" :src="`data:image/jpeg;base64,${request.userProfilePic}`" />
                 <v-icon v-else>mdi-account</v-icon>
