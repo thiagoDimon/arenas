@@ -41,8 +41,14 @@ export const useMatchStore = defineStore('match', {
       const { data } = await axios.post('/match/search', filters)
       return data || []
     },
-    async requestToJoinMatch (matchId) {
-      console.log('Requesting to join match with ID:', matchId)
+    async requestToJoinMatch (match, userId) {
+      const joinMatch = {
+        userId,
+        matchId: match.id,
+        rolePlayer: match.userPosition,
+        userMatchStatus: match.userMatchStatus,
+      }
+      await axios.post('/user-match', joinMatch)
     },
     async leaveMatch (matchId, userId) {
       try {

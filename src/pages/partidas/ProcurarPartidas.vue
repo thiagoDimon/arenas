@@ -1,5 +1,43 @@
 <template>
   <div class="pa-6" style="min-height: 100vh;">
+    <arn-alerta
+      v-model="alert.show"
+      :color="alert.color"
+      :text="alert.text"
+      :title="alert.title"
+      :type="alert.type"
+    />
+    <arn-modal v-model="showModal" :close-on-confirm="false" :confirm-flat="true" @confirm="() => confirmarParticipacao()">
+      <template #title>
+        <span>{{ $t("confirmarParticipacao") }}</span>
+      </template>
+      <template #default>
+        <v-row>
+          <v-col class="arena-texto-1" cols="12">
+            {{ $t("confirmaParticipacao", { tituloPartida: selectedMatch ? selectedMatch.title : '' }) }}
+          </v-col>
+          <v-col cols="12">
+            <div>
+              <span>{{ $t("escolhaSuaPosicao") }}</span>
+              <span style="color: #B00020"> *</span>
+            </div>
+            <v-select
+              v-model="selectedMatch.userPosition"
+              bg-color="white"
+              clearable
+              color="primary-color-300"
+              density="comfortable"
+              hide-details
+              item-title="descricao"
+              item-value="valor"
+              :items="listaPosicoes"
+              :placeholder="$t('selecionePosicao')"
+              variant="outlined"
+            />
+          </v-col>
+        </v-row>
+      </template>
+    </arn-modal>
     <arn-loader :loading="loading" />
     <arn-card>
       <template #header>
@@ -177,7 +215,7 @@
               <v-col class="pa-2" cols="12" sm="6">
                 <arn-button
                   class="w-100 text-capitalize"
-                  :desabilitado="match.currentPlayers >= match.maxPlayers"
+                  :desabilitado="desabiltaBotaoParticipar(match)"
                   :flat="true"
                   @click="solicitarParticipacao(match)"
                 >
@@ -207,21 +245,26 @@
   import { useI18n } from 'vue-i18n'
   import { useDisplay } from 'vuetify'
   import ArnMatchDetailsModal from '@/components/modals/ArnMatchDetailsModal.vue'
-  import { useMatchStore } from '@/stores'
+  import { useMatchStore, useUserStore } from '@/stores'
+  import matchStatusENUM from '@/util/enums/matchStatus.js'
   import NivelENUM from '@/util/enums/nivel.js'
-  import userMatchStatusEnum from '@/util/enums/userMatchStatus.js'
+  import PosicaoENUM from '@/util/enums/posicao.js'
+  import userMatchStatusENUM from '@/util/enums/userMatchStatus.js'
   import { getFormattedDate, isValidUserName } from '@/util/functions'
 
   const { smAndDown, smAndUp } = useDisplay()
   const { t } = useI18n()
+
   const matchStore = useMatchStore()
+  const userStore = useUserStore()
 
   const listaPartidas = ref([])
   const loading = ref(false)
   const showDetailsModal = ref(false)
   const selectedMatch = ref(null)
+  const showModal = ref(false)
 
-  const listaStatus = userMatchStatusEnum.lista.map(status => ({
+  const listaStatus = userMatchStatusENUM.lista.map(status => ({
     valor: status.valor,
     chave: status.chave,
     descricao: t(status.chave),
@@ -232,6 +275,20 @@
     chave: nivel.chave.toUpperCase(),
     descricao: t(nivel.chave),
   }))
+
+  const listaPosicoes = PosicaoENUM.lista.map(posicao => ({
+    valor: posicao.valor,
+    chave: posicao.chave,
+    descricao: t(posicao.chave),
+  }))
+
+  const alert = ref({
+    show: false,
+    title: '',
+    text: '',
+    type: 'success',
+    color: 'success',
+  })
 
   const filtros = ref({
     title: null,
@@ -269,22 +326,72 @@
   }
 
   function getStatusDescription (status) {
-    const chave = userMatchStatusEnum.getChave(status)
+    const chave = userMatchStatusENUM.getChave(status)
     return chave ? t(chave) : status
   }
 
   function getStatusColor (status) {
-    const item = userMatchStatusEnum.lista.find(item => item.valor === status)
+    const item = userMatchStatusENUM.lista.find(item => item.valor === status)
     return item ? item.color : 'primary-color-100'
   }
 
   async function solicitarParticipacao (match) {
-    await matchStore.requestToJoinMatch(match.id)
+    showModal.value = true
+    selectedMatch.value = match
+  }
+
+  const showAlert = (title, text, type = 'success') => {
+    alert.value = {
+      show: true,
+      title,
+      text,
+      type,
+      color: type,
+    }
+  }
+
+  async function confirmarParticipacao () {
+    if (!selectedMatch.value.userPosition) {
+      showAlert(
+        t('atencao'),
+        t('posicaoObrigatoria'),
+        'warning',
+      )
+      return
+    }
+
+    if (selectedMatch.value) {
+      try {
+        selectedMatch.value.userMatchStatus = selectedMatch.value.privateMatch ? userMatchStatusENUM.SOLICITADO.valor : userMatchStatusENUM.CONFIRMADO.valor
+        await matchStore.requestToJoinMatch(selectedMatch.value, userStore.user.id)
+      } finally {
+        showModal.value = false
+        showAlert(
+          t('sucesso'),
+          t('participacaoConfirmada'),
+          'success',
+        )
+      }
+      await buscarPartidas()
+    }
   }
 
   function abrirDetalhesPartida (match) {
     selectedMatch.value = match
     showDetailsModal.value = true
+  }
+
+  function desabiltaBotaoParticipar (match) {
+    if ([matchStatusENUM.FINALIZADA.valor, matchStatusENUM.CANCELADA.valor].includes(match.status)) {
+      return true
+    }
+    if (match.currentPlayers >= match.maxPlayers) {
+      return true
+    }
+    if (match.players.some(player => player.user.id === userStore.user.id)) {
+      return true
+    }
+    return false
   }
 
 </script>

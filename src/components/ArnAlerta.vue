@@ -1,7 +1,7 @@
 <template>
   <transition name="slide-fade">
     <v-alert
-      class="arena-alerta"
+      class="arena-alerta mt-4"
       :color="color"
       :density="density"
       :icon="icon"
