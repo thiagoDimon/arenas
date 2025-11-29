@@ -9,8 +9,4 @@ async function initializeApp () {
   app.mount('#app')
 }
 
-try {
-  await initializeApp()
-} catch (error) {
-  console.error(error)
-}
+initializeApp()
