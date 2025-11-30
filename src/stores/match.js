@@ -64,5 +64,65 @@ export const useMatchStore = defineStore('match', {
         throw error
       }
     },
+    async getMyCreatedMatches (userId) {
+      try {
+        const { data } = await axios.get(`/match/created/${userId}`)
+        return data || []
+      } catch (error) {
+        console.error('Erro ao buscar partidas criadas:', error)
+        throw error
+      }
+    },
+    async getMatchWithPlayers (matchId) {
+      try {
+        const { data } = await axios.get(`/match/${matchId}/players`)
+        return data
+      } catch (error) {
+        console.error('Erro ao buscar detalhes da partida:', error)
+        throw error
+      }
+    },
+    async updatePlayerPositions (dados) {
+      try {
+        const response = await axios.put(`/match/${dados.matchId}/positions`, {
+          positions: dados.positions,
+        })
+        return response.status === 200
+      } catch (error) {
+        console.error('Erro ao atualizar posições:', error)
+        throw error
+      }
+    },
+    async removePlayerFromMatch (matchId, playerId) {
+      try {
+        const response = await axios.delete(`/match/${matchId}/player/${playerId}`)
+        return response.status === 200
+      } catch (error) {
+        console.error('Erro ao remover jogador:', error)
+        throw error
+      }
+    },
+    async cancelMatch (matchId, userId) {
+      try {
+        const response = await axios.put(`/match/${matchId}/cancel`, {
+          creatorUserId: userId,
+        })
+        return response.status === 200
+      } catch (error) {
+        console.error('Erro ao cancelar partida:', error)
+        throw error
+      }
+    },
+    async finalizeMatch (matchId, userId) {
+      try {
+        const response = await axios.put(`/match/${matchId}/finalize`, {
+          creatorUserId: userId,
+        })
+        return response.status === 200
+      } catch (error) {
+        console.error('Erro ao finalizar partida:', error)
+        throw error
+      }
+    },
   },
 })
