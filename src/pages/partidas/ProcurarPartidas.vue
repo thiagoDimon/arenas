@@ -263,7 +263,7 @@
   const selectedMatch = ref(null)
   const showModal = ref(false)
 
-  const listaStatus = userMatchStatusENUM.lista.map(status => ({
+  const listaStatus = matchStatusENUM.lista.map(status => ({
     valor: status.valor,
     chave: status.chave,
     descricao: t(status.chave),
@@ -325,12 +325,12 @@
   }
 
   function getStatusDescription (status) {
-    const chave = userMatchStatusENUM.getChave(status)
+    const chave = matchStatusENUM.getChave(status)
     return chave ? t(chave) : status
   }
 
   function getStatusColor (status) {
-    const item = userMatchStatusENUM.lista.find(item => item.valor === status)
+    const item = matchStatusENUM.lista.find(item => item.valor === status)
     return item ? item.color : 'primary-color-100'
   }
 

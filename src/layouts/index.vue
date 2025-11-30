@@ -37,15 +37,9 @@
       submenus: [
         { icon: 'mdi-pen', text: 'criarPartida', route: '/partidas/criar' },
         { icon: 'mdi-magnify', text: 'procurarPartidas', route: '/partidas/procurar' },
+        { icon: 'mdi-cog', text: 'gerenciarPartidas', route: '/partidas/gerenciar' },
       ],
       showInDesktop: true,
-    },
-    { icon: 'mdi-account-outline',
-      text: 'perfil',
-      route: '/perfil',
-      submenusIsOpen: false,
-      submenus: [],
-      showInDesktop: false,
     },
   ])
 </script>

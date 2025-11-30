@@ -123,7 +123,7 @@
   import { onMounted, ref } from 'vue'
   import { useDisplay } from 'vuetify'
   import { useCalendarStore, useUserStore } from '@/stores'
-  import matchStatusEnum from '@/util/enums/matchStatus.js'
+  import matchStatusEnum from '@/util/enums/userMatchStatus.js'
 
   const calendarStore = useCalendarStore()
   const { mdAndUp } = useDisplay()
