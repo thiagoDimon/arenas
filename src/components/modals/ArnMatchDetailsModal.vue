@@ -9,111 +9,106 @@
       <v-card-text class="pa-6">
         <arn-loader :loading="loading" />
 
-        <div v-if="match && !loading">
-          <div class="mb-4">
-            <h3 class="arena-titulo-4 mb-2">{{ match.title }}</h3>
-            <v-chip class="mb-3" color="primary-color-100" variant="flat">
-              {{ getStatusDescription(match.status) }}
-            </v-chip>
+        <!-- Data e Horário -->
+        <div class="info-section mb-4">
+          <div class="d-flex align-center mb-2">
+            <v-icon class="mr-2" color="#1B5E20">mdi-calendar-outline</v-icon>
+            <span class="font-weight-bold">{{ $t('dataHorario') }}:</span>
           </div>
+          <span class="ml-8">{{ getFormattedDate(match.date, match.time) }}</span>
+        </div>
 
-          <v-divider class="mb-4" />
-
-          <div class="info-section mb-4">
-            <div class="d-flex align-center mb-2">
-              <v-icon class="mr-2" color="#1B5E20">mdi-calendar-outline</v-icon>
-              <span class="font-weight-bold">{{ $t('dataHorario') }}:</span>
-            </div>
-            <span class="ml-8">{{ getFormattedDate(match.date, match.time) }}</span>
+        <div v-if="isValidUserName(match.createUserName)" class="info-section mb-4">
+          <div class="d-flex align-center mb-2">
+            <v-icon class="mr-2" color="#1B5E20">mdi-account</v-icon>
+            <span class="font-weight-bold">{{ $t('criadoPor', { nomeUsuario: '' }) }}:</span>
           </div>
+          <span class="ml-8">{{ match.createUserName }}</span>
+        </div>
 
-          <div v-if="isValidUserName(match.createUserName)" class="info-section mb-4">
-            <div class="d-flex align-center mb-2">
-              <v-icon class="mr-2" color="#1B5E20">mdi-account</v-icon>
-              <span class="font-weight-bold">{{ $t('criadoPor', { nomeUsuario: '' }) }}:</span>
-            </div>
-            <span class="ml-8">{{ match.createUserName }}</span>
+        <!-- Jogadores -->
+        <div class="info-section mb-4">
+          <div class="d-flex align-center mb-2">
+            <arn-icon class="mr-2" color="#1B5E20" icon="jogadores" />
+            <span class="font-weight-bold">{{ $t('jogadores') }}:</span>
           </div>
+          <div class="ml-8">
+            <span>{{ `${match.currentPlayers}/${match.maxPlayers} ${$t('jogadores')}` }}</span>
+            <v-progress-linear
+              class="mt-2"
+              color="#32ae3b"
+              height="6px"
+              :max="match.maxPlayers"
+              :model-value="match.currentPlayers"
+            />
+          </div>
+        </div>
 
-          <div class="info-section mb-4">
-            <div class="d-flex align-center mb-2">
-              <arn-icon class="mr-2" color="#1B5E20" icon="jogadores" />
-              <span class="font-weight-bold">{{ $t('jogadores') }}:</span>
-            </div>
-            <div class="ml-8">
-              <span>{{ `${match.currentPlayers}/${match.maxPlayers} ${$t('jogadores')}` }}</span>
-              <v-progress-linear
-                class="mt-2"
-                color="#32ae3b"
-                height="6px"
-                :max="match.maxPlayers"
-                :model-value="match.currentPlayers"
+        <!-- Nível -->
+        <div v-if="match.level" class="info-section mb-4">
+          <div class="d-flex align-center mb-2">
+            <v-icon class="mr-2" color="#1B5E20">mdi-chart-line</v-icon>
+            <span class="font-weight-bold">{{ $t('nivel') }}:</span>
+          </div>
+          <span class="ml-8">{{ match.level }}</span>
+        </div>
+
+        <!-- Valor -->
+        <div v-if="match.value" class="info-section mb-4">
+          <div class="d-flex align-center mb-2">
+            <v-icon class="mr-2" color="#1B5E20">mdi-currency-usd</v-icon>
+            <span class="font-weight-bold">{{ $t('valor') }}:</span>
+          </div>
+          <span class="ml-8">R$ {{ match.value }}</span>
+        </div>
+
+        <!-- Descrição -->
+        <div v-if="match.description" class="info-section mb-4">
+          <div class="d-flex align-center mb-2">
+            <v-icon class="mr-2" color="#1B5E20">mdi-text</v-icon>
+            <span class="font-weight-bold">{{ $t('descricao') }}:</span>
+          </div>
+          <p class="ml-8 text-justify">{{ match.description }}</p>
+        </div>
+
+        <v-divider class="mb-4" />
+
+        <!-- Local -->
+        <div class="info-section">
+          <div class="d-flex align-center mb-2">
+            <v-icon class="mr-2" color="#1B5E20">mdi-map-marker</v-icon>
+            <span class="font-weight-bold">{{ $t('local') }}:</span>
+          </div>
+          <div class="ml-8">
+            <p v-if="match.localName" class="mb-1 font-weight-medium">{{ match.localName }}</p>
+            <p v-if="getFullAddress(match)" class="mb-1">{{ getFullAddress(match) }}</p>
+            <p v-if="match.localNeighborhood || match.localCity" class="mb-1">
+              {{ match.localNeighborhood }}{{ match.localNeighborhood && match.localCity ? ', ' : '' }}{{ match.localCity }} - {{ match.localState }}
+            </p>
+            <p v-if="match.localZipCode" class="text-grey">CEP: {{ formatZipCode(match.localZipCode) }}</p>
+
+            <div v-if="getFullAddress(match)" class="mt-4">
+              <iframe
+                allowfullscreen
+                class="google-maps-iframe"
+                frameborder="0"
+                height="300"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                :src="getGoogleMapsEmbedUrl(match)"
+                width="100%"
               />
-            </div>
-          </div>
-
-          <div v-if="match.level" class="info-section mb-4">
-            <div class="d-flex align-center mb-2">
-              <v-icon class="mr-2" color="#1B5E20">mdi-chart-line</v-icon>
-              <span class="font-weight-bold">{{ $t('nivel') }}:</span>
-            </div>
-            <span class="ml-8">{{ match.level }}</span>
-          </div>
-
-          <div v-if="match.value" class="info-section mb-4">
-            <div class="d-flex align-center mb-2">
-              <v-icon class="mr-2" color="#1B5E20">mdi-currency-usd</v-icon>
-              <span class="font-weight-bold">{{ $t('valor') }}:</span>
-            </div>
-            <span class="ml-8">R$ {{ match.value }}</span>
-          </div>
-
-          <div v-if="match.description" class="info-section mb-4">
-            <div class="d-flex align-center mb-2">
-              <v-icon class="mr-2" color="#1B5E20">mdi-text</v-icon>
-              <span class="font-weight-bold">{{ $t('descricao') }}:</span>
-            </div>
-            <p class="ml-8 text-justify">{{ match.description }}</p>
-          </div>
-
-          <v-divider class="mb-4" />
-
-          <div class="info-section">
-            <div class="d-flex align-center mb-2">
-              <v-icon class="mr-2" color="#1B5E20">mdi-map-marker</v-icon>
-              <span class="font-weight-bold">{{ $t('local') }}:</span>
-            </div>
-            <div class="ml-8">
-              <p v-if="match.localName" class="mb-1 font-weight-medium">{{ match.localName }}</p>
-              <p v-if="getFullAddress(match)" class="mb-1">{{ getFullAddress(match) }}</p>
-              <p v-if="match.localNeighborhood || match.localCity" class="mb-1">
-                {{ match.localNeighborhood }}{{ match.localNeighborhood && match.localCity ? ', ' : '' }}{{ match.localCity }} - {{ match.localState }}
-              </p>
-              <p v-if="match.localZipCode" class="text-grey">CEP: {{ formatZipCode(match.localZipCode) }}</p>
-
-              <div v-if="getFullAddress(match)" class="mt-4">
-                <iframe
-                  allowfullscreen
-                  class="google-maps-iframe"
-                  frameborder="0"
-                  height="300"
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                  :src="getGoogleMapsEmbedUrl(match)"
-                  width="100%"
-                />
-                <v-btn
-                  class="mt-2"
-                  color="#1B5E20"
-                  :href="getGoogleMapsDirectionsUrl(match)"
-                  prepend-icon="mdi-navigation"
-                  size="small"
-                  target="_blank"
-                  variant="tonal"
-                >
-                  {{ $t('abrirNoMaps') }}
-                </v-btn>
-              </div>
+              <v-btn
+                class="mt-2"
+                color="#1B5E20"
+                :href="getGoogleMapsDirectionsUrl(match)"
+                prepend-icon="mdi-navigation"
+                size="small"
+                target="_blank"
+                variant="tonal"
+              >
+                {{ $t('abrirNoMaps') }}
+              </v-btn>
             </div>
           </div>
         </div>
@@ -145,7 +140,7 @@
 
 <script setup>
   import { useI18n } from 'vue-i18n'
-  import userMatchStatusEnum from '@/util/enums/userMatchStatus'
+  import matchStatusEnum from '@/util/enums/matchStatus'
   import { getFormattedDate, isValidUserName } from '@/util/functions'
 
   const props = defineProps({
@@ -186,7 +181,8 @@
   }
 
   function getStatusDescription (status) {
-    return t(userMatchStatusEnum.getChave(status))
+    const item = matchStatusEnum.lista.find(item => item.valor === status)
+    return item ? item.chave : status
   }
 
   function getFullAddress (match) {

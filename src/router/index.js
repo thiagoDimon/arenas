@@ -41,6 +41,11 @@ const routes = [
         name: 'Criar Partidas',
         component: () => import('@/pages/partidas/CriarPartidas.vue'),
       },
+      {
+        path: 'gerenciar',
+        name: 'Gerenciar Partidas',
+        component: () => import('@/pages/partidas/GerenciarPartidas.vue'),
+      },
     ],
   },
   {

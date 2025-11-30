@@ -440,7 +440,7 @@
       )
     }
 
-    return isFirstNameValid && isLastNameValid && isPhoneValid && isBirthDateValid && isDescriptionValid
+    return isFirstNameValid && isLastNameValid && isPhoneValid && isBirthDateValid
   }
 
   const loadUserData = async () => {
