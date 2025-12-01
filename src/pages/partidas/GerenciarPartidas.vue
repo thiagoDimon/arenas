@@ -35,7 +35,7 @@
           </template>
           <template #actions>
             <v-row no-gutters>
-              <v-col class="pa-2" :cols="match.status === 'X' || match.status === 'F' ? 6 : 4" :sm="match.status === 'X' || match.status === 'F' ? 6 : 4">
+              <v-col class="pa-2" cols="12" :sm="match.status === 'X' || match.status === 'F' ? 6 : 4">
                 <arn-button
                   class="w-100"
                   :flat="true"
@@ -46,7 +46,7 @@
                   <span>{{ $t('detalhes') }}</span>
                 </arn-button>
               </v-col>
-              <v-col class="pa-2" :cols="match.status === 'X' || match.status === 'F' ? 6 : 4" :sm="match.status === 'X' || match.status === 'F' ? 6 : 4">
+              <v-col class="pa-2" cols="12" :sm="match.status === 'X' || match.status === 'F' ? 6 : 4">
                 <arn-button
                   bg-color="#1976D2"
                   class="w-100"
